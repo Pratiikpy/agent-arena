@@ -27,7 +27,7 @@ Bitget's own GetAgent platform.
 
 ## Proof it's real (not slides)
 - **Live signed firewall** — curl a verdict in 10 seconds; tamper any field and the
-  signature dies. A 17-case red-team battery: **0 unsafe orders ever passed.**
+  signature dies. A 23-case red-team battery: **0 unsafe orders ever passed.**
 - **Four published Bitget Playbooks** with real on-platform backtests (BTC breakout
   Sharpe 1.68 / PF 2.33, ETH breakout PF 1.42, adaptive regime BTC PF 1.74, adaptive regime
   ETH Sharpe 2.15 / PF 3.34) — plus three more honestly *withheld* because they underperformed.
@@ -37,7 +37,7 @@ Bitget's own GetAgent platform.
   and offline verifier.
 - **Effectively free** — a full signed verdict (all gates + Ed25519) takes **~0.1 ms**
   (~9,700 verdicts/sec, single core): gating every trade is production-cheap.
-- **222 passing tests**, lint-clean, real Bitget data across BTC/ETH/SOL + tokenized AAPL.
+- **233 passing tests**, lint-clean, real Bitget data across BTC/ETH/SOL + tokenized AAPL.
 
 ## Why only an AI agent can do this
 The competitors read five analyst perspectives, debate them (the LLM agent argues bull

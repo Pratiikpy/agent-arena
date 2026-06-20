@@ -58,8 +58,21 @@ def test_gate_blocks_new_exposure_in_fast_crash():
     assert g.passed is False and "kill-switch" in g.detail
 
 
-def test_gate_allows_reduce_only_in_fast_crash():
-    assert gate_market_regime(MarketRegime.FAST_RISK_OFF, _intent(reduce_only=True)).passed is True
+def test_gate_rejects_fake_reduce_only_in_fast_crash():
+    # the reduce_only flag alone, with no opposing position, must NOT slip past the kill-switch
+    assert gate_market_regime(MarketRegime.FAST_RISK_OFF, _intent(reduce_only=True)).passed is False
+    assert gate_market_regime(
+        MarketRegime.FAST_RISK_OFF, _intent(side=Side.BUY, reduce_only=True), position_qty=1.0, price=63_000.0
+    ).passed is False  # BUY does not reduce a long
+
+
+def test_gate_allows_genuine_reduction_in_fast_crash():
+    # SELL opposing a long, within the position, with a price → a real de-risk → permitted
+    g = gate_market_regime(
+        MarketRegime.FAST_RISK_OFF, _intent(side=Side.SELL, notional=50.0, reduce_only=True),
+        position_qty=1.0, price=63_000.0,
+    )
+    assert g.passed is True
 
 
 def test_gate_passes_in_normal_and_risk_off():

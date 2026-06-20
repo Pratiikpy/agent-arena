@@ -30,7 +30,7 @@ doing something insane.**
   anything reaches the exchange. No agent — not even a confident LLM — can breach the
   mandate (per-order notional, total exposure, leverage, universe, trade-rate). On top of
   per-order limits, a **market-wide kill-switch** forces the *entire fleet* to de-risk-only
-  in a fast crash (`FAST_RISK_OFF`). It fails closed even on malformed input, and a 17-case
+  in a fast crash (`FAST_RISK_OFF`). It fails closed even on malformed input, and a 23-case
   red-team battery passes **0 unsafe orders**.
 - **Verification:** agents are ranked not by raw PnL but with **anti-overfitting
   statistics** — Deflated Sharpe, PSR, and the Probability of Backtest Overfitting
@@ -70,10 +70,10 @@ perceive ─▶ decide ─▶ FIREWALL ─▶ execute ─▶ signed ledger ─�
   over HTTP returns a signed verdict; a production single-page UI (firewall / arena /
   ledger / debate / verify) is served at `/`.
 
-**Run it** (no keys needed for the offline path; **222 tests pass**, lint-clean, 0 warnings):
+**Run it** (no keys needed for the offline path; **233 tests pass**, lint-clean, 0 warnings):
 ```bash
 cd bitarena && uv venv && uv pip install -e ".[dev,api,mcp,llm]"
-uv run pytest                                              # 222 passing, 92% coverage
+uv run pytest                                              # 233 passing, 92% coverage
 uv run python scripts/run_arena.py --source bitget --instrument perp   # real-data tournament
 uv run python scripts/demo_firewall.py --symbol BTCUSDT --side buy --notional 999999
 uv run python scripts/llm_debate.py --symbol BTCUSDT      # Qwen debate, firewall-gated
@@ -125,7 +125,7 @@ All under [`evidence/`](./evidence/README.md), reproducible with the commands ab
 - `overfit_trap.json` — the *verification* half quantified: on a no-edge market, DSR + PBO flag
   naive best-of-N selection as overfit (PBO 0.77) before any capital is risked.
 - `llm_debate.json` — a live Qwen debate, gated by the firewall.
-- `redteam.json` — 15 adversarial attacks + 2 controls; **0 unsafe orders passed**, signed.
+- `redteam.json` — 20 adversarial attacks + 3 controls; **0 unsafe orders passed**, signed.
 - `firewall_value.json` — the firewall's *containment value* quantified: a misbehaving agent
   stays **solvent under the mandate** vs **bankrupt unprotected** ($8,341 saved on a $10k account).
 - `external_agent_session.json` — a third-party bot vetting every trade over HTTP (Track-2).

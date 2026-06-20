@@ -8,7 +8,7 @@ here is Agent Arena rated against each dimension — strengths **and** real limi
 | Dimension | Self-rating | One-line |
 |---|---|---|
 | Depth of thesis | 9/10 | Trust = containment + verification; a testable conflict-gating bet; one real (funding) edge, now live in the arena |
-| Runnability | 8/10 | Live signed firewall + **public deploy**, real Bitget data, four published Playbooks, 222 tests — but paper, not real-money yet |
+| Runnability | 8/10 | Live signed firewall + **public deploy**, real Bitget data, four published Playbooks, 233 tests — but paper, not real-money yet |
 | Completeness | 9/10 | End-to-end loop, 7 agents, allocator, signed ledger, MCP/API, live UI, four published Playbooks |
 | Novelty & potential | 9/10 | Agent-vs-agent arena + signed firewall + trust-allocator + overfit scoring + live LLM debate |
 | Bitget-native depth | 8/10 | Real public data, **four published GetAgent Playbooks**, live Qwen, tokenized-stock Track 3 |
@@ -26,7 +26,7 @@ top-3 by Sharpe across BTC/ETH/SOL.
 ## Runnability — strong, with a clear ceiling
 Live signed firewall (publicly callable at **https://bitarena.vercel.app**, also curl-able
 offline), real Bitget market data, **four published GetAgent Playbooks** with real
-on-platform backtests, a live Qwen debate agent, and 222 passing offline tests. The public
+on-platform backtests, a live Qwen debate agent, and 233 passing offline tests. The public
 repo (github.com/Pratiikpy/agent-arena, CI green) and the live deploy are both up. **Limit:**
 trading is paper (no real-money order yet — needs a trade-permission key), and the ≤3-min
 demo video is not yet recorded (storyboard ready).

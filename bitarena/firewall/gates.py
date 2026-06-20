@@ -11,7 +11,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 
 from ..domain.mandate import Mandate
-from ..domain.market import Quote
+from ..domain.market import Quote, Side
 from ..domain.intent import TradeIntent
 from ..domain.verdict import GateResult
 from .regime import MarketRegime
@@ -94,19 +94,48 @@ def gate_leverage_request(intent: TradeIntent, mandate: Mandate) -> GateResult:
     return GateResult(gate="leverage", passed=passed, detail=detail, limit=cap, attempted=intent.leverage)
 
 
-def gate_market_regime(regime: MarketRegime, intent: TradeIntent) -> GateResult:
-    """Fleet-wide kill-switch: in a fast crash (``FAST_RISK_OFF``) only de-risking
-    (reduce-only) orders pass — every agent is forced to stop adding exposure at once.
-    A genuine reduction is still verified downstream, so the reduce-only flag alone can't
-    be used to open a fresh position. ``NORMAL`` always passes."""
-    if regime is MarketRegime.FAST_RISK_OFF and not intent.reduce_only:
+def is_genuine_reduction(
+    intent: TradeIntent, position_qty: float, price: float | None
+) -> bool:
+    """True only if the order genuinely reduces an existing position: it is reduce-only, its
+    side opposes the position sign, and its notional does not exceed the position (so it can
+    neither open nor flip). The ``reduce_only`` flag alone is never trusted — this is what
+    both the exposure-cap exemption and the kill-switch rely on, so a fake reduce-only order
+    can neither bypass the caps nor slip past the crash kill-switch."""
+    if not intent.reduce_only or price is None or price <= 0:
+        return False
+    opposes = (
+        (intent.side is Side.SELL and position_qty > 0)
+        or (intent.side is Side.BUY and position_qty < 0)
+    )
+    if not opposes:
+        return False
+    requested = intent.notional_usd or 0.0
+    if intent.quantity is not None:
+        requested = max(requested, intent.quantity * price)
+    return requested <= abs(position_qty) * price + 1e-9
+
+
+def gate_market_regime(
+    regime: MarketRegime,
+    intent: TradeIntent,
+    position_qty: float = 0.0,
+    price: float | None = None,
+) -> GateResult:
+    """Fleet-wide kill-switch: in a fast crash (``FAST_RISK_OFF``) only a *verified* genuine
+    reduction passes — every agent is forced to stop adding exposure at once. The reduce-only
+    flag alone is not enough (a fake reduce-only on a flat book cannot slip through), so an
+    agent cannot use it to open or average into a position mid-crash. ``NORMAL`` always passes."""
+    if regime is not MarketRegime.FAST_RISK_OFF:
         return GateResult(
             gate="market_regime",
-            passed=False,
-            detail="market kill-switch engaged (fast risk-off): reduce-only orders permitted",
+            passed=True,
+            detail="" if regime is MarketRegime.NORMAL else regime.value,
         )
+    if is_genuine_reduction(intent, position_qty, price):
+        return GateResult(gate="market_regime", passed=True, detail="fast risk-off: de-risking permitted")
     return GateResult(
         gate="market_regime",
-        passed=True,
-        detail="" if regime is MarketRegime.NORMAL else regime.value,
+        passed=False,
+        detail="market kill-switch engaged (fast risk-off): de-risking (reduce-only) trades only",
     )

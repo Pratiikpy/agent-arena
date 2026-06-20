@@ -20,7 +20,7 @@ from .domain import (
     default_arena_mandate,
 )
 from .domain.verdict import Decision
-from .firewall import EvalContext, Firewall
+from .firewall import EvalContext, Firewall, MarketRegime
 from .firewall.signing import model_canonical, sha256_hex
 
 _EPS = 1e-6
@@ -47,12 +47,15 @@ def _base_mandate():
     return default_arena_mandate(10_000, allowed_symbols=("BTCUSDT",))
 
 
-def _ctx(quote, *, mandate=None, exposure=0.0, daily=0, halted=False, now=_NOW, max_age=60_000) -> EvalContext:
+def _ctx(quote, *, mandate=None, exposure=0.0, daily=0, halted=False, now=_NOW, max_age=60_000,
+         position_qty=0.0, regime=MarketRegime.NORMAL) -> EvalContext:
     return EvalContext(
         mandate=mandate or _base_mandate(),
         equity_usd=10_000.0,
         quote=quote,
         current_exposure_usd=exposure,
+        position_qty=position_qty,
+        regime=regime,
         daily_count=daily,
         halted=halted,
         now_ms=now,
@@ -60,10 +63,11 @@ def _ctx(quote, *, mandate=None, exposure=0.0, daily=0, halted=False, now=_NOW, 
     )
 
 
-def _intent(symbol="BTCUSDT", side=Side.BUY, instrument=InstrumentType.SPOT, notional=None, quantity=None, leverage=1.0):
+def _intent(symbol="BTCUSDT", side=Side.BUY, instrument=InstrumentType.SPOT, notional=None,
+            quantity=None, leverage=1.0, reduce_only=False):
     return TradeIntent(
         agent_id="redteam", symbol=symbol, side=side, instrument=instrument,
-        notional_usd=notional, quantity=quantity, leverage=leverage,
+        notional_usd=notional, quantity=quantity, leverage=leverage, reduce_only=reduce_only,
     )
 
 
@@ -96,9 +100,32 @@ def build_attacks() -> list[Attack]:
         Attack("kill_switch_active", "halt", _intent(notional=100.0), _ctx(_quote(), halted=True), "reject"),
         Attack("below_min_price", "universe", _intent(notional=100.0), _ctx(_quote(), mandate=min_price), "reject"),
         Attack("expired_mandate", "expiry", _intent(notional=100.0), _ctx(_quote(), mandate=expired), "reject"),
+        # --- bypass attempts against the hardened surfaces (must REJECT) ---
+        # a reduce-only flag on a fresh order must not open a position with the caps disabled
+        Attack("reduce_only_open_bypass", "exposure",
+               _intent(notional=2_000.0, reduce_only=True),
+               _ctx(_quote(), exposure=30_000.0, position_qty=0.0), "reject"),
+        # an over-sized "reduction" (notional >> position) must not get the exemption either
+        Attack("reduce_only_flip_bypass", "exposure",
+               _intent(side=Side.SELL, notional=2_000.0, reduce_only=True),
+               _ctx(_quote(), exposure=30_000.0, position_qty=0.001), "reject"),
+        # crash kill-switch: a fresh buy is blocked while the fleet de-risks
+        Attack("killswitch_new_buy", "regime", _intent(notional=100.0),
+               _ctx(_quote(), regime=MarketRegime.FAST_RISK_OFF), "reject"),
+        # crash kill-switch: a fake reduce-only (no position to reduce) must not slip through
+        Attack("killswitch_fake_reduce", "regime",
+               _intent(notional=2_000.0, reduce_only=True),
+               _ctx(_quote(), regime=MarketRegime.FAST_RISK_OFF, position_qty=0.0), "reject"),
+        # a negative reported exposure must not inflate headroom past the per-order cap
+        Attack("negative_exposure_inflation", "sizing", _intent(notional=5_000_000.0),
+               _ctx(_quote(), exposure=-1e9), "bounded"),
         # --- legitimate controls: must be ALLOWED (proves the gate isn't blocking everything) ---
         Attack("legit_small_buy", "control", _intent(notional=50.0), _ctx(_quote()), "allow"),
         Attack("legit_mid_buy", "control", _intent(notional=1_500.0), _ctx(_quote()), "allow"),
+        # a genuine de-risk during a crash must still be permitted (kill-switch isn't a full halt)
+        Attack("legit_derisk_in_crash", "control",
+               _intent(side=Side.SELL, notional=100.0, reduce_only=True),
+               _ctx(_quote(), regime=MarketRegime.FAST_RISK_OFF, position_qty=0.1), "allow"),
     ]
 
 

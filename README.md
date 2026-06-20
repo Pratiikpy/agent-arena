@@ -147,7 +147,7 @@ uv run python scripts/verify_cert.py --file v.json     # -> ✓ signature VALID 
 
 ## Status
 
-Complete and tested — **222 passing tests, lint-clean, fully offline**: the signed
+Complete and tested — **233 passing tests, lint-clean, fully offline**: the signed
 tamper-evident firewall (red-teamed, **0 unsafe orders pass**), a live Bitget connector
 (real data verified), the arena with **seven competitors** (conflict-gated swarm, the
 published-Playbook regime mirror, persona team, Q-learning RL, momentum, buy-hold, and a

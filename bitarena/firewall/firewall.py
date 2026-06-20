@@ -24,7 +24,7 @@ from pydantic import BaseModel, ConfigDict
 
 from ..domain.intent import TradeIntent
 from ..domain.mandate import Mandate
-from ..domain.market import Quote, Side
+from ..domain.market import Quote
 from ..domain.verdict import Certificate, Decision, GateResult, Verdict
 from . import gates
 from .regime import MarketRegime
@@ -87,7 +87,10 @@ class Firewall:
             gates.gate_min_price(ctx.mandate, price),
             gates.gate_daily_count(ctx.daily_count, ctx.mandate),
             gates.gate_leverage_request(intent, ctx.mandate),
-            gates.gate_market_regime(ctx.regime, intent),
+            gates.gate_market_regime(
+                ctx.regime, intent, ctx.position_qty,
+                ctx.quote.mid if ctx.quote is not None else None,
+            ),
         ]
         first_fail = next((g for g in structural if not g.passed), None)
         if first_fail is not None:
@@ -153,32 +156,26 @@ class Firewall:
         allowable = order_cap
 
         # A reduce-only order is exempt from the exposure/leverage caps ONLY when it is a
-        # *verified* genuine reduction: its side opposes the current position and it does not
-        # exceed it (no opening or flipping). A bare reduce_only flag is never trusted, so an
-        # agent cannot set it on a fresh order to open a position with the exposure/leverage
-        # caps disabled.
+        # *verified* genuine reduction (side opposes the position and does not exceed it — no
+        # opening or flipping). The bare reduce_only flag is never trusted; the same check
+        # guards the crash kill-switch, so it lives in one place (gates.is_genuine_reduction).
         price = ctx.quote.mid if ctx.quote is not None else None
-        position_notional = abs(ctx.position_qty) * price if (price and price > 0) else 0.0
-        opposes = (
-            (intent.side is Side.SELL and ctx.position_qty > 0)
-            or (intent.side is Side.BUY and ctx.position_qty < 0)
-        )
-        genuine_reduce = intent.reduce_only and opposes and requested <= position_notional + _EPS
-
-        if not genuine_reduce:
-            exposure_room = max(0.0, caps.max_total_exposure_usd - ctx.current_exposure_usd)
+        if not gates.is_genuine_reduction(intent, ctx.position_qty, price):
+            # clamp at 0: a negative reported exposure must never *inflate* headroom past the caps
+            exposure = max(0.0, ctx.current_exposure_usd)
+            exposure_room = max(0.0, caps.max_total_exposure_usd - exposure)
             results.append(
                 GateResult(
                     gate="max_total_exposure",
                     passed=requested <= exposure_room + _EPS,
                     limit=caps.max_total_exposure_usd,
-                    attempted=ctx.current_exposure_usd + requested,
+                    attempted=exposure + requested,
                 )
             )
             allowable = min(allowable, exposure_room)
 
             lev_ceiling = caps.max_leverage * ctx.equity_usd
-            lev_room = max(0.0, lev_ceiling - ctx.current_exposure_usd)
+            lev_room = max(0.0, lev_ceiling - exposure)
             results.append(
                 GateResult(
                     gate="max_leverage_exposure",

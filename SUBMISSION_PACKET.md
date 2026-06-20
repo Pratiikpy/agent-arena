@@ -53,7 +53,7 @@ decide (7 agents incl. a live Qwen LLM debate, the published Playbook strategy, 
 funding-carry competitor) →
 **firewall** (signed, red-teamed) → execute (paper / Bitget) → **signed ledger** →
 overfit-aware leaderboard → **trust allocator**. Exposed over an HTTP API and an MCP
-server, with an independent `/verify` endpoint and a production UI. 222 passing tests.
+server, with an independent `/verify` endpoint and a production UI. 233 passing tests.
 Run it: `cd bitarena && uv pip install -e ".[dev,api,mcp,llm]" && uv run pytest` then
 `uv run uvicorn bitarena.api.app:app --port 8000`.
 
@@ -84,7 +84,7 @@ let a fleet of agents be run with real capital. That is what Agent Arena is.
   losers are withheld — publish discipline as evidence. `playbook/PUBLISHED.md`.
 - **Live signed firewall verdicts** — `firewall_demos.json` (ALLOW/CAPPED/REJECT + tamper
   proof); callable live at `POST /firewall`, independently checkable at `POST /verify`.
-- **Red-team** — `redteam.json`: 15 attacks, **0 unsafe orders passed**, all signed.
+- **Red-team** — `redteam.json`: 20 attacks, **0 unsafe orders passed**, all signed.
 - **Firewall containment value** — `firewall_value.json`: a misbehaving agent stays solvent
   under the mandate vs bankrupt unprotected ($8,341 saved on a $10k account).
 - **Overfit-detection value** — `overfit_trap.json`: on a no-edge market, DSR + PBO (0.77) flag
