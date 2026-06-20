@@ -114,7 +114,7 @@ For each screen: **purpose · data it shows · components · states · backing e
 
 ### 4.4 Arena leaderboard  (`/arena`)
 - **Purpose:** the tournament. Rank the agents honestly.
-- **Header strip:** `symbol`, `instrument`, `source` (e.g. `bitget:1m:1000bars`), `ticks`,
+- **Header strip:** `symbol`, `instrument`, `source` (e.g. `bitget:1h:1000bars`), `ticks`,
   `starting_cash`, `issuer`, and two trust badges: **`ledger ✓ verified`** and a
   **PBO gauge** (`overfitting.pbo`) with a plain-language label (see §9).
 - **Table (one row per agent), columns:** `rank`, `agent_id`, `final_equity`,
@@ -231,7 +231,7 @@ Returns the most recent tournament. Real shape (BTC perp, 1000 ticks) — abbrev
 {
   "symbol": "BTCUSDT", "instrument": "perp", "ticks": 1000,
   "starting_cash": 10000.0, "issuer": "98683e5cbe6313a0",
-  "source": "bitget:1m:1000bars",
+  "source": "bitget:1h:1000bars",
   "leaderboard": [
     {"agent_id": "baseline-momentum", "rank": 1, "final_equity": 10090.61,
      "total_return": 0.009061, "sharpe": 0.031001, "sortino": 0.029601,
