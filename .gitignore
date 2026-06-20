@@ -18,10 +18,9 @@ htmlcov/
 build/
 dist/
 
-# Arena runtime state (kept out of git; the curated evidence/ is committed deliberately).
-# evidence/live/ is volatile state written by scripts/live_step.py (portfolios, growing
-# ledgers, cursor) — regenerate it with `make live`, don't commit the churn.
+# Arena runtime state.
+# A committed snapshot of evidence/live/ ships as part of the evidence pack (a real, signed
+# live-mode tournament served at GET /live); `make live` advances it locally on fresh Bitget data.
 .runtime/
-evidence/live/
 
 .vercel
