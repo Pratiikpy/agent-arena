@@ -87,6 +87,12 @@ class Arena:
         self.daily_counts: dict[str, int] = {aid: 0 for aid in self.agents}
 
         ledger_dir = Path(ledger_dir) if ledger_dir else None
+        if ledger_dir is not None:
+            # A batch tournament starts with FRESH ledgers, so re-running is idempotent
+            # (no doubled records). Live resume/append is handled separately by LiveArena.
+            ledger_dir.mkdir(parents=True, exist_ok=True)
+            for aid in self.agents:
+                (ledger_dir / f"{aid}.jsonl").unlink(missing_ok=True)
         self.ledgers: dict[str, SignedLedger] = {
             aid: SignedLedger(self._signer, ledger_dir / f"{aid}.jsonl" if ledger_dir else None)
             for aid in self.agents
