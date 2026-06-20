@@ -215,8 +215,10 @@ is **directional but not statistically significant**, and we report that rather 
 (`evidence/swarm_edge.json`). The product is the *trust layer*, not a secret alpha.
 
 **"Is it actually live, or just slides?"** Live at **bitarena.vercel.app** — the landing ticks a
-fresh signed verdict on the **real BTC price every few seconds** (`/pulse`), tournaments run on
-real Bitget data, and four Playbooks are published on Bitget's own GetAgent platform.
+fresh signed verdict on the **real BTC price every few seconds** (`/pulse`). **Click the badge**
+and it verifies that live verdict's signature *in your browser* (Web Crypto), then **"Tamper a
+byte"** turns the same signature **✗ invalid** — trustless tamper-evidence on live data, in one
+click. Tournaments run on real Bitget data; four Playbooks are published on Bitget's own platform.
 
 **"How do I trust your numbers?"** You don't have to. `scripts/verify_evidence.py` re-checks every
 signed ledger + certificate (issuer-pinned); `scripts/check_docs.py` fails CI if any cited number

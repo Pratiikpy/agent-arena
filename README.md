@@ -15,7 +15,7 @@
 > scoring, signed ledger, and Bitget integration are original work.
 
 ### For judges — confirm it in 60 seconds
-- **See it live:** open [bitarena.vercel.app](https://bitarena.vercel.app) — the **LIVE FIREWALL** badge ticks a freshly Ed25519-signed verdict on the real BTC price every few seconds.
+- **See it live — then verify it yourself in one click:** open [bitarena.vercel.app](https://bitarena.vercel.app); the **LIVE FIREWALL** badge ticks a freshly Ed25519-signed verdict on the real BTC price every few seconds. **Click the badge** → it verifies that live verdict's signature *in your browser* (Web Crypto, no server) → then hit **"Tamper a byte"** and watch the same signature go **✗ invalid**. Trustless, tamper-evident, on live data.
 - **Run it:** `uv venv && uv pip install -e ".[dev,api,mcp]" && uv run pytest` (255 tests, offline) — or `make verify` for the full gate (tests · lint · doc-numbers · evidence · red-team).
 - **Verify the evidence yourself, offline:** `uv run python scripts/verify_evidence.py` → re-checks every signed ledger (9,230 records) + certificate, all pinned to the published issuer.
 - **Integrate in 5 lines:** `uv run python scripts/integrate_example.py` → a third-party bot vets *and* offline-verifies its trades against the live deploy.
