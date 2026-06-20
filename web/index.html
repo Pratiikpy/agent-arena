@@ -46,6 +46,41 @@ const API = params.get("api") || (location.protocol.startsWith("http") ? locatio
 const ACCENT = "#0a0a0a";
 const PRICE = 63975.11, MAX_ORDER = 2000, MAX_TOTAL = 50000;
 
+// Agent Arena's published Ed25519 issuer key (config/issuer_pubkey.hex). The Verify tab pins
+// against this, so a forger who self-signs with their own key is rejected — all in your browser.
+const ISSUER_PUBKEY = "c2f8243b0d573587f285c830a868acd19249d17d59ecbf9329e796dfed6fb630";
+const FLOAT_FIELDS = new Set(["effective_notional_usd"]);
+const _hexBytes = (h) => { try { return Uint8Array.from(h.match(/../g).map(x => parseInt(x, 16))); } catch(e) { return null; } };
+// Canonical bytes EXACTLY matching the server's signing form: sorted keys, no whitespace,
+// Python float repr for monetary fields (50 -> "50.0"), ints bare.
+function canonicalCertBytes(cert){
+  const o = Object.assign({}, cert); delete o.signature_hex; delete o.public_key_hex;
+  const body = Object.keys(o).sort().map(k => {
+    const v = o[k]; let s;
+    if (v === null) s = "null";
+    else if (FLOAT_FIELDS.has(k) && typeof v === "number") s = Number.isInteger(v) ? v.toFixed(1) : String(v);
+    else if (typeof v === "number") s = String(v);
+    else s = JSON.stringify(v);
+    return JSON.stringify(k) + ":" + s;
+  }).join(",");
+  return new TextEncoder().encode("{" + body + "}");
+}
+// Verify a certificate ENTIRELY in the browser (Web Crypto Ed25519) — no server, no network.
+// Returns {valid, trusted_issuer} or null if this browser lacks Ed25519 (caller then falls back).
+async function verifyCertLocally(cert){
+  if (!(window.crypto && crypto.subtle)) return null;
+  const pubHex = (cert.public_key_hex || "").toLowerCase();
+  const pub = _hexBytes(pubHex), sig = _hexBytes(cert.signature_hex || "");
+  if (!pub || !sig) return { valid:false, trusted_issuer:false };
+  let key;
+  try { key = await crypto.subtle.importKey("raw", pub, {name:"Ed25519"}, false, ["verify"]); }
+  catch(e){ return null; }  // Ed25519 unsupported -> server fallback
+  try {
+    const valid = await crypto.subtle.verify({name:"Ed25519"}, key, sig, canonicalCertBytes(cert));
+    return { valid, trusted_issuer: valid && pubHex === ISSUER_PUBKEY };
+  } catch(e){ return null; }
+}
+
 const VC = {
   ALLOW:        { fg:"#0b7a4b", bg:"#effaf3", line:"#b6e6cb" },
   ALLOW_CAPPED: { fg:"#946200", bg:"#fdf6e9", line:"#f0d699" },
@@ -209,7 +244,20 @@ const App = {
     let payload;
     try{ const d=JSON.parse(txt); payload=(d&&typeof d==="object"&&d.certificate)?d.certificate:d; }
     catch(e){ state.verifyResult={valid:false,reason:"not valid JSON"}; render(); return; }
-    try{ const r=await api("/verify",{method:"POST",body:JSON.stringify(payload)}); state.verifyResult=r.data; }
+    // Verify ENTIRELY in your browser (Web Crypto Ed25519) — the certificate is never sent anywhere.
+    const local = await verifyCertLocally(payload);
+    if(local){
+      state.verifyResult = {
+        valid: local.valid, trusted_issuer: local.trusted_issuer, method: "client-side",
+        issuer: payload.issuer, decision: payload.decision, intent_hash: payload.intent_hash,
+        reason: !local.valid ? "signature invalid or tampered"
+              : local.trusted_issuer ? "signature valid and signed by Agent Arena's published key"
+              : "signature self-consistent but NOT Agent Arena's published key (possible forgery)",
+      };
+      render(); return;
+    }
+    // Fallback only if this browser lacks Web Crypto Ed25519: ask the server to re-check.
+    try{ const r=await api("/verify",{method:"POST",body:JSON.stringify(payload)}); state.verifyResult=Object.assign({method:"server"},r.data); }
     catch(e){ state.verifyResult={valid:null,reason:"verifier needs the API running (start it, or use scripts/verify_cert.py offline)"}; }
     render();
   },
@@ -404,17 +452,20 @@ function verifyView(){
   const r=state.verifyResult;
   let card="";
   if(r){
-    if(r.valid===true){ const C=VC.ALLOW; card='<div data-stamp style="margin-top:18px;display:flex;align-items:center;gap:16px;padding:20px 24px;border-radius:16px;border:1px solid '+C.line+';background:'+C.bg+';"><span class="mono" style="font-size:20px;font-weight:600;color:'+C.fg+';">✓ signature valid</span><span style="flex:1;font-size:14px;color:#1d1d1f;">Signed by issuer '+esc(r.issuer||"")+' and not altered.</span></div>'; }
+    if(r.valid===true){ const C=VC.ALLOW; const m=r.method==="client-side"?'<span class="mono" style="font-size:11px;font-weight:600;color:#0b7a4b;white-space:nowrap;">✓ in your browser · no server</span>':''; card='<div data-stamp style="margin-top:18px;display:flex;align-items:center;gap:16px;padding:20px 24px;border-radius:16px;border:1px solid '+C.line+';background:'+C.bg+';"><span class="mono" style="font-size:20px;font-weight:600;color:'+C.fg+';">✓ signature valid</span><span style="flex:1;font-size:14px;color:#1d1d1f;">'+esc(r.reason||"Signed and not altered.")+'</span>'+m+'</div>'; }
     else if(r.valid===false){ const C=VC.REJECT; card='<div data-stamp style="margin-top:18px;display:flex;align-items:center;gap:16px;padding:20px 24px;border-radius:16px;border:1px solid '+C.line+';background:'+C.bg+';"><span class="mono" style="font-size:20px;font-weight:600;color:'+C.fg+';">✗ invalid</span><span style="flex:1;font-size:14px;color:#1d1d1f;">'+esc(r.reason||"signature invalid or tampered")+'</span></div>'; }
     else { card='<div style="margin-top:18px;padding:20px 24px;border-radius:16px;border:1px dashed rgba(0,0,0,.2);background:#fafafa;color:#6b7280;font-size:14px;">'+esc(r.reason||"")+'</div>'; }
     if(r.valid!==null && (r.decision||r.intent_hash)){
-      card+='<div style="margin-top:12px;display:grid;grid-template-columns:auto 1fr;gap:8px 16px;">'+[["decision",r.decision],["issuer",r.issuer],["intent_hash",r.intent_hash]].map(m=>'<span class="mono" style="font-size:11px;color:#9aa0aa;">'+m[0]+'</span><span class="mono" style="font-size:11.5px;color:#1d1d1f;word-break:break-all;">'+esc(m[1]||"")+'</span>').join("")+'</div>';
+      const ti = r.trusted_issuer===undefined ? "—" : (r.trusted_issuer ? "yes — Agent Arena's published key" : "NO — not the published key (possible forgery)");
+      const mode = r.method==="client-side" ? "in your browser (Web Crypto Ed25519)" : (r.method==="server" ? "server /verify" : "—");
+      const rows=[["decision",r.decision],["issuer",r.issuer],["trusted issuer",ti],["verified",mode],["intent_hash",r.intent_hash]];
+      card+='<div style="margin-top:12px;display:grid;grid-template-columns:auto 1fr;gap:8px 16px;">'+rows.map(m=>'<span class="mono" style="font-size:11px;color:#9aa0aa;">'+m[0]+'</span><span class="mono" style="font-size:11.5px;color:#1d1d1f;word-break:break-all;">'+esc(m[1]||"")+'</span>').join("")+'</div>';
     }
   }
   return '<div style="max-width:840px;margin:0 auto;padding:56px 40px 80px;">\
     <div style="font-size:12px;font-weight:600;letter-spacing:.2em;color:#6b7280;margin-bottom:12px;">INDEPENDENT VERIFIER</div>\
     <h1 style="margin:0 0 14px;font-size:clamp(2rem,4vw,2.9rem);font-weight:700;letter-spacing:-.028em;color:#1d1d1f;">Verify any certificate</h1>\
-    <p style="margin:0 0 24px;font-size:1.05rem;line-height:1.55;color:#6b7280;">Paste a firewall certificate (or a full verdict). It is checked against the public key embedded in the certificate itself — you do not have to trust this server. <span class="mono" style="font-size:12px;color:#a0a4ac;">POST /verify</span></p>\
+    <p style="margin:0 0 24px;font-size:1.05rem;line-height:1.55;color:#6b7280;">Paste a firewall certificate (or a full verdict). The Ed25519 signature is verified <b>entirely in your browser</b> (Web Crypto) and pinned to Agent Arena&rsquo;s published key — this page never sends your certificate anywhere. <span class="mono" style="font-size:12px;color:#a0a4ac;">(falls back to POST /verify only if your browser lacks Ed25519)</span></p>\
     <textarea id="verifyInput" oninput="App.set(\'verifyInput\',this.value)" placeholder="paste a certificate or verdict JSON here" style="width:100%;height:230px;background:#f6f6f7;border:1px solid #e6e6e9;border-radius:12px;padding:14px;font-family:\'JetBrains Mono\',monospace;font-size:12px;line-height:1.5;color:#0a0a0a;resize:vertical;">'+esc(state.verifyInput||"")+'</textarea>\
     <div style="display:flex;gap:10px;margin-top:12px;"><button onclick="App.runVerify()" style="background:#0a0a0a;color:#fff;border:none;border-radius:11px;padding:13px 22px;font-size:14px;font-weight:600;cursor:pointer;">Verify signature →</button><button onclick="App.loadLastCert()" style="background:#fff;color:#0a0a0a;border:1px solid rgba(0,0,0,.16);border-radius:11px;padding:13px 22px;font-size:14px;font-weight:600;cursor:pointer;">Load last verdict</button></div>'+card+'</div>';
 }
