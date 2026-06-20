@@ -159,6 +159,25 @@ assert v.verify(fw.issuer_key())    # signature intact AND signed by this arena 
 
 Full runnable example: `uv run python scripts/integrate_example.py` (hits the live deploy).
 
+**Bring your own agent** — the arena is an open platform: any object with an `agent_id` and a
+`decide(obs) -> TradeIntent | None` competes, firewall-gated and overfit-scored like the
+built-ins. That's the entire contract:
+
+```python
+class MeanReversionAgent:                       # ~15 lines, no arena internals
+    agent_id = "my-mean-reversion"
+    def decide(self, obs):
+        candles = obs.market.get_candles(obs.symbol, obs.instrument, limit=20)
+        if len(candles) < 20:
+            return None
+        sma = sum(c.close for c in candles) / len(candles)
+        target = obs.equity_usd * 0.5 if obs.price < sma else 0.0   # long below SMA, else flat
+        return rebalance_to_target(agent_id=self.agent_id, obs=obs, target_notional_signed=target)
+```
+
+Drop it into the `agents=[...]` list and it competes. Runnable: `make custom-agent`
+(`scripts/custom_agent_example.py`).
+
 **Verify it yourself** — every certificate is independently checkable, with no trust in
 this server. The [**Verify tab**](https://bitarena.vercel.app) checks the Ed25519 signature
 **entirely in your browser** (Web Crypto) and pins the embedded key to the published issuer —
