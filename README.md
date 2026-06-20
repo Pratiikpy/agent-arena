@@ -120,6 +120,21 @@ curl -s localhost:8000/firewall \
   -d '{"agent_id":"my-agent","symbol":"BTCUSDT","side":"buy","notional_usd":50}'
 ```
 
+**Integrate in Python** — a third-party bot vets every trade in a few lines (no Arena code
+beyond the client), against the public deploy or your own host:
+
+```python
+from bitarena.client import FirewallClient
+
+fw = FirewallClient("https://bitarena.vercel.app")
+v = fw.vet("BTCUSDT", "buy", notional_usd=50)
+if v.allowed:                       # ALLOW / ALLOW_CAPPED
+    place_my_order("BTCUSDT", "buy", v.effective_notional_usd)
+assert v.verify(fw.issuer_key())    # signature intact AND signed by this arena — offline
+```
+
+Full runnable example: `uv run python scripts/integrate_example.py` (hits the live deploy).
+
 **Verify it yourself** — every certificate is independently checkable, with no trust
 in this server: `POST /verify` re-checks a certificate's Ed25519 signature against its
 embedded public key, `GET /pubkey` returns the issuer key, and the offline CLI needs
@@ -147,7 +162,7 @@ uv run python scripts/verify_cert.py --file v.json     # -> ✓ signature VALID 
 
 ## Status
 
-Complete and tested — **233 passing tests, lint-clean, fully offline**: the signed
+Complete and tested — **242 passing tests, lint-clean, fully offline**: the signed
 tamper-evident firewall (red-teamed, **0 unsafe orders pass**), a live Bitget connector
 (real data verified), the arena with **seven competitors** (conflict-gated swarm, the
 published-Playbook regime mirror, persona team, Q-learning RL, momentum, buy-hold, and a

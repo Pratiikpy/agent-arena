@@ -53,7 +53,7 @@ decide (7 agents incl. a live Qwen LLM debate, the published Playbook strategy, 
 funding-carry competitor) →
 **firewall** (signed, red-teamed) → execute (paper / Bitget) → **signed ledger** →
 overfit-aware leaderboard → **trust allocator**. Exposed over an HTTP API and an MCP
-server, with an independent `/verify` endpoint and a production UI. 233 passing tests.
+server, with an independent `/verify` endpoint and a production UI. 242 passing tests.
 Run it: `cd bitarena && uv pip install -e ".[dev,api,mcp,llm]" && uv run pytest` then
 `uv run uvicorn bitarena.api.app:app --port 8000`.
 
@@ -92,8 +92,10 @@ let a fleet of agents be run with real capital. That is what Agent Arena is.
 - **Tournaments on real Bitget data (1h)** — `bitget_btc_perp/`, `bitget_eth_perp/`,
   `bitget_sol_perp/`, `bitget_tokenized_aapl/` (Track 3): leaderboards + signed
   hash-chained ledgers + trade CSVs (timestamp/pair/side/price/qty/balance Δ).
-- **External integration** — `external_agent_session.json`: a third-party bot vetting
-  every trade through the firewall over HTTP (Track-2 "another developer integrated it").
+- **External integration** — a `FirewallClient` SDK (`bitarena/client.py`) +
+  `scripts/integrate_example.py`: a third-party bot vets every trade and **offline-verifies**
+  each signed verdict in a few lines, runnable against the live deploy; plus
+  `external_agent_session.json`, a recorded session. Track-2 "another developer integrated it".
 - **Funding-carry edge study** — `funding_carry.json`: real Bitget funding history,
   walk-forward + Deflated Sharpe.
 - **Live LLM debate** — `llm_debate.json`: a real Qwen analyst debate, firewall-gated.
