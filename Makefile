@@ -1,12 +1,15 @@
 # Agent Arena — one-command workflows. Requires `uv` (https://docs.astral.sh/uv/).
 
-.PHONY: setup test lint arena firewall firewall-value redteam killswitch allocator funding walkforward overfit-trap bench evidence check-docs verify-evidence integrate playbook-validate serve live demo verify
+.PHONY: setup test cov lint arena firewall firewall-value redteam killswitch allocator funding walkforward overfit-trap bench evidence check-docs verify-evidence integrate playbook-validate serve live demo verify
 
 setup:           ## create venv + install everything
 	uv venv && uv pip install -e ".[dev,api,mcp,llm]"
 
 test:            ## run the full offline test suite
 	uv run pytest
+
+cov:             ## run the suite with a coverage report (needs the .[dev] extra)
+	uv run pytest --cov=bitarena --cov-report=term-missing
 
 lint:            ## static lint
 	uv run --with ruff ruff check .

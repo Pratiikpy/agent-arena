@@ -73,7 +73,7 @@ perceive ─▶ decide ─▶ FIREWALL ─▶ execute ─▶ signed ledger ─�
 **Run it** (no keys needed for the offline path; **242 tests pass**, lint-clean, 0 warnings):
 ```bash
 cd bitarena && uv venv && uv pip install -e ".[dev,api,mcp,llm]"
-uv run pytest                                              # 242 passing, 92% coverage
+uv run pytest --cov=bitarena                               # 242 passing, 92% coverage (reproducible)
 uv run python scripts/run_arena.py --source bitget --instrument perp   # real-data tournament
 uv run python scripts/demo_firewall.py --symbol BTCUSDT --side buy --notional 999999
 uv run python scripts/llm_debate.py --symbol BTCUSDT      # Qwen debate, firewall-gated

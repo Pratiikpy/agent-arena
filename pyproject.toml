@@ -25,7 +25,7 @@ dependencies = [
 llm = ["openai>=1.30"]
 api = ["fastapi>=0.110", "uvicorn>=0.29"]
 mcp = ["mcp>=1.2"]
-dev = ["pytest>=8.0", "pytest-asyncio>=0.23"]
+dev = ["pytest>=8.0", "pytest-asyncio>=0.23", "pytest-cov>=5.0"]
 # Heavy, optional competitor backends. Not required for the core arena.
 rl = ["finrl"]
 backtest = ["vectorbt"]
