@@ -1,6 +1,6 @@
 # Agent Arena — one-command workflows. Requires `uv` (https://docs.astral.sh/uv/).
 
-.PHONY: setup test lint arena firewall redteam allocator funding walkforward bench evidence playbook-validate serve live demo verify
+.PHONY: setup test lint arena firewall firewall-value redteam killswitch allocator funding walkforward overfit-trap bench evidence check-docs verify-evidence integrate playbook-validate serve live demo verify
 
 setup:           ## create venv + install everything
 	uv venv && uv pip install -e ".[dev,api,mcp,llm]"
@@ -19,6 +19,9 @@ firewall:        ## one signed firewall verdict (oversized -> ALLOW_CAPPED)
 
 redteam:         ## adversarial battery — proves 0 unsafe orders pass
 	uv run python scripts/redteam.py
+
+killswitch:      ## quantify the market-wide kill-switch in a flash crash (contained vs not)
+	uv run python scripts/regime_killswitch.py
 
 firewall-value:  ## quantify the firewall's containment value (rogue agent: contained vs not)
 	uv run python scripts/firewall_value.py
@@ -41,6 +44,15 @@ bench:           ## firewall latency benchmark (signed verdicts/sec)
 evidence:        ## regenerate the deterministic evidence pack
 	uv run python scripts/make_evidence.py
 
+check-docs:      ## fail if any cited number drifts from the source of truth
+	uv run python scripts/check_docs.py
+
+verify-evidence: ## re-verify the whole evidence pack (signed, chained, issuer-pinned)
+	uv run python scripts/verify_evidence.py
+
+integrate:       ## third-party integration demo: vet + offline-verify trades vs the live deploy
+	uv run python scripts/integrate_example.py
+
 playbook-validate: ## locally validate the published Playbook package (needs the getagent skill)
 	uv run --with pyyaml python "$(GETAGENT)/scripts/validate.py" ./playbook/adaptive-regime/
 
@@ -53,5 +65,5 @@ live:            ## advance the LIVE arena one step on real Bitget data (run on 
 demo: test firewall redteam   ## quick end-to-end proof: tests + signed verdict + red-team
 	@echo "Agent Arena demo complete."
 
-verify: test lint redteam     ## full quality gate: tests + lint + adversarial red-team
-	@echo "Agent Arena verified: tests + lint + red-team all green."
+verify: test lint check-docs verify-evidence redteam  ## full quality gate (mirrors CI)
+	@echo "Agent Arena verified: tests + lint + doc-numbers + evidence pack + red-team all green."
