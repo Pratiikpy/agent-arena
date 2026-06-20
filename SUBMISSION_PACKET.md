@@ -127,8 +127,11 @@ fallbacks). Honest self-assessment is an explicit scoring criterion.
 3. **[YOU]** Record the ≤3-min demo video (`DEMO.md`) and paste the link.
 4. **[YOU]** Post the #BitgetHackathon quote-tweet; paste the link.
 5. **[YOU]** Submit with your registration UID, primary track = Trading Infra.
-6. *(Optional, highest-leverage)* a real dust-sized live Bitget order with a
-   trade-permission key, to move from "paper" to "live trading."
+6. *(Optional, highest-leverage)* move from "paper" to "live trading" with one real
+   dust-sized Bitget order — **the tooling is ready**: add trade-permission keys to `.env`
+   (a dedicated sub-account), then `uv run python scripts/place_live_order.py --confirm`.
+   It's dry-run by default, places only the size the **firewall ALLOWs**, and writes the
+   signed `evidence/live_order_receipt.json` (the verifiable live-trading record).
 
 Everything else — code, tests, evidence, the published Playbooks, docs — is done.
 

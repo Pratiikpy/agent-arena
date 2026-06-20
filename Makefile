@@ -1,6 +1,6 @@
 # Agent Arena — one-command workflows. Requires `uv` (https://docs.astral.sh/uv/).
 
-.PHONY: setup test cov lint arena firewall firewall-value redteam killswitch allocator funding walkforward overfit-trap bench evidence check-docs verify-evidence integrate playbook-validate serve live demo verify
+.PHONY: setup test cov lint arena firewall firewall-value redteam killswitch allocator funding walkforward overfit-trap bench evidence check-docs verify-evidence integrate playbook-validate serve live live-order demo verify
 
 setup:           ## create venv + install everything
 	uv venv && uv pip install -e ".[dev,api,mcp,llm]"
@@ -64,6 +64,9 @@ serve:           ## serve the UI + API at http://localhost:8000
 
 live:            ## advance the LIVE arena one step on real Bitget data (run on a schedule)
 	uv run python scripts/live_step.py --symbol BTCUSDT --instrument perp --state evidence/live
+
+live-order:      ## DRY-RUN a firewall-gated dust order (add --confirm + a trade key to place it)
+	uv run python scripts/place_live_order.py
 
 demo: test firewall redteam   ## quick end-to-end proof: tests + signed verdict + red-team
 	@echo "Agent Arena demo complete."
