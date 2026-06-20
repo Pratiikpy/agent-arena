@@ -244,9 +244,15 @@ const App = {
   },
   async loadLb(){
     if(state.lb) return;
-    try{ const r=await api("/live"); if(r.ok&&r.data&&r.data.leaderboard&&r.data.leaderboard.length){ state.lb=r.data; state.lbIsLive=true; render(); return; } }catch(e){ /* no live arena yet -> batch */ }
-    try{ const r=await api("/leaderboard"); state.lb=r.ok?r.data:mockLeaderboard(); }catch(e){ state.lb=mockLeaderboard(); }
-    state.lbIsLive=false; render();
+    let live=null, batch=null;
+    try{ const r=await api("/live"); if(r.ok&&r.data&&r.data.leaderboard&&r.data.leaderboard.length) live=r.data; }catch(e){}
+    try{ const r=await api("/leaderboard"); if(r.ok&&r.data) batch=r.data; }catch(e){}
+    // Show the live arena only when it's genuinely the current/richer run (>= batch ticks) so a
+    // frozen snapshot is never labelled "LIVE"; otherwise the canonical batch tournament, which
+    // keeps the Arena tab consistent with the landing hero (both /leaderboard).
+    if(live && (!batch || (live.ticks||0) >= (batch.ticks||0))){ state.lb=live; state.lbIsLive=true; }
+    else { state.lb = batch || mockLeaderboard(); state.lbIsLive=false; }
+    render();
   },
   async loadLed(){ try{ const r=await api("/ledger?agent="+encodeURIComponent(state.ledgerAgent)+"&limit=10"); state.led=r.ok?r.data:genLedger(state.ledgerAgent); }catch(e){ state.led=genLedger(state.ledgerAgent); } render(); },
   async loadDeb(){ if(state.deb) return; try{ const r=await api("/debate"); state.deb=r.ok?r.data:mockDebate(); }catch(e){ state.deb=mockDebate(); } render(); },
