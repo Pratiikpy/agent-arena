@@ -27,6 +27,7 @@ uv run python scripts/demo_firewall.py --symbol BTCUSDT --side buy --notional 99
 | `last_run/` | Working copy of the most recent tournament — what the API serves at `GET /leaderboard` (and the deployed UI reads) |
 | `redteam.json` | 15 adversarial attacks + 2 controls; **0 unsafe orders passed**, all signed |
 | `firewall_value.json` | The firewall's *containment value*, quantified: a misbehaving agent (8×-oversized orders) on an adverse market stays **solvent (+\$4,222)** under the mandate vs **bankrupt (−\$4,120)** unprotected — the firewall saved \$8,341 on a \$10k account |
+| `regime_killswitch.json` | The firewall's *market-wide* kill-switch: a reckless "buy the dip" agent through a ~16% flash crash, run with the kill-switch ON vs OFF. In `FAST_RISK_OFF` the firewall blocks new exposure (signed REJECTs, issuer `98683e5c`) while still permitting de-risking — the protected fleet avoids **\$3,120** of further loss vs unprotected (on a \$100k account). Per-order safety + fleet-wide circuit-breaker. |
 | `firewall_bench.json` | Firewall latency: a full signed verdict (gates + Ed25519) is **~0.1 ms** (~9,700/sec single core) — gating every trade is effectively free |
 | `external_agent_session.json` | A third-party bot vetting every trade through the firewall over HTTP |
 | `llm_debate.json` | One live Qwen analyst debate, gated by the firewall |

@@ -31,7 +31,7 @@ from ..config import load_settings
 from ..connectors import ReplayMarketData, synthetic_series
 from ..connectors.bitget import BitgetPublicData
 from ..domain import Certificate, InstrumentType, Side, TradeIntent, default_arena_mandate
-from ..firewall import EvalContext, Firewall, verify_certificate
+from ..firewall import EvalContext, Firewall, MarketRegime, assess_regime, verify_certificate
 
 _AGENT_ID_RE = re.compile(r"[A-Za-z0-9_-]{1,64}")
 
@@ -99,13 +99,22 @@ def create_app(
             md.set_cursor(59)
             q = md.get_quote(symbol, instrument)
             quote = q.model_copy(update={"ts": now_ms}) if q is not None else None
+        # market-wide regime from recent live candles → drives the fleet kill-switch
+        regime = MarketRegime.NORMAL
+        if market_client is not None:
+            try:
+                candles = market_client.get_candles(symbol, instrument, limit=12)
+                if candles:
+                    regime = assess_regime([c.close for c in candles])
+            except Exception:  # network/parse issues must not break the heartbeat
+                pass
         intent = TradeIntent(
             agent_id="pulse", symbol=symbol, side=Side.BUY,
             instrument=instrument, notional_usd=50.0,
         )
         mandate = default_arena_mandate(10_000.0, allowed_symbols=(symbol,))
         ctx = EvalContext(
-            mandate=mandate, equity_usd=10_000.0, quote=quote,
+            mandate=mandate, equity_usd=10_000.0, quote=quote, regime=regime,
             now_ms=now_ms, max_quote_age_ms=120_000,
         )
         verdict = firewall.evaluate(intent, ctx)
@@ -113,6 +122,8 @@ def create_app(
         return {
             "server_time_ms": now_ms,
             "data_source": source,
+            "regime": regime.value,
+            "kill_switch_armed": regime is MarketRegime.FAST_RISK_OFF,
             "quote": {
                 "symbol": symbol,
                 "mid": quote.mid if quote else None,

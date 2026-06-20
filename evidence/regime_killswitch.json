@@ -1,0 +1,438 @@
+{
+  "scenario": {
+    "description": "reckless 'buy the dip' agent (+$5k exposure/bar) through a ~16% flash crash",
+    "bars": 22,
+    "start_price": 63000.0,
+    "end_price": 52920.0,
+    "crash_pct": 16.0
+  },
+  "protected": {
+    "final_equity_usd": 77766.89,
+    "final_position_qty": 2.41434,
+    "orders_blocked": 7,
+    "timeline": [
+      {
+        "step": 0,
+        "price": 63000.0,
+        "regime": "NORMAL",
+        "decision": "ALLOW",
+        "filled_usd": 10000.0,
+        "position_qty": 0.15873,
+        "equity_usd": 100000.0
+      },
+      {
+        "step": 1,
+        "price": 63000.0,
+        "regime": "NORMAL",
+        "decision": "ALLOW",
+        "filled_usd": 10000.0,
+        "position_qty": 0.31746,
+        "equity_usd": 100000.0
+      },
+      {
+        "step": 2,
+        "price": 63000.0,
+        "regime": "NORMAL",
+        "decision": "ALLOW",
+        "filled_usd": 10000.0,
+        "position_qty": 0.47619,
+        "equity_usd": 100000.0
+      },
+      {
+        "step": 3,
+        "price": 63000.0,
+        "regime": "NORMAL",
+        "decision": "ALLOW",
+        "filled_usd": 10000.0,
+        "position_qty": 0.634921,
+        "equity_usd": 100000.0
+      },
+      {
+        "step": 4,
+        "price": 63000.0,
+        "regime": "NORMAL",
+        "decision": "ALLOW",
+        "filled_usd": 10000.0,
+        "position_qty": 0.793651,
+        "equity_usd": 100000.0
+      },
+      {
+        "step": 5,
+        "price": 63000.0,
+        "regime": "NORMAL",
+        "decision": "ALLOW",
+        "filled_usd": 10000.0,
+        "position_qty": 0.952381,
+        "equity_usd": 100000.0
+      },
+      {
+        "step": 6,
+        "price": 63000.0,
+        "regime": "NORMAL",
+        "decision": "ALLOW",
+        "filled_usd": 10000.0,
+        "position_qty": 1.111111,
+        "equity_usd": 100000.0
+      },
+      {
+        "step": 7,
+        "price": 63000.0,
+        "regime": "NORMAL",
+        "decision": "ALLOW",
+        "filled_usd": 10000.0,
+        "position_qty": 1.269841,
+        "equity_usd": 100000.0
+      },
+      {
+        "step": 8,
+        "price": 63000.0,
+        "regime": "NORMAL",
+        "decision": "ALLOW",
+        "filled_usd": 10000.0,
+        "position_qty": 1.428571,
+        "equity_usd": 100000.0
+      },
+      {
+        "step": 9,
+        "price": 63000.0,
+        "regime": "NORMAL",
+        "decision": "ALLOW",
+        "filled_usd": 10000.0,
+        "position_qty": 1.587302,
+        "equity_usd": 100000.0
+      },
+      {
+        "step": 10,
+        "price": 62160.0,
+        "regime": "NORMAL",
+        "decision": "ALLOW",
+        "filled_usd": 10000.0,
+        "position_qty": 1.748177,
+        "equity_usd": 98666.67
+      },
+      {
+        "step": 11,
+        "price": 61320.0,
+        "regime": "NORMAL",
+        "decision": "ALLOW",
+        "filled_usd": 10000.0,
+        "position_qty": 1.911256,
+        "equity_usd": 97198.2
+      },
+      {
+        "step": 12,
+        "price": 60480.0,
+        "regime": "RISK_OFF",
+        "decision": "ALLOW",
+        "filled_usd": 10000.0,
+        "position_qty": 2.0766,
+        "equity_usd": 95592.74
+      },
+      {
+        "step": 13,
+        "price": 59640.0,
+        "regime": "RISK_OFF",
+        "decision": "ALLOW",
+        "filled_usd": 10000.0,
+        "position_qty": 2.244272,
+        "equity_usd": 93848.4
+      },
+      {
+        "step": 14,
+        "price": 58800.0,
+        "regime": "RISK_OFF",
+        "decision": "ALLOW",
+        "filled_usd": 10000.0,
+        "position_qty": 2.41434,
+        "equity_usd": 91963.21
+      },
+      {
+        "step": 15,
+        "price": 57960.0,
+        "regime": "FAST_RISK_OFF",
+        "decision": "REJECT",
+        "filled_usd": 0.0,
+        "position_qty": 2.41434,
+        "equity_usd": 89935.17
+      },
+      {
+        "step": 16,
+        "price": 57120.0,
+        "regime": "FAST_RISK_OFF",
+        "decision": "REJECT",
+        "filled_usd": 0.0,
+        "position_qty": 2.41434,
+        "equity_usd": 87907.12
+      },
+      {
+        "step": 17,
+        "price": 56280.0,
+        "regime": "FAST_RISK_OFF",
+        "decision": "REJECT",
+        "filled_usd": 0.0,
+        "position_qty": 2.41434,
+        "equity_usd": 85879.07
+      },
+      {
+        "step": 18,
+        "price": 55440.0,
+        "regime": "FAST_RISK_OFF",
+        "decision": "REJECT",
+        "filled_usd": 0.0,
+        "position_qty": 2.41434,
+        "equity_usd": 83851.03
+      },
+      {
+        "step": 19,
+        "price": 54600.0,
+        "regime": "FAST_RISK_OFF",
+        "decision": "REJECT",
+        "filled_usd": 0.0,
+        "position_qty": 2.41434,
+        "equity_usd": 81822.98
+      },
+      {
+        "step": 20,
+        "price": 53760.0,
+        "regime": "FAST_RISK_OFF",
+        "decision": "REJECT",
+        "filled_usd": 0.0,
+        "position_qty": 2.41434,
+        "equity_usd": 79794.94
+      },
+      {
+        "step": 21,
+        "price": 52920.0,
+        "regime": "FAST_RISK_OFF",
+        "decision": "REJECT",
+        "filled_usd": 0.0,
+        "position_qty": 2.41434,
+        "equity_usd": 77766.89
+      }
+    ],
+    "sample_signed_reject": {
+      "certificate": {
+        "version": 1,
+        "intent_hash": "f20e89ac746adeb05ed9382b425278fec0b395520f2662a9e6f2f75767a28d51",
+        "decision": "REJECT",
+        "effective_notional_usd": null,
+        "issued_at": "2026-06-20T17:26:26.868433+00:00",
+        "issuer": "98683e5cbe6313a0",
+        "nonce": "HZJDrK-RBtkfh3BR",
+        "signature_hex": "a9dfa1f01aa4c40eab38663346e9f77beeeed8f15e93978867d345234a377d285d56ac36b6ac6524ebdd052fe5ce17df6a793416b5652afbe60b9aae79270105",
+        "public_key_hex": "c2f8243b0d573587f285c830a868acd19249d17d59ecbf9329e796dfed6fb630"
+      },
+      "certificate_valid": true,
+      "reason": "market kill-switch engaged (fast risk-off): reduce-only orders permitted"
+    }
+  },
+  "unprotected": {
+    "final_equity_usd": 74646.53,
+    "final_position_qty": 3.678128,
+    "orders_blocked": 0,
+    "timeline": [
+      {
+        "step": 0,
+        "price": 63000.0,
+        "regime": "NORMAL",
+        "decision": "FILL",
+        "filled_usd": 10000.0,
+        "position_qty": 0.15873,
+        "equity_usd": 100000.0
+      },
+      {
+        "step": 1,
+        "price": 63000.0,
+        "regime": "NORMAL",
+        "decision": "FILL",
+        "filled_usd": 10000.0,
+        "position_qty": 0.31746,
+        "equity_usd": 100000.0
+      },
+      {
+        "step": 2,
+        "price": 63000.0,
+        "regime": "NORMAL",
+        "decision": "FILL",
+        "filled_usd": 10000.0,
+        "position_qty": 0.47619,
+        "equity_usd": 100000.0
+      },
+      {
+        "step": 3,
+        "price": 63000.0,
+        "regime": "NORMAL",
+        "decision": "FILL",
+        "filled_usd": 10000.0,
+        "position_qty": 0.634921,
+        "equity_usd": 100000.0
+      },
+      {
+        "step": 4,
+        "price": 63000.0,
+        "regime": "NORMAL",
+        "decision": "FILL",
+        "filled_usd": 10000.0,
+        "position_qty": 0.793651,
+        "equity_usd": 100000.0
+      },
+      {
+        "step": 5,
+        "price": 63000.0,
+        "regime": "NORMAL",
+        "decision": "FILL",
+        "filled_usd": 10000.0,
+        "position_qty": 0.952381,
+        "equity_usd": 100000.0
+      },
+      {
+        "step": 6,
+        "price": 63000.0,
+        "regime": "NORMAL",
+        "decision": "FILL",
+        "filled_usd": 10000.0,
+        "position_qty": 1.111111,
+        "equity_usd": 100000.0
+      },
+      {
+        "step": 7,
+        "price": 63000.0,
+        "regime": "NORMAL",
+        "decision": "FILL",
+        "filled_usd": 10000.0,
+        "position_qty": 1.269841,
+        "equity_usd": 100000.0
+      },
+      {
+        "step": 8,
+        "price": 63000.0,
+        "regime": "NORMAL",
+        "decision": "FILL",
+        "filled_usd": 10000.0,
+        "position_qty": 1.428571,
+        "equity_usd": 100000.0
+      },
+      {
+        "step": 9,
+        "price": 63000.0,
+        "regime": "NORMAL",
+        "decision": "FILL",
+        "filled_usd": 10000.0,
+        "position_qty": 1.587302,
+        "equity_usd": 100000.0
+      },
+      {
+        "step": 10,
+        "price": 62160.0,
+        "regime": "NORMAL",
+        "decision": "FILL",
+        "filled_usd": 10000.0,
+        "position_qty": 1.748177,
+        "equity_usd": 98666.67
+      },
+      {
+        "step": 11,
+        "price": 61320.0,
+        "regime": "NORMAL",
+        "decision": "FILL",
+        "filled_usd": 10000.0,
+        "position_qty": 1.911256,
+        "equity_usd": 97198.2
+      },
+      {
+        "step": 12,
+        "price": 60480.0,
+        "regime": "RISK_OFF",
+        "decision": "FILL",
+        "filled_usd": 10000.0,
+        "position_qty": 2.0766,
+        "equity_usd": 95592.74
+      },
+      {
+        "step": 13,
+        "price": 59640.0,
+        "regime": "RISK_OFF",
+        "decision": "FILL",
+        "filled_usd": 10000.0,
+        "position_qty": 2.244272,
+        "equity_usd": 93848.4
+      },
+      {
+        "step": 14,
+        "price": 58800.0,
+        "regime": "RISK_OFF",
+        "decision": "FILL",
+        "filled_usd": 10000.0,
+        "position_qty": 2.41434,
+        "equity_usd": 91963.21
+      },
+      {
+        "step": 15,
+        "price": 57960.0,
+        "regime": "FAST_RISK_OFF",
+        "decision": "FILL",
+        "filled_usd": 10000.0,
+        "position_qty": 2.586873,
+        "equity_usd": 89935.17
+      },
+      {
+        "step": 16,
+        "price": 57120.0,
+        "regime": "FAST_RISK_OFF",
+        "decision": "FILL",
+        "filled_usd": 10000.0,
+        "position_qty": 2.761943,
+        "equity_usd": 87762.19
+      },
+      {
+        "step": 17,
+        "price": 56280.0,
+        "regime": "FAST_RISK_OFF",
+        "decision": "FILL",
+        "filled_usd": 10000.0,
+        "position_qty": 2.939626,
+        "equity_usd": 85442.16
+      },
+      {
+        "step": 18,
+        "price": 55440.0,
+        "regime": "FAST_RISK_OFF",
+        "decision": "FILL",
+        "filled_usd": 10000.0,
+        "position_qty": 3.120001,
+        "equity_usd": 82972.87
+      },
+      {
+        "step": 19,
+        "price": 54600.0,
+        "regime": "FAST_RISK_OFF",
+        "decision": "FILL",
+        "filled_usd": 10000.0,
+        "position_qty": 3.303152,
+        "equity_usd": 80352.07
+      },
+      {
+        "step": 20,
+        "price": 53760.0,
+        "regime": "FAST_RISK_OFF",
+        "decision": "FILL",
+        "filled_usd": 10000.0,
+        "position_qty": 3.489163,
+        "equity_usd": 77577.43
+      },
+      {
+        "step": 21,
+        "price": 52920.0,
+        "regime": "FAST_RISK_OFF",
+        "decision": "FILL",
+        "filled_usd": 10000.0,
+        "position_qty": 3.678128,
+        "equity_usd": 74646.53
+      }
+    ],
+    "sample_signed_reject": null
+  },
+  "kill_switch_engaged_at_step": 15,
+  "loss_avoided_usd": 3120.36,
+  "summary": "Kill-switch blocked 7 new-exposure orders during the crash; protected fleet ended at $77,767 vs $74,647 unprotected \u2014 $3,120 of loss avoided."
+}

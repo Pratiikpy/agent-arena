@@ -27,6 +27,7 @@ from ..domain.mandate import Mandate
 from ..domain.market import Quote, Side
 from ..domain.verdict import Certificate, Decision, GateResult, Verdict
 from . import gates
+from .regime import MarketRegime
 from .signing import Signer, intent_hash, new_nonce, utc_now_iso
 
 #: A trade smaller than this (after capping) is not worth executing → REJECT.
@@ -47,6 +48,7 @@ class EvalContext(BaseModel):
     #                            verify a reduce-only claim instead of trusting the flag
     daily_count: int = 0
     halted: bool = False
+    regime: MarketRegime = MarketRegime.NORMAL  # fleet-wide kill-switch state (fast crash → reduce-only)
     now_ms: int | None = None
     max_quote_age_ms: int = 60_000
 
@@ -85,6 +87,7 @@ class Firewall:
             gates.gate_min_price(ctx.mandate, price),
             gates.gate_daily_count(ctx.daily_count, ctx.mandate),
             gates.gate_leverage_request(intent, ctx.mandate),
+            gates.gate_market_regime(ctx.regime, intent),
         ]
         first_fail = next((g for g in structural if not g.passed), None)
         if first_fail is not None:

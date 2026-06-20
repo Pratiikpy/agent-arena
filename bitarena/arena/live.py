@@ -23,6 +23,7 @@ from ..domain.mandate import Mandate, default_arena_mandate
 from ..domain.market import InstrumentType
 from ..domain.verdict import Decision
 from ..firewall.firewall import EvalContext, Firewall
+from ..firewall.regime import assess_regime
 from ..ledger.ledger import SignedLedger
 from .engine import _SIM_MAX_QUOTE_AGE_MS, _cert_hash
 from .leaderboard import build_leaderboard, cross_agent_pbo
@@ -165,6 +166,10 @@ class LiveArena:
                 self._day = day
                 self.daily_counts = {aid: 0 for aid in self.agents}
 
+            regime = assess_regime(
+                [c.close for c in md.get_candles(self.symbol, self.instrument, limit=12)]
+            )
+
             for aid, agent in self.agents.items():
                 pf = self.portfolios[aid]
                 obs = AgentObservation(
@@ -178,7 +183,7 @@ class LiveArena:
                 ctx = EvalContext(
                     mandate=self.mandate, equity_usd=pf.equity(price), quote=quote,
                     current_exposure_usd=pf.exposure_usd(price), position_qty=pf.position_qty,
-                    daily_count=self.daily_counts[aid],
+                    regime=regime, daily_count=self.daily_counts[aid],
                     now_ms=ts, max_quote_age_ms=_SIM_MAX_QUOTE_AGE_MS,
                 )
                 verdict = self.firewall.evaluate(intent, ctx)

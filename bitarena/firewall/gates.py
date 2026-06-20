@@ -14,6 +14,7 @@ from ..domain.mandate import Mandate
 from ..domain.market import Quote
 from ..domain.intent import TradeIntent
 from ..domain.verdict import GateResult
+from .regime import MarketRegime
 
 
 def gate_halt(halted: bool) -> GateResult:
@@ -91,3 +92,21 @@ def gate_leverage_request(intent: TradeIntent, mandate: Mandate) -> GateResult:
     passed = intent.leverage <= cap + 1e-9
     detail = "" if passed else "requested leverage exceeds cap"
     return GateResult(gate="leverage", passed=passed, detail=detail, limit=cap, attempted=intent.leverage)
+
+
+def gate_market_regime(regime: MarketRegime, intent: TradeIntent) -> GateResult:
+    """Fleet-wide kill-switch: in a fast crash (``FAST_RISK_OFF``) only de-risking
+    (reduce-only) orders pass — every agent is forced to stop adding exposure at once.
+    A genuine reduction is still verified downstream, so the reduce-only flag alone can't
+    be used to open a fresh position. ``NORMAL`` always passes."""
+    if regime is MarketRegime.FAST_RISK_OFF and not intent.reduce_only:
+        return GateResult(
+            gate="market_regime",
+            passed=False,
+            detail="market kill-switch engaged (fast risk-off): reduce-only orders permitted",
+        )
+    return GateResult(
+        gate="market_regime",
+        passed=True,
+        detail="" if regime is MarketRegime.NORMAL else regime.value,
+    )

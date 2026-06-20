@@ -27,6 +27,8 @@ def test_pulse_is_live_and_signed():
     assert body["quote"]["mid"] and body["quote"]["mid"] > 0
     assert body["quote"]["age_ms"] is not None and body["quote"]["age_ms"] < 120_000  # fresh
     assert body["verdict"]["decision"] in ("ALLOW", "ALLOW_CAPPED", "REJECT")
+    assert body["regime"] in ("NORMAL", "RISK_OFF", "FAST_RISK_OFF")
+    assert body["regime"] == "NORMAL" and body["kill_switch_armed"] is False  # offline: no live crash signal
     assert body["issuer"]
     assert body["certificate"] is not None
     assert body["certificate_valid"] is True  # the heartbeat verdict is genuinely signed

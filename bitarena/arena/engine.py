@@ -19,6 +19,7 @@ from ..domain.mandate import Mandate, default_arena_mandate
 from ..domain.market import InstrumentType
 from ..domain.verdict import Decision, Verdict
 from ..firewall.firewall import EvalContext, Firewall
+from ..firewall.regime import assess_regime
 from ..firewall.signing import Signer, model_canonical, sha256_hex
 from ..ledger.ledger import SignedLedger
 from .leaderboard import build_leaderboard, cross_agent_pbo
@@ -140,6 +141,11 @@ class Arena:
             self._day = day
             self.daily_counts = {aid: 0 for aid in self.agents}
 
+        # market-wide regime: one signal per tick, shared by every agent's evaluation
+        regime = assess_regime(
+            [c.close for c in self.market.get_candles(self.symbol, self.instrument, limit=12)]
+        )
+
         for agent_id, agent in self.agents.items():
             pf = self.portfolios[agent_id]
             equity = pf.equity(price)
@@ -163,6 +169,7 @@ class Arena:
                 quote=quote,
                 current_exposure_usd=pf.exposure_usd(price),
                 position_qty=pf.position_qty,
+                regime=regime,
                 daily_count=self.daily_counts[agent_id],
                 now_ms=ts,
                 max_quote_age_ms=_SIM_MAX_QUOTE_AGE_MS,

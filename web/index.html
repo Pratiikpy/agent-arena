@@ -449,6 +449,9 @@ function renderPulse(){
       '<span style="color:#9aa0aa;margin-left:auto;">'+(live?"bitget":"synthetic")+'</span>'+
     '</div>'+
     '<div style="color:#cbd0d8;">BTC '+px+' · <span style="color:'+vc+';font-weight:600;">'+esc(dec)+'</span></div>'+
+    (d.regime && d.regime !== "NORMAL"
+      ? '<div style="color:'+(d.kill_switch_armed?"#f2bdb7":"#f0d699")+';margin-top:2px;">'+(d.kill_switch_armed?"⛔ KILL-SWITCH":"⚠ "+esc(d.regime))+'</div>'
+      : '')+
     '<div style="color:#7a8089;margin-top:2px;">signed '+ago+'s ago · issuer '+esc((d.issuer||"").slice(0,8))+'</div>';
 }
 async function pulseTick(){

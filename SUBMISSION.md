@@ -28,8 +28,10 @@ doing something insane.**
 - **Containment:** every order from every agent must pass a single, fail-closed
   **safety firewall** that returns a signed `ALLOW` / `ALLOW_CAPPED` / `REJECT` before
   anything reaches the exchange. No agent — not even a confident LLM — can breach the
-  mandate (per-order notional, total exposure, leverage, universe, trade-rate). It fails
-  closed even on malformed input, and a 17-case red-team battery passes **0 unsafe orders**.
+  mandate (per-order notional, total exposure, leverage, universe, trade-rate). On top of
+  per-order limits, a **market-wide kill-switch** forces the *entire fleet* to de-risk-only
+  in a fast crash (`FAST_RISK_OFF`). It fails closed even on malformed input, and a 17-case
+  red-team battery passes **0 unsafe orders**.
 - **Verification:** agents are ranked not by raw PnL but with **anti-overfitting
   statistics** — Deflated Sharpe, PSR, and the Probability of Backtest Overfitting
   (CSCV) — so a lucky winner is exposed rather than crowned. Every certificate is

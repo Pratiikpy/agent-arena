@@ -27,7 +27,8 @@ decides which agents deserve to be trusted with capital:**
 
 1. **A universal safety firewall.** Every order from every agent passes through one
    fail-closed gate that returns a signed `ALLOW` / `ALLOW_CAPPED` / `REJECT`
-   certificate *before* anything reaches the exchange. No agent can blow up.
+   certificate *before* anything reaches the exchange. No agent can blow up — and a
+   market-wide **kill-switch** forces the whole fleet to de-risk-only in a fast crash.
 2. **A live tournament.** Multiple autonomous agents (a debate swarm, an RL agent,
    a persona team, a single-LLM control) trade Bitget side by side on equal capital.
 3. **Overfit-aware scoring.** Agents are ranked with institutional rigor — Deflated
