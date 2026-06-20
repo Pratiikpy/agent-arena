@@ -58,6 +58,12 @@ def test_expected_max_sharpe_increases_with_trials():
     assert 0 < a < b
 
 
+def test_expected_max_sharpe_matches_bailey_reference():
+    # E[max SR] = sqrt(V) * [(1-g)*Z(1 - 1/N) + g*Z(1 - 1/(N*e))], g = Euler-Mascheroni.
+    # Independently hand-computed for V=1, N=10 -> 1.574598; locks the DSR deflation term.
+    assert abs(expected_max_sharpe(1.0, 10) - 1.574598) < 1e-5
+
+
 def test_dsr_deflates_relative_to_psr():
     moments = dict(sr_hat=0.20, n=500, skew=0.0, kurt=3.0)
     psr = probabilistic_sharpe_ratio(0.20, 500)
