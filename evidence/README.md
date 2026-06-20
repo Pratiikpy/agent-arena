@@ -56,15 +56,16 @@ scenario (trend → chop → trend):
 | agent | final equity | trades | note |
 |---|---|---|---|
 | benchmark-buyhold | ~$11,557 | 4 | passive wins when the market simply trends |
-| rl-qlearn | ~$9,933 | 190 | online learner; explores a lot early |
-| persona-team | ~$9,926 | 95 | bull/bear/quant ensemble, risk-vetoed |
-| **swarm (conflict-gated)** | **~$9,867** | **38** | flattened through the choppy middle — few trades |
-| baseline-momentum | ~$9,507 | 108 | whipsawed in the chop — most trades, worst result |
+| persona-team | ~$9,952 | 65 | bull/bear/quant ensemble, risk-vetoed |
+| **swarm (conflict-gated)** | **~$9,824** | **50** | flattened through the choppy middle — few trades |
+| rl-qlearn | ~$9,658 | 140 | online learner; explores a lot |
+| baseline-momentum | ~$9,640 | 109 | whipsawed in the chop — most trades, worst result |
+| regime | ~$9,077 | 125 | the published-Playbook mirror; underperforms in chop |
 
-The swarm beats the naive momentum baseline with **~1/3 the trades**, which is exactly
-its design claim: *when signals disagree (chop), size down; momentum keeps trading and
-bleeds.* Buy-and-hold still wins overall because the scenario is trend-dominated — and
-the Arena reports that rather than hiding it.
+The swarm beats the naive momentum baseline (−1.8% vs −3.6%) with **~half the trades**, which
+is exactly its design claim: *when signals disagree (chop), size down; momentum keeps trading
+and bleeds.* Buy-and-hold still wins overall because the scenario is trend-dominated — and the
+Arena reports that rather than hiding it.
 
 **On flat real data, nobody beats breakeven — and that's reported, not hidden.** On a
 ~16h real Bitget BTC perp window all agents hovered near flat (see
@@ -72,8 +73,8 @@ the Arena reports that rather than hiding it.
 noise, and the Arena says so.
 
 **Overfitting is flagged — and the metric discriminates.** With the full six-agent
-roster the synthetic run reports a high cross-agent `PBO ≈ 0.83` (the in-sample winner
-there is mostly luck), while the regime scenario reports `PBO ≈ 0.03` (the ranking is
+roster the synthetic run reports a high cross-agent `PBO ≈ 0.84` (the in-sample winner
+there is mostly luck), while the regime scenario reports `PBO ≈ 0.00` (the ranking is
 robust). Same metric, opposite verdicts — that is the number that stops a lucky
 backtest from being sold as an edge. (The `RegimeAgent` — the published Bitget Playbook
 mirror — wins the clean synthetic trend but underperforms in chop and on flat real data,

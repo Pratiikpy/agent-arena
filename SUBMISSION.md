@@ -147,15 +147,15 @@ fields), and signed `ledgers/*.jsonl`.
   folds — driven *mainly by downside-avoidance, not carry income* (we report both
   separately). It's a live, correctly-accounted arena competitor.
 - Four strategies **published on Bitget's GetAgent platform** with real backtests.
-- The scoring tells the truth: with the full roster the synthetic run reports `PBO ≈ 0.83`
-  (the in-sample winner is mostly luck), the regime scenario `PBO ≈ 0.03` (robust ranking).
+- The scoring tells the truth: with the full roster the synthetic run reports `PBO ≈ 0.84`
+  (the in-sample winner is mostly luck), the regime scenario `PBO ≈ 0.00` (robust ranking).
 
 **What is honestly limited (and reported, not hidden)**
 - No *price-directional* agent reliably beats buy-and-hold on flat real data — active
   trading does not manufacture edge from noise, and the Arena says so. The exception is
   the structural funding edge. The headline product is the *trust layer*.
 - The conflict-gated swarm beats the naive momentum baseline **only in the choppy regimes
-  it targets** (regime scenario: swarm −1.9% in 51 trades vs momentum −4.9% in 108) —
+  it targets** (regime scenario: swarm −1.8% in 50 trades vs momentum −3.6% in 109) —
   exactly its design claim; over random-walk chop the edge is directional but not
   statistically significant, and we report that.
 - The Agent Hub signals are honest offline proxies (live Skill briefs replace them);

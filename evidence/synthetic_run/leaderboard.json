@@ -7,20 +7,37 @@
   "leaderboard": [
     {
       "agent_id": "regime",
-      "final_equity": 10929.76,
+      "final_equity": 10955.71,
       "trades": 105,
-      "fees_usd": 91.02,
-      "psr": 0.765,
-      "total_return": 0.092976,
-      "sharpe": 0.029453,
-      "sortino": 0.028296,
-      "max_drawdown": -0.095078,
-      "volatility": 0.005554,
-      "win_rate": 0.451667,
-      "profit_factor": 1.101008,
-      "calmar": 0.977897,
+      "fees_usd": 91.07,
+      "psr": 0.7705,
+      "total_return": 0.095571,
+      "sharpe": 0.030188,
+      "sortino": 0.028953,
+      "max_drawdown": -0.092744,
+      "volatility": 0.005548,
+      "win_rate": 0.453333,
+      "profit_factor": 1.103894,
+      "calmar": 1.030485,
       "periods": 600,
       "rank": 1
+    },
+    {
+      "agent_id": "swarm",
+      "final_equity": 10092.01,
+      "trades": 79,
+      "fees_usd": 29.82,
+      "psr": 0.6693,
+      "total_return": 0.009201,
+      "sharpe": 0.01786,
+      "sortino": 0.018816,
+      "max_drawdown": -0.013797,
+      "volatility": 0.000876,
+      "win_rate": 0.476667,
+      "profit_factor": 1.083177,
+      "calmar": 0.66691,
+      "periods": 600,
+      "rank": 2
     },
     {
       "agent_id": "benchmark-buyhold",
@@ -37,125 +54,118 @@
       "profit_factor": 1.042981,
       "calmar": 0.510076,
       "periods": 600,
-      "rank": 2
-    },
-    {
-      "agent_id": "swarm",
-      "final_equity": 10079.39,
-      "trades": 82,
-      "fees_usd": 30.13,
-      "psr": 0.6477,
-      "total_return": 0.007939,
-      "sharpe": 0.01545,
-      "sortino": 0.016315,
-      "max_drawdown": -0.014692,
-      "volatility": 0.000878,
-      "win_rate": 0.475,
-      "profit_factor": 1.071239,
-      "calmar": 0.540327,
-      "periods": 600,
       "rank": 3
     },
     {
       "agent_id": "baseline-momentum",
-      "final_equity": 10414.03,
-      "trades": 155,
-      "fees_usd": 151.72,
-      "psr": 0.6438,
-      "total_return": 0.041403,
-      "sharpe": 0.015044,
-      "sortino": 0.014956,
-      "max_drawdown": -0.078037,
-      "volatility": 0.005497,
+      "final_equity": 10426.37,
+      "trades": 154,
+      "fees_usd": 151.68,
+      "psr": 0.6469,
+      "total_return": 0.042637,
+      "sharpe": 0.015388,
+      "sortino": 0.015299,
+      "max_drawdown": -0.076786,
+      "volatility": 0.005505,
       "win_rate": 0.481667,
-      "profit_factor": 1.040883,
-      "calmar": 0.530551,
+      "profit_factor": 1.041861,
+      "calmar": 0.555277,
       "periods": 600,
       "rank": 4
     },
     {
       "agent_id": "persona-team",
-      "final_equity": 9984.32,
-      "trades": 92,
-      "fees_usd": 15.81,
-      "psr": 0.4347,
-      "total_return": -0.001568,
-      "sharpe": -0.00672,
-      "sortino": -0.006897,
+      "final_equity": 9981.15,
+      "trades": 93,
+      "fees_usd": 15.96,
+      "psr": 0.4212,
+      "total_return": -0.001885,
+      "sharpe": -0.008126,
+      "sortino": -0.008352,
       "max_drawdown": -0.006962,
       "volatility": 0.000378,
-      "win_rate": 0.471667,
-      "profit_factor": 0.976243,
-      "calmar": -0.225192,
+      "win_rate": 0.468333,
+      "profit_factor": 0.971006,
+      "calmar": -0.270814,
       "periods": 600,
       "rank": 5
     },
     {
       "agent_id": "rl-qlearn",
-      "final_equity": 9308.7,
-      "trades": 163,
-      "fees_usd": 191.49,
-      "psr": 0.0112,
-      "total_return": -0.06913,
-      "sharpe": -0.086263,
-      "sortino": -0.078429,
-      "max_drawdown": -0.069131,
-      "volatility": 0.001373,
-      "win_rate": 0.411667,
-      "profit_factor": 0.573495,
-      "calmar": -0.999987,
+      "final_equity": 9459.77,
+      "trades": 166,
+      "fees_usd": 196.19,
+      "psr": 0.0297,
+      "total_return": -0.054023,
+      "sharpe": -0.071832,
+      "sortino": -0.064346,
+      "max_drawdown": -0.054024,
+      "volatility": 0.001277,
+      "win_rate": 0.441667,
+      "profit_factor": 0.645931,
+      "calmar": -0.999985,
       "periods": 600,
       "rank": 6
     }
   ],
   "firewall": {
     "totals": {
-      "intents": 600,
-      "allow": 281,
-      "allow_capped": 319,
-      "reject": 0,
+      "intents": 616,
+      "allow": 279,
+      "allow_capped": 321,
+      "reject": 16,
       "exec_fail": 0
     },
     "by_agent": {
       "swarm": {
         "intents": 82,
-        "allow": 82,
+        "allow": 79,
         "allow_capped": 0,
-        "reject": 0,
+        "reject": 3,
         "exec_fail": 0,
-        "reject_reasons": {}
+        "reject_reasons": {
+          "market_regime": 3
+        }
       },
       "regime": {
-        "intents": 105,
+        "intents": 110,
         "allow": 39,
         "allow_capped": 66,
-        "reject": 0,
+        "reject": 5,
         "exec_fail": 0,
-        "reject_reasons": {}
+        "reject_reasons": {
+          "market_regime": 5
+        }
       },
       "persona-team": {
-        "intents": 92,
-        "allow": 92,
+        "intents": 95,
+        "allow": 93,
         "allow_capped": 0,
-        "reject": 0,
+        "reject": 2,
         "exec_fail": 0,
-        "reject_reasons": {}
+        "reject_reasons": {
+          "market_regime": 2
+        }
       },
       "rl-qlearn": {
-        "intents": 163,
-        "allow": 22,
-        "allow_capped": 141,
-        "reject": 0,
+        "intents": 167,
+        "allow": 23,
+        "allow_capped": 143,
+        "reject": 1,
         "exec_fail": 0,
-        "reject_reasons": {}
+        "reject_reasons": {
+          "market_regime": 1
+        }
       },
       "baseline-momentum": {
-        "intents": 155,
-        "allow": 46,
+        "intents": 159,
+        "allow": 45,
         "allow_capped": 109,
-        "reject": 0,
+        "reject": 5,
         "exec_fail": 0,
-        "reject_reasons": {}
+        "reject_reasons": {
+          "market_regime": 5
+        }
       },
       "benchmark-buyhold": {
         "intents": 3,
@@ -168,18 +178,27 @@
     }
   },
   "overfitting": {
-    "pbo": 0.8333,
+    "pbo": 0.8413,
     "insufficient": false,
     "n_combinations": 252
   },
   "ledger_verified": true,
   "ledger_entries": {
-    "swarm": 528,
-    "regime": 210,
-    "persona-team": 411,
-    "rl-qlearn": 652,
-    "baseline-momentum": 930,
-    "benchmark-buyhold": 18
+    "swarm": 79,
+    "regime": 105,
+    "persona-team": 93,
+    "rl-qlearn": 166,
+    "baseline-momentum": 154,
+    "benchmark-buyhold": 3
+  },
+  "funding_settlements": 0,
+  "funding_received": {
+    "swarm": 0.0,
+    "regime": 0.0,
+    "persona-team": 0.0,
+    "rl-qlearn": 0.0,
+    "baseline-momentum": 0.0,
+    "benchmark-buyhold": 0.0
   },
   "label": "synthetic"
 }

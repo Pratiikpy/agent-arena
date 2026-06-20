@@ -56,8 +56,8 @@ funding-carry competitor that harvests real perpetual funding), the firewall
 stats (allowed / capped), `ledger_verified=True`, and the cross-agent `PBO`. Say it
 plainly: "On flat real data nobody reliably beats the benchmark — and the Arena reports
 that. The PBO number tells you when the leader is luck, not skill." Then the regime
-scenario (`make_evidence`): "In the chop, the conflict-gated swarm flattened — 51 trades,
-−1.9% — while the naive momentum bot whipsawed at 108 trades and lost −4.9%. The thesis
+scenario (`make_evidence`): "In the chop, the conflict-gated swarm flattened — 50 trades,
+−1.8% — while the naive momentum bot whipsawed at 109 trades and lost −3.6%. The thesis
 holds exactly where it claims to."
 
 ## 2:15 – 2:45 · Shipped to Bitget's own platform

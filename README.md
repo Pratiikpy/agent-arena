@@ -145,6 +145,14 @@ uv run python scripts/demo_firewall.py --symbol BTCUSDT --side buy --notional 50
 uv run python scripts/verify_cert.py --file v.json     # -> ✓ signature VALID (fully offline)
 ```
 
+Or re-verify the **entire evidence pack** in one command — every signed ledger's hash-chain
+and signatures, every certificate, all pinned to the published issuer (`config/issuer_pubkey.hex`):
+
+```bash
+uv run python scripts/verify_evidence.py
+# -> ✓ 53 ledgers, 9,230 signed records, certs + red-team — signed, chained, pinned, untampered
+```
+
 ## Documentation
 
 | Doc | What |
