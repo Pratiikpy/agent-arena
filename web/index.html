@@ -39,8 +39,10 @@
   @media (max-width:700px){
     nav{flex-wrap:wrap!important;padding:12px 16px!important;row-gap:12px!important;}
     nav div{flex-wrap:wrap!important;gap:14px 18px!important;}
-    /* inline-styled multi-column grids collapse to one column; wide tables/code scroll */
+    /* inline-styled multi-column grids collapse to one column; flex rows wrap (e.g. the
+       7-button ledger agent selector); wide tables/code scroll */
     [style*="grid-template-columns"]{grid-template-columns:1fr!important;}
+    [style*="display:flex"]{flex-wrap:wrap!important;}
     table{display:block!important;overflow-x:auto!important;white-space:nowrap;}
     pre{overflow-x:auto!important;}
   }
