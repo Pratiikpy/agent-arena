@@ -90,7 +90,8 @@ One project, three tracks (eligible for all-tracks judging):
 - **Trading Agent** — seven autonomous perceive→decide→execute competitors.
 - **Trading Infra** — the firewall, signed ledger, overfit benchmark, independent
   verifier, and MCP server are reusable infrastructure any developer can integrate.
-- **US Stock AI** — a tournament runs on Bitget tokenized US stocks (`RAAPLUSDT`).
+- **US Stock AI** — tournaments run across **six** Bitget tokenized US stocks (AAPL, TSLA,
+  NVDA, MSFT, GOOGL, META); the firewall gates every order, **0 unsafe** (`tokenized_stock_sweep.json`).
 
 ## 5. Shipped to Bitget's own platform — four published Playbooks
 
@@ -117,7 +118,8 @@ All under [`evidence/`](./evidence/README.md), reproducible with the commands ab
 - `bitget_btc_perp/`, `bitget_eth_perp/`, `bitget_sol_perp/` — tournaments on **real
   Bitget perps** (1-hour candles), each including the funding-carry competitor with real
   funding settled to equity.
-- `bitget_tokenized_aapl/` — tournament on **real Bitget tokenized AAPL** (Track 3).
+- `bitget_tokenized_aapl/` — full signed tournament on **real Bitget tokenized AAPL** (Track 3);
+  `tokenized_stock_sweep.json` extends it across **six** tokenized US stocks (0 unsafe, all verified).
 - `firewall_demos.json` — ALLOW / ALLOW_CAPPED / REJECT + tamper-detection proof.
 - `firewall_bench.json` — ~0.1 ms per signed verdict (~9,700/sec single core).
 - `funding_carry.json`, `funding_edge_walkforward.json` — the funding edge validated with

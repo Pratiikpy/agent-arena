@@ -1,0 +1,105 @@
+{
+  "description": "Track 3 breadth: the arena + signed firewall run across Bitget's tokenized-US-stock universe (1h candles); every order gated, 0 unsafe.",
+  "stocks_run": 6,
+  "total_firewall_intents": 883,
+  "total_unsafe_orders": 0,
+  "all_ledgers_verified": true,
+  "per_stock": [
+    {
+      "symbol": "RAAPLUSDT",
+      "name": "Apple",
+      "ticks": 500,
+      "firewall": {
+        "intents": 146,
+        "allow": 37,
+        "allow_capped": 109,
+        "reject": 0,
+        "exec_fail": 0
+      },
+      "ledger_verified": true,
+      "cross_agent_pbo": 0.7341,
+      "top_agent": "regime",
+      "top_final_equity": 10009.29
+    },
+    {
+      "symbol": "RTSLAUSDT",
+      "name": "Tesla",
+      "ticks": 500,
+      "firewall": {
+        "intents": 132,
+        "allow": 40,
+        "allow_capped": 92,
+        "reject": 0,
+        "exec_fail": 0
+      },
+      "ledger_verified": true,
+      "cross_agent_pbo": 0.75,
+      "top_agent": "swarm",
+      "top_final_equity": 10000.0
+    },
+    {
+      "symbol": "RNVDAUSDT",
+      "name": "NVIDIA",
+      "ticks": 500,
+      "firewall": {
+        "intents": 164,
+        "allow": 53,
+        "allow_capped": 111,
+        "reject": 0,
+        "exec_fail": 0
+      },
+      "ledger_verified": true,
+      "cross_agent_pbo": 0.7619,
+      "top_agent": "persona-team",
+      "top_final_equity": 10000.27
+    },
+    {
+      "symbol": "RMSFTUSDT",
+      "name": "Microsoft",
+      "ticks": 500,
+      "firewall": {
+        "intents": 112,
+        "allow": 35,
+        "allow_capped": 77,
+        "reject": 0,
+        "exec_fail": 0
+      },
+      "ledger_verified": true,
+      "cross_agent_pbo": 0.631,
+      "top_agent": "regime",
+      "top_final_equity": 10228.47
+    },
+    {
+      "symbol": "RGOOGLUSDT",
+      "name": "Alphabet",
+      "ticks": 500,
+      "firewall": {
+        "intents": 138,
+        "allow": 39,
+        "allow_capped": 99,
+        "reject": 0,
+        "exec_fail": 0
+      },
+      "ledger_verified": true,
+      "cross_agent_pbo": 0.7024,
+      "top_agent": "swarm",
+      "top_final_equity": 9996.33
+    },
+    {
+      "symbol": "RMETAUSDT",
+      "name": "Meta",
+      "ticks": 500,
+      "firewall": {
+        "intents": 191,
+        "allow": 63,
+        "allow_capped": 128,
+        "reject": 0,
+        "exec_fail": 0
+      },
+      "ledger_verified": true,
+      "cross_agent_pbo": 0.4325,
+      "top_agent": "persona-team",
+      "top_final_equity": 9992.26
+    }
+  ]
+}

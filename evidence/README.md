@@ -23,7 +23,8 @@ uv run python scripts/demo_firewall.py --symbol BTCUSDT --side buy --notional 99
 | `regime_scenario/` | Tournament on a constructed trend → chop → trend market |
 | `bitget_btc_perp/` | Tournament on **real Bitget BTCUSDT perp** 1-hour candles, with a **funding-carry** agent harvesting real perpetual funding (settlements credited to equity) |
 | `bitget_eth_perp/`, `bitget_sol_perp/` | More real-Bitget perp tournaments (breadth) |
-| `bitget_tokenized_aapl/` | Tournament on **real Bitget tokenized AAPL** (`RAAPLUSDT`) — Track 3 |
+| `bitget_tokenized_aapl/` | Tournament on **real Bitget tokenized AAPL** (`RAAPLUSDT`) — Track 3 (full signed ledgers) |
+| `tokenized_stock_sweep.json` | **Track 3 breadth:** the arena + firewall across **six** real Bitget tokenized US stocks (AAPL, TSLA, NVDA, MSFT, GOOGL, META) — 883 firewall intents, **0 unsafe**, all ledgers verified |
 | `last_run/` | Working copy of the most recent tournament — what the API serves at `GET /leaderboard` (and the deployed UI reads) |
 | `redteam.json` | 20 adversarial attacks + 3 controls; **0 unsafe orders passed**, all signed |
 | `firewall_value.json` | The firewall's *containment value*, quantified: a misbehaving agent (8×-oversized orders) on an adverse market stays **solvent (+\$4,212)** under the mandate vs **bankrupt (−\$4,362)** unprotected — the firewall saved \$8,574 on a \$10k account |

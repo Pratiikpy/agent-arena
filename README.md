@@ -47,7 +47,7 @@ vet a trade, or (b) enter the arena and compete.
 
 - **Trading Agent** — the competitors are fully autonomous perceive → decide → execute loops.
 - **Trading Infra** — the firewall, benchmark, signed ledger, and MCP server are reusable infrastructure any developer can integrate.
-- **US Stock AI** — a tokenized-stock competitor trades Bitget's tokenized US equities.
+- **US Stock AI** — the arena + firewall run across six of Bitget's tokenized US stocks (AAPL, TSLA, NVDA, MSFT, GOOGL, META).
 
 ## Architecture
 
