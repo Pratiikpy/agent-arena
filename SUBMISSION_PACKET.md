@@ -68,7 +68,7 @@ let a fleet of agents be run with real capital. That is what Agent Arena is.
 | Requirement | What we submit |
 |---|---|
 | **UID matches registration** | **[YOU]** your Bitget UID |
-| **Public GitHub + complete README** | **[YOU]** push `bitarena/` to a public repo. README is ready (install, run, integrate, examples). |
+| **Public GitHub + complete README** | ✅ **Live:** https://github.com/Pratiikpy/agent-arena (public, CI green, v0.1.0). README has install/run/integrate/examples. |
 | **Thesis clearly stated** | The four-part description above (also in `SUBMISSION.md`). |
 | **Verifiable usage record** (≥1) | Multiple — see below. |
 | **Deployment link** (optional) | **[YOU]** deploy via `DEPLOY.md` (Dockerfile + render.yaml ready); UI+API served at `/`. |
@@ -113,17 +113,12 @@ fallbacks). Honest self-assessment is an explicit scoring criterion.
 > Pre-push safety: audited — **no API keys in any git-tracked file** (Playbook and Qwen
 > keys never committed; `.env` is gitignored and untracked). Safe to make the repo public.
 
-1. **[YOU]** Push `bitarena/` to a **standalone** public GitHub repo. It currently lives
-   inside the private parent repo and is gitignored there with no `.git` of its own, so
-   initialize it fresh (its `.gitignore` already excludes `.env`/`.keys`/secrets — audit
-   confirmed none are tracked):
-   ```bash
-   cd .research/bitarena
-   git init && git add . && git commit -m "Agent Arena: trust layer for autonomous trading agents"
-   gh repo create agent-arena --public --source=. --push
-   ```
-   Paste the resulting URL.
-2. **[YOU]** Deploy (`DEPLOY.md`) and paste the public URL (UI + API + `/verify`).
+1. ✅ **DONE — pushed to https://github.com/Pratiikpy/agent-arena** (public, 278 files,
+   CI green, **v0.1.0** released, 10 topics set). Secrets audited: `.env`/`.keys`/`*.pem`
+   excluded, no Playbook/Qwen keys in any tracked file. Push updates with
+   `git add -A && git commit -m "..." && git push` from `.research/bitarena`.
+2. **[YOU]** Deploy (`DEPLOY.md`) — connect Render to the repo (it auto-builds from
+   `render.yaml`); paste the public URL (UI + API + `/verify`). *Needs your hosting account.*
 3. **[YOU]** Record the ≤3-min demo video (`DEMO.md`) and paste the link.
 4. **[YOU]** Post the #BitgetHackathon quote-tweet; paste the link.
 5. **[YOU]** Submit with your registration UID, primary track = Trading Infra.
