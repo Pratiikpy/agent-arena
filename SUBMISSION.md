@@ -194,3 +194,31 @@ Each next step is an extension of what already ships, not a rewrite:
 
 The thesis scales the way it starts: more agents, more capital, more markets — all behind one
 signed, verifiable safety gate.
+
+## Common questions, answered head-on
+
+**"Isn't a 'firewall' just input validation?"** No. It returns an Ed25519-**signed**,
+tamper-evident certificate per order (verifiable in your browser, no server), it is **fail-closed**
+(denies on missing data or an internal error), it has a market-wide **kill-switch** that
+force-flats the whole fleet in a fast crash, and it is **threat-modeled** (`THREAT_MODEL.md`) and
+red-teamed (23 cases, **0 unsafe**). Validation rejects bad input; this issues a verifiable safety
+*guarantee* and proves it.
+
+**"Did you just wrap FinRL / TradingAgents?"** No — the Arena engine, firewall, scoring, signed
+ledger, and Bitget integration are original work, with **no imports or copies** of those projects
+(clean reimplementation of public ideas; see `NOTICE`). The statistics are reimplemented from the
+source papers (Bailey & López de Prado), formulas only.
+
+**"Is the trading edge real?"** One structural edge is — funding carry, validated with
+walk-forward + Deflated Sharpe on real Bitget funding history. The secondary conflict-gating bet
+is **directional but not statistically significant**, and we report that rather than hide it
+(`evidence/swarm_edge.json`). The product is the *trust layer*, not a secret alpha.
+
+**"Is it actually live, or just slides?"** Live at **bitarena.vercel.app** — the landing ticks a
+fresh signed verdict on the **real BTC price every few seconds** (`/pulse`), tournaments run on
+real Bitget data, and four Playbooks are published on Bitget's own GetAgent platform.
+
+**"How do I trust your numbers?"** You don't have to. `scripts/verify_evidence.py` re-checks every
+signed ledger + certificate (issuer-pinned); `scripts/check_docs.py` fails CI if any cited number
+drifts from its source; and you can verify any certificate **in your own browser** (Web Crypto).
+Every claim above traces to a signed artifact in `evidence/`.
