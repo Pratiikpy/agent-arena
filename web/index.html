@@ -280,6 +280,7 @@ const App = {
     render();
   },
   loadLastCert(){ if(state.result&&state.result.cert){ state.verifyInput=JSON.stringify(state.result.cert,null,2); state.verifyResult=null; } else { state.verifyResult={valid:null,reason:"run a firewall check first to get a certificate"}; } render(); },
+  verifyPulse(){ if(!pulseData||!pulseData.certificate){ return; } state.verifyInput=JSON.stringify(pulseData.certificate,null,2); state.verifyResult=null; state.view="verify"; try{window.scrollTo(0,0);}catch(e){} render(); App.runVerify(); },
 };
 
 // ---------- result view model ----------
@@ -501,8 +502,9 @@ function pulseEl(){
   let el = $("pulse");
   if(!el){
     el = document.createElement("div"); el.id = "pulse";
-    el.style.cssText = "position:fixed;right:16px;bottom:16px;z-index:50;background:#0a0a0a;color:#fff;border-radius:12px;padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.55;box-shadow:0 4px 20px rgba(0,0,0,.22);max-width:300px;";
-    el.title = "Live signed firewall heartbeat — GET /pulse. Each verdict is freshly Ed25519-signed.";
+    el.style.cssText = "position:fixed;right:16px;bottom:16px;z-index:50;background:#0a0a0a;color:#fff;border-radius:12px;padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.55;box-shadow:0 4px 20px rgba(0,0,0,.22);max-width:300px;cursor:pointer;";
+    el.title = "Live signed firewall heartbeat — GET /pulse. Each verdict is freshly Ed25519-signed. Click to verify this live verdict in your browser.";
+    el.onclick = () => { try { App.verifyPulse(); } catch (e) {} };
     document.body.appendChild(el);
   }
   return el;
@@ -526,7 +528,8 @@ function renderPulse(){
     (d.regime && d.regime !== "NORMAL"
       ? '<div style="color:'+(d.kill_switch_armed?"#f2bdb7":"#f0d699")+';margin-top:2px;">'+(d.kill_switch_armed?"⛔ KILL-SWITCH":"⚠ "+esc(d.regime))+'</div>'
       : '')+
-    '<div style="color:#7a8089;margin-top:2px;">signed '+ago+'s ago · issuer '+esc((d.issuer||"").slice(0,8))+'</div>';
+    '<div style="color:#7a8089;margin-top:2px;">signed '+ago+'s ago · issuer '+esc((d.issuer||"").slice(0,8))+'</div>'+
+    '<div style="color:#86efac;margin-top:4px;font-weight:600;">↗ click to verify in your browser</div>';
 }
 async function pulseTick(){
   try{ const r = await fetch(API + "/pulse"); if(!r.ok) throw 0;
