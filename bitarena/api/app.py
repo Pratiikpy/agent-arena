@@ -49,7 +49,8 @@ class FirewallRequest(BaseModel):
 
 
 def create_app(
-    *, evidence_dir: str = "evidence/last_run", web_dir: str = "web", offline: bool = False
+    *, evidence_dir: str = "evidence/last_run", web_dir: str = "web", offline: bool = False,
+    market_client=None,
 ) -> FastAPI:
     settings = load_settings()
     app = FastAPI(title="Agent Arena", version="0.1.0")
@@ -63,7 +64,10 @@ def create_app(
         allow_headers=["*"],
     )
     firewall = Firewall.with_settings(settings)
-    market_client = None if offline else BitgetPublicData()
+    # An injected market_client (used by tests to exercise the live path) always wins; otherwise
+    # offline -> no live data, online -> the real Bitget public client.
+    if market_client is None and not offline:
+        market_client = BitgetPublicData()
     evidence = Path(evidence_dir)
     web = Path(web_dir)
 

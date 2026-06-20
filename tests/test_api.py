@@ -146,3 +146,42 @@ def test_root_serves_the_ui():
     r = _client().get("/")
     assert r.status_code == 200
     assert "Agent Arena" in r.text  # the production single-page UI is served at /
+
+
+def test_pulse_and_firewall_live_path_with_kill_switch():
+    # Exercise the PRODUCTION live path (offline tests otherwise skip it): inject a market client
+    # returning a fresh quote + a crashing candle window. /pulse must report the live source and
+    # ARM the kill-switch; /firewall's live quote path must still return a signed verdict.
+    import time
+
+    from bitarena.domain.market import Candle, InstrumentType, Quote
+
+    now = int(time.time() * 1000)
+
+    class FakeClient:
+        def get_quote(self, symbol, instrument=InstrumentType.SPOT):
+            return Quote(symbol=symbol, bid=99.9, ask=100.1, last=100.0, ts=now)
+
+        def get_candles(self, symbol, instrument, limit=12, **k):
+            prices = [100, 100, 100, 100, 98, 95, 92, 90, 88, 86, 84, 82]  # ~18% fast crash
+            return [Candle(ts=now + i, open=p, high=p, low=p, close=p, volume=1.0)
+                    for i, p in enumerate(prices)]
+
+    c = TestClient(create_app(offline=True, market_client=FakeClient(), evidence_dir="evidence/last_run"))
+
+    pulse = c.get("/pulse").json()
+    assert pulse["data_source"] == "bitget-live"
+    assert pulse["regime"] == "FAST_RISK_OFF" and pulse["kill_switch_armed"] is True
+    assert pulse["certificate_valid"] is True
+
+    fw = c.post("/firewall", json={"agent_id": "a", "symbol": "BTCUSDT", "side": "buy", "notional_usd": 50}).json()
+    assert fw["decision"] in ("ALLOW", "ALLOW_CAPPED", "REJECT")
+    assert fw["certificate_valid"] is True
+
+
+def test_ledger_success_returns_signed_records():
+    # the happy path: a real, existing agent ledger returns its records (last_run is signed)
+    r = _client().get("/ledger?agent=swarm")
+    assert r.status_code == 200
+    body = r.json()
+    assert body["agent"] == "swarm" and body["count"] >= 1 and body["records"]
