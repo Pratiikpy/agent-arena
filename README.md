@@ -109,6 +109,23 @@ uv run uvicorn bitarena.api.app:app --port 8000   # UI at / · HTTP: /health /fi
 uv run python -m bitarena.mcp.server              # MCP (stdio): vet_trade, get_leaderboard, list_agents
 ```
 
+**Connect the MCP server** from Claude Desktop / Cursor / Codex — add this to your MCP client
+config (e.g. `claude_desktop_config.json`), pointing `--directory` at your clone:
+
+```json
+{
+  "mcpServers": {
+    "bitarena": {
+      "command": "uv",
+      "args": ["--directory", "/path/to/bitarena", "run", "python", "-m", "bitarena.mcp.server"]
+    }
+  }
+}
+```
+
+Then ask your agent to *"vet a BTCUSDT buy of $50 through the bitarena firewall"* — it calls
+`vet_trade` and gets back a signed verdict. No Bitget keys needed for the offline path.
+
 **Live mode (paper → live):** run the arena continuously on real Bitget data — each call
 processes new candles and persists state (portfolios + signed ledgers + cursor), so it
 resumes across runs. Schedule it (cron / a deployed worker) and `GET /live` serves the
