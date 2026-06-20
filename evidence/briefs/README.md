@@ -20,10 +20,18 @@ One file per skill, optionally per symbol. The loader checks, in order,
 
 ## Wiring a real Bitget Skill
 
-1. Run the Agent Hub Skill on Bitget (macro / sentiment / news / on-chain / technical).
-2. Export its result into the format above, e.g. `sentiment_BTCUSDT.json`, in this folder.
-3. The next arena/debate run uses it as a live signal (`source: agent_hub:sentiment`, with no
-   `(fallback)` tag).
+Two ways to obtain a real Skill brief, both ending in a JSON file dropped here:
+
+- **On-platform:** run the Skill on Bitget GetAgent and export its result.
+- **Programmatic:** call the Skill Hub via Bitget's `agent_hub` MCP server
+  (`github.com/BitgetLimited/agent_hub` — `npx bitget-hub` / `bitget-mcp-server`, with your
+  Agent Hub key) and write its output into the format above.
+
+Then:
+
+1. Save it as `<skill>_<SYMBOL>.json` (e.g. `sentiment_BTCUSDT.json`) in this folder.
+2. The next arena/debate run uses it as a live signal (`source: agent_hub:sentiment`, with no
+   `(fallback)` tag) — no code change.
 
 No brief present → the channel falls back to a deterministic price-action proxy, **clearly
 tagged `(fallback)`** so nothing offline is ever presented as a live skill call.
