@@ -25,7 +25,7 @@ from ..domain.verdict import Decision
 from ..firewall.firewall import EvalContext, Firewall
 from ..firewall.regime import assess_regime
 from ..ledger.ledger import SignedLedger
-from .engine import _SIM_MAX_QUOTE_AGE_MS, _cert_hash
+from .engine import _SIM_MAX_QUOTE_AGE_MS, _cert_hash, _funding_price
 from .leaderboard import build_leaderboard, cross_agent_pbo
 from .portfolio import Portfolio
 
@@ -145,6 +145,8 @@ class LiveArena:
         # resume funding by timestamp (robust to a refetched/shifted funding list)
         ts_index = [t for t, _ in self._funding_index]
         fptr = bisect.bisect_right(ts_index, self._last_funding_ts) if self._last_funding_ts is not None else 0
+        prev_ts: int | None = None  # bracketing candle for funding-price interpolation across a gap
+        prev_price: float | None = None
 
         for i, candle in enumerate(candles):
             if self.last_ts is not None and candle.ts <= self.last_ts:
@@ -157,9 +159,11 @@ class LiveArena:
 
             while fptr < len(self._funding_index) and self._funding_index[fptr][0] <= ts:
                 self._last_funding_ts, rate = self._funding_index[fptr]
+                fprice = _funding_price(self._last_funding_ts, prev_ts, prev_price, price, ts)
                 for pf in self.portfolios.values():
-                    pf.apply_funding(rate, price)
+                    pf.apply_funding(rate, fprice)
                 fptr += 1
+            prev_ts, prev_price = ts, price
 
             day = ts // 86_400_000
             if day != self._day:

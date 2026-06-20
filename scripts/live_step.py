@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import time
 from pathlib import Path
 
 from bitarena.agents import (
@@ -32,6 +33,15 @@ from bitarena.connectors.bitget import BitgetPublicData
 from bitarena.domain.market import InstrumentType
 from bitarena.firewall import Firewall
 
+_TF_UNITS = {"m": 60_000, "h": 3_600_000, "d": 86_400_000}
+
+
+def _timeframe_ms(tf: str) -> int:
+    try:
+        return int(tf[:-1]) * _TF_UNITS[tf[-1].lower()]
+    except (ValueError, KeyError, IndexError):
+        return 3_600_000  # default to 1h
+
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Advance the live arena one increment on real Bitget data.")
@@ -46,6 +56,12 @@ def main() -> None:
     instrument = InstrumentType.PERP if args.instrument == "perp" else InstrumentType.SPOT
     client = BitgetPublicData()
     candles = client.get_candles(args.symbol, instrument, timeframe=args.timeframe, limit=args.bars)
+    # drop the still-forming current bar: Bitget returns the incomplete candle, which would
+    # otherwise be processed now and then re-sent with a corrected close next run (and skipped
+    # as ts <= last_ts), freezing the most-recent bar's marks. Only ingest closed bars.
+    tf_ms = _timeframe_ms(args.timeframe)
+    now_ms = int(time.time() * 1000)
+    candles = [c for c in candles if c.ts + tf_ms <= now_ms]
     funding = (
         client.get_funding_history(args.symbol, limit=400)
         if instrument is InstrumentType.PERP and len(candles) >= 20

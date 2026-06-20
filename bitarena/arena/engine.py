@@ -29,6 +29,21 @@ from .portfolio import Portfolio
 _SIM_MAX_QUOTE_AGE_MS = 10 ** 15
 
 
+def _funding_price(
+    ts_f: int, prev_ts: int | None, prev_price: float | None, price: float, ts: int
+) -> float:
+    """Price to value a funding settlement at ``ts_f``, linearly interpolated between the
+    bracketing candles ``(prev_ts, prev_price)`` and ``(ts, price)``. On a candle gap that
+    spans several funding intervals this values each interval at its own time instead of
+    settling them all at the latest price (which would over/under-charge the carry)."""
+    if prev_ts is None or prev_price is None or ts <= prev_ts:
+        return price
+    if ts_f <= prev_ts:
+        return prev_price
+    frac = max(0.0, min(1.0, (ts_f - prev_ts) / (ts - prev_ts)))
+    return prev_price + (price - prev_price) * frac
+
+
 def _cert_hash(verdict: Verdict) -> str:
     if verdict.certificate is None:
         return ""
@@ -94,6 +109,8 @@ class Arena:
         self._funding_index = self._build_funding_index(funding)
         self._funding_ptr = 0
         self._funding_settlements = 0
+        self._prev_ts: int | None = None  # previous candle (ts, mid) for funding-price interpolation
+        self._prev_price: float | None = None
 
     @staticmethod
     def _build_funding_index(funding: list[dict] | None) -> list[tuple[int, float]]:
@@ -129,11 +146,13 @@ class Arena:
         # settle any due perpetual funding on the positions held into the settlement
         # (longs pay shorts when the rate is positive); funding flows into cash -> equity
         while self._funding_ptr < len(self._funding_index) and self._funding_index[self._funding_ptr][0] <= ts:
-            rate = self._funding_index[self._funding_ptr][1]
+            ts_f, rate = self._funding_index[self._funding_ptr]
+            fprice = _funding_price(ts_f, self._prev_ts, self._prev_price, price, ts)
             for pf in self.portfolios.values():
-                pf.apply_funding(rate, price)
+                pf.apply_funding(rate, fprice)
             self._funding_ptr += 1
             self._funding_settlements += 1
+        self._prev_ts, self._prev_price = ts, price
 
         # roll the per-day trade counters over at each simulated UTC-day boundary
         day = ts // 86_400_000
