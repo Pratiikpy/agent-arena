@@ -53,6 +53,9 @@ def create_app(
 ) -> FastAPI:
     settings = load_settings()
     app = FastAPI(title="Agent Arena", version="0.1.0")
+    # Wildcard CORS is intentional: this is a public, credential-less read/verify API — the
+    # whole point is that anyone, from any origin, can vet a trade and independently check a
+    # certificate. allow_credentials stays at its default (False), so no cookies/auth are exposed.
     app.add_middleware(
         CORSMiddleware,
         allow_origins=["*"],

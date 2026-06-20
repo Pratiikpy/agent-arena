@@ -101,6 +101,9 @@ def probability_of_backtest_overfitting(
     if n < 2 or n_splits % 2 != 0 or t < n_splits:
         return {"pbo": float("nan"), "n_combinations": 0, "insufficient": True}
 
+    # trim to an exact multiple of n_splits so every IS/OOS partition is equal-sized
+    # (array_split would otherwise hand ±1 row to some chunks, biasing the rank statistic)
+    t -= t % n_splits
     chunks = np.array_split(np.arange(t), n_splits)
 
     def perf(block: np.ndarray) -> np.ndarray:

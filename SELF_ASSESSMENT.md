@@ -41,6 +41,12 @@ resumes state between scheduled invocations. **Limit:** Agent Hub Skills run as 
 offline fallbacks (not live calls), and the other agents are deterministic functions of
 market history by design (no cross-run learning).
 
+*Precise scope of "no agent can bypass":* the firewall is the **single execution chokepoint**
+every order the arena places passes through, and the only shipped integration surface (the
+HTTP API / MCP `vet_trade`) is the gated one — there is no ungated path exposed to an agent.
+This is an architectural guarantee enforced by that one code path, not an OS-level process
+sandbox; it bounds what an agent's *decisions* can do, which is the threat model.
+
 ## Novelty — strong
 A live agent-vs-agent trading arena where every order is gated by a signed certificate,
 agents are ranked with Deflated Sharpe / PBO, and a meta-allocator funds them by verified

@@ -88,7 +88,7 @@ def study(funding_rates, *, thresholds=(0.0, 0.00005, 0.0001, 0.0002), folds: in
     best = max(sweep, key=lambda s: (s["sharpe_annualized"] if s["sharpe_annualized"] is not None else -9.0))
 
     bm = sharpe_moments(carry_returns(fr, adaptive=True, threshold=best["threshold"]))
-    sr_var = float(np.var(srs)) if len(srs) > 1 else 0.0
+    sr_var = float(np.var(srs, ddof=1)) if len(srs) > 1 else 0.0  # sample variance (ddof=1), matches DSR convention
     dsr = deflated_sharpe_ratio(bm["sr"], bm["n"], len(thresholds), sr_var, skew=bm["skew"], kurt=bm["kurt"])
 
     return {

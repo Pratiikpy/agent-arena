@@ -35,7 +35,10 @@ _SIG_FIELDS = {"signature_hex", "public_key_hex"}
 
 
 def canonical_json(data: dict[str, Any]) -> bytes:
-    """Deterministic JSON bytes: sorted keys, no whitespace."""
+    """Deterministic JSON bytes for signing: sorted keys, no whitespace. Numeric fields are
+    plain JSON numbers — a cross-language verifier should parse them as IEEE-754 doubles to
+    reproduce the digest. Certificates and ledger records never carry non-finite values by
+    construction (the firewall rejects a non-finite size before issuing a verdict)."""
     return json.dumps(data, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
 
 
