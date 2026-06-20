@@ -13,6 +13,7 @@ The MCP SDK is an optional dependency; install with ``pip install -e ".[mcp]"``.
 from __future__ import annotations
 
 import json
+import time
 from pathlib import Path
 
 from ..config import load_settings
@@ -89,11 +90,11 @@ def build_server():
         mandate = default_arena_mandate(equity_usd, allowed_symbols=(symbol.upper(),))
         ctx = EvalContext(
             mandate=mandate,
-            equity_usd=equity_usd,
+            equity_usd=max(1.0, equity_usd),
             quote=quote,
-            current_exposure_usd=current_exposure_usd,
-            now_ms=quote.ts if quote else None,
-            max_quote_age_ms=10 ** 15,
+            current_exposure_usd=max(0.0, current_exposure_usd),
+            now_ms=int(time.time() * 1000),
+            max_quote_age_ms=120_000,  # real freshness gate (reject quotes > 2 min old)
         )
         verdict = firewall.evaluate(intent, ctx)
         return {

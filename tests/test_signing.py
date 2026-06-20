@@ -52,6 +52,22 @@ def test_unsigned_certificate_is_invalid():
     assert verify_certificate(_cert()) is False
 
 
+def test_self_consistent_forgery_passes_integrity_but_fails_issuer_pinning():
+    # A2: an attacker who signs a fake verdict with their OWN keypair (and embeds their own
+    # public key) produces a cert that is internally consistent — integrity verification
+    # passes. Authenticity therefore REQUIRES pinning against the arena's published key.
+    arena = Signer.generate()
+    attacker = Signer.generate()
+    forged = attacker.sign_certificate(_cert(decision=Decision.ALLOW, notional=1_000_000.0))
+    assert verify_certificate(forged) is True  # integrity holds (self-consistent)
+    assert verify_certificate(forged, expected_public_key_hex=arena.public_key_hex) is False  # forgery caught
+    genuine = arena.sign_certificate(_cert())
+    assert verify_certificate(genuine, expected_public_key_hex=arena.public_key_hex) is True
+    # a tampered genuine cert fails even with the correct pinned key
+    tampered = genuine.model_copy(update={"effective_notional_usd": 9e9})
+    assert verify_certificate(tampered, expected_public_key_hex=arena.public_key_hex) is False
+
+
 def test_load_or_create_persists_key(tmp_path):
     path = tmp_path / "k" / "arena.pem"
     s1 = Signer.load_or_create(path)

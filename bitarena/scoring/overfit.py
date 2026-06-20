@@ -18,6 +18,7 @@ from itertools import combinations
 import numpy as np
 from scipy.stats import kurtosis as _kurtosis
 from scipy.stats import norm
+from scipy.stats import rankdata
 from scipy.stats import skew as _skew
 
 EULER_MASCHERONI = 0.5772156649015329
@@ -44,8 +45,14 @@ def probabilistic_sharpe_ratio(
     """PSR: probability the true (per-period) Sharpe exceeds ``sr_benchmark``."""
     if n < 2:
         return float("nan")
-    denom = math.sqrt(max(1e-12, 1.0 - skew * sr_hat + ((kurt - 1.0) / 4.0) * sr_hat ** 2))
-    z = (sr_hat - sr_benchmark) * math.sqrt(n - 1) / denom
+    # var of the Sharpe estimator (Bailey & Lopez de Prado). A non-positive term means the
+    # estimator variance is undefined — return NaN rather than clamping to ~0, which would
+    # snap z to +inf and manufacture a false PSR=1.0 for exactly the degenerate fat-tailed
+    # high-Sharpe agents PSR is meant to flag.
+    var_term = 1.0 - skew * sr_hat + ((kurt - 1.0) / 4.0) * sr_hat ** 2
+    if var_term <= 0:
+        return float("nan")
+    z = (sr_hat - sr_benchmark) * math.sqrt(n - 1) / math.sqrt(var_term)
     return float(norm.cdf(z))
 
 
@@ -112,9 +119,9 @@ def probability_of_backtest_overfitting(
         is_perf = perf(matrix[is_rows, :])
         oos_perf = perf(matrix[oos_rows, :])
         best = int(np.argmax(is_perf))
-        order = oos_perf.argsort()  # ascending
-        rank = np.empty(n, dtype=float)
-        rank[order] = np.arange(1, n + 1)
+        # tie-averaged ranks: a flat/no-information matrix yields rank ~ (n+1)/2 for every
+        # strategy, so omega ~ 0.5 and PBO ~ 0.5 (correct), not a confident PBO=1.0.
+        rank = rankdata(oos_perf, method="average")  # 1..n, ascending
         omega = rank[best] / (n + 1)
         omega = min(max(omega, 1e-6), 1 - 1e-6)
         logits.append(math.log(omega / (1.0 - omega)))

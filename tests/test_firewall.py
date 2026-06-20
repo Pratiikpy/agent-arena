@@ -112,10 +112,23 @@ def test_quantity_priced_via_quote():
     assert v.effective_notional_usd == 2_000.0
 
 
-def test_reduce_only_skips_exposure_caps():
-    # reduce_only: exposure full but a small reduce still allowed up to order cap
+def test_reduce_only_without_a_position_is_not_exempt():
+    # A1: a reduce_only flag on a fresh order (no opposing position) must NOT bypass the
+    # exposure cap. With exposure at the cap there is no room -> REJECT (the bypass is fixed).
     v = Firewall().evaluate(
-        _intent(notional_usd=500.0, reduce_only=True), _ctx(current_exposure_usd=30_000.0)
+        _intent(side=Side.BUY, notional_usd=500.0, reduce_only=True),
+        _ctx(current_exposure_usd=30_000.0, position_qty=0.0),
+    )
+    assert v.decision is Decision.REJECT
+
+
+def test_genuine_reduction_is_exempt_from_exposure_cap():
+    # A real reduction (SELL opposing a long, within the position size) is exempt from the
+    # exposure/leverage caps and allowed up to the order cap even with exposure at the cap.
+    long_qty = 30_000.0 / _quote().mid  # a long position worth ~$30k
+    v = Firewall().evaluate(
+        _intent(side=Side.SELL, notional_usd=500.0, reduce_only=True),
+        _ctx(current_exposure_usd=30_000.0, position_qty=long_qty),
     )
     assert v.decision is Decision.ALLOW
     assert v.effective_notional_usd == 500.0

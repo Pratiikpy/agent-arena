@@ -157,7 +157,7 @@ class TrustAllocator:
             ctx = EvalContext(
                 mandate=self._mandate_for(self.weights[aid]),
                 equity_usd=pf.equity(price), quote=quote,
-                current_exposure_usd=pf.exposure_usd(price),
+                current_exposure_usd=pf.exposure_usd(price), position_qty=pf.position_qty,
                 now_ms=quote.ts, max_quote_age_ms=10 ** 15,
             )
             verdict = self.firewall.evaluate(intent, ctx)

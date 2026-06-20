@@ -177,7 +177,8 @@ class LiveArena:
                 self.firewall_totals["intents"] += 1
                 ctx = EvalContext(
                     mandate=self.mandate, equity_usd=pf.equity(price), quote=quote,
-                    current_exposure_usd=pf.exposure_usd(price), daily_count=self.daily_counts[aid],
+                    current_exposure_usd=pf.exposure_usd(price), position_qty=pf.position_qty,
+                    daily_count=self.daily_counts[aid],
                     now_ms=ts, max_quote_age_ms=_SIM_MAX_QUOTE_AGE_MS,
                 )
                 verdict = self.firewall.evaluate(intent, ctx)

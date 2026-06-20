@@ -162,6 +162,7 @@ class Arena:
                 equity_usd=equity,
                 quote=quote,
                 current_exposure_usd=pf.exposure_usd(price),
+                position_qty=pf.position_qty,
                 daily_count=self.daily_counts[agent_id],
                 now_ms=ts,
                 max_quote_age_ms=_SIM_MAX_QUOTE_AGE_MS,

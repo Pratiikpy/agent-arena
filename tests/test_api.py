@@ -86,3 +86,26 @@ def test_verify_accepts_full_verdict_not_just_bare_cert():
 def test_verify_malformed():
     bad = _client().post("/verify", json={"not": "a cert"}).json()
     assert bad["valid"] is False
+
+
+def test_ledger_rejects_path_traversal():
+    # A3: the agent param must not be able to escape the ledgers directory (CWE-22)
+    client = _client()
+    assert client.get("/ledger", params={"agent": "../ledgers/regime"}).status_code == 400
+    assert client.get("/ledger", params={"agent": "../../SUBMISSION"}).status_code == 400
+    assert client.get("/ledger", params={"agent": "..%2f..%2fpwned"}).status_code == 400
+
+
+def test_verify_reports_trusted_issuer_and_catches_forgery():
+    # A2: /verify distinguishes integrity (valid) from authenticity (trusted_issuer).
+    from bitarena.domain.verdict import Certificate
+    from bitarena.firewall.signing import Signer
+
+    client = _client()
+    cert = client.post("/firewall", json={"symbol": "BTCUSDT", "side": "buy", "notional_usd": 50}).json()["certificate"]
+    good = client.post("/verify", json=cert).json()
+    assert good["valid"] is True and good["trusted_issuer"] is True
+
+    forged = Signer.generate().sign_certificate(Certificate(**cert))  # attacker self-signs
+    bad = client.post("/verify", json=forged.model_dump()).json()
+    assert bad["valid"] is True and bad["trusted_issuer"] is False  # integrity ok, but NOT this arena

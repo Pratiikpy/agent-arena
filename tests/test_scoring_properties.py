@@ -30,7 +30,9 @@ def test_psr_always_in_unit_interval():
             rng.uniform(-2.0, 2.0), rng.randint(5, 2_000),
             skew=rng.uniform(-3.0, 3.0), kurt=rng.uniform(1.6, 12.0),
         )
-        assert math.isfinite(p) and 0.0 <= p <= 1.0
+        # NaN is the correct result when the Sharpe-estimator variance is non-positive
+        # (undefined) rather than a clamped false 1.0; otherwise PSR is a probability.
+        assert math.isnan(p) or (0.0 <= p <= 1.0)
 
 
 def test_dsr_bounded_and_never_exceeds_psr():

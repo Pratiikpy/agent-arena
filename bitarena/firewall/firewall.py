@@ -24,7 +24,7 @@ from pydantic import BaseModel, ConfigDict
 
 from ..domain.intent import TradeIntent
 from ..domain.mandate import Mandate
-from ..domain.market import Quote
+from ..domain.market import Quote, Side
 from ..domain.verdict import Certificate, Decision, GateResult, Verdict
 from . import gates
 from .signing import Signer, intent_hash, new_nonce, utc_now_iso
@@ -43,6 +43,8 @@ class EvalContext(BaseModel):
     equity_usd: float
     quote: Quote | None = None
     current_exposure_usd: float = 0.0
+    position_qty: float = 0.0  # signed current position in the symbol; lets the firewall
+    #                            verify a reduce-only claim instead of trusting the flag
     daily_count: int = 0
     halted: bool = False
     now_ms: int | None = None
@@ -147,7 +149,20 @@ class Firewall:
         )
         allowable = order_cap
 
-        if not intent.reduce_only:
+        # A reduce-only order is exempt from the exposure/leverage caps ONLY when it is a
+        # *verified* genuine reduction: its side opposes the current position and it does not
+        # exceed it (no opening or flipping). A bare reduce_only flag is never trusted, so an
+        # agent cannot set it on a fresh order to open a position with the exposure/leverage
+        # caps disabled.
+        price = ctx.quote.mid if ctx.quote is not None else None
+        position_notional = abs(ctx.position_qty) * price if (price and price > 0) else 0.0
+        opposes = (
+            (intent.side is Side.SELL and ctx.position_qty > 0)
+            or (intent.side is Side.BUY and ctx.position_qty < 0)
+        )
+        genuine_reduce = intent.reduce_only and opposes and requested <= position_notional + _EPS
+
+        if not genuine_reduce:
             exposure_room = max(0.0, caps.max_total_exposure_usd - ctx.current_exposure_usd)
             results.append(
                 GateResult(

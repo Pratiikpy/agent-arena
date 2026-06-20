@@ -53,7 +53,7 @@ decide (7 agents incl. a live Qwen LLM debate, the published Playbook strategy, 
 funding-carry competitor) →
 **firewall** (signed, red-teamed) → execute (paper / Bitget) → **signed ledger** →
 overfit-aware leaderboard → **trust allocator**. Exposed over an HTTP API and an MCP
-server, with an independent `/verify` endpoint and a production UI. 218 passing tests.
+server, with an independent `/verify` endpoint and a production UI. 222 passing tests.
 Run it: `cd bitarena && uv pip install -e ".[dev,api,mcp,llm]" && uv run pytest` then
 `uv run uvicorn bitarena.api.app:app --port 8000`.
 
@@ -113,7 +113,7 @@ fallbacks). Honest self-assessment is an explicit scoring criterion.
 > Pre-push safety: audited — **no API keys in any git-tracked file** (Playbook and Qwen
 > keys never committed; `.env` is gitignored and untracked). Safe to make the repo public.
 
-1. ✅ **DONE — pushed to https://github.com/Pratiikpy/agent-arena** (public, 278 files,
+1. ✅ **DONE — pushed to https://github.com/Pratiikpy/agent-arena** (public,
    CI green, **v0.1.0** released, 10 topics set). Secrets audited: `.env`/`.keys`/`*.pem`
    excluded, no Playbook/Qwen keys in any tracked file. Push updates with
    `git add -A && git commit -m "..." && git push` from `.research/bitarena`.

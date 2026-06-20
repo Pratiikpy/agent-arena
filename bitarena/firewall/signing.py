@@ -2,14 +2,20 @@
 
 A certificate is signed over the canonical JSON of all its fields except the
 signature and public key. Verification recomputes that canonical payload, so any
-post-issue mutation invalidates the signature. Anyone with the embedded public key
-can verify a certificate offline — no call back to the arena required.
+post-issue mutation invalidates the signature — anyone can confirm *integrity*
+offline with the embedded public key, no call back to the arena required.
+
+*Authenticity* (that the real arena signed it, not a forger who self-signed with
+their own keypair) requires pinning: compare the certificate's public key against
+the arena's published issuer key. ``verify_certificate(cert, expected_public_key_hex=...)``
+does this; the published key lives in ``config/issuer_pubkey.hex`` and at ``GET /pubkey``.
 """
 
 from __future__ import annotations
 
 import base64
 import hashlib
+import hmac
 import json
 import os
 from datetime import datetime, timezone
@@ -119,16 +125,22 @@ class Signer:
                 raise TypeError("signing key is not Ed25519")
             return cls(key)
         sk = Ed25519PrivateKey.generate()
-        path.parent.mkdir(parents=True, exist_ok=True)
-        pem = sk.private_bytes(
-            serialization.Encoding.PEM,
-            serialization.PrivateFormat.PKCS8,
-            serialization.NoEncryption(),
-        )
-        path.write_bytes(pem)
-        try:  # best-effort restrictive perms (no-op on some platforms)
-            os.chmod(path, 0o600)
-        except OSError:  # pragma: no cover
+        try:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            pem = sk.private_bytes(
+                serialization.Encoding.PEM,
+                serialization.PrivateFormat.PKCS8,
+                serialization.NoEncryption(),
+            )
+            path.write_bytes(pem)
+            try:  # best-effort restrictive perms (no-op on some platforms)
+                os.chmod(path, 0o600)
+            except OSError:  # pragma: no cover
+                pass
+        except OSError:
+            # read-only filesystem (e.g. serverless): use an ephemeral in-memory key
+            # rather than crashing. Certs stay self-verifying; set ARENA_SIGNING_KEY_B64
+            # for a stable issuer in such deployments.
             pass
         return cls(sk)
 
@@ -140,13 +152,22 @@ def build_signer(b64: str | None, path: Path | str) -> Signer:
     return Signer.load_or_create(path)
 
 
-def verify_certificate(cert: Certificate) -> bool:
+def verify_certificate(cert: Certificate, expected_public_key_hex: str | None = None) -> bool:
     """Verify a certificate's Ed25519 signature against its embedded public key.
 
-    Returns ``False`` for a missing signature/key, a tampered payload, or any
-    malformed field — never raises.
+    Integrity by default: returns ``False`` for a missing signature/key, a tampered
+    payload, or any malformed field — never raises.
+
+    Pass ``expected_public_key_hex`` (the arena's published issuer key) to ALSO require
+    authenticity: that this exact issuer signed it, not a forger who self-signed with
+    their own keypair. Without pinning, a self-consistent forged certificate verifies
+    as ``True`` (integrity holds), which is why provenance checks must pin the key.
     """
     if not cert.signature_hex or not cert.public_key_hex:
+        return False
+    if expected_public_key_hex is not None and not hmac.compare_digest(
+        cert.public_key_hex.strip().lower(), expected_public_key_hex.strip().lower()
+    ):
         return False
     try:
         public_key = Ed25519PublicKey.from_public_bytes(bytes.fromhex(cert.public_key_hex))

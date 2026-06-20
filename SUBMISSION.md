@@ -68,10 +68,10 @@ perceive ─▶ decide ─▶ FIREWALL ─▶ execute ─▶ signed ledger ─�
   over HTTP returns a signed verdict; a production single-page UI (firewall / arena /
   ledger / debate / verify) is served at `/`.
 
-**Run it** (no keys needed for the offline path; **218 tests pass**, lint-clean, 0 warnings):
+**Run it** (no keys needed for the offline path; **222 tests pass**, lint-clean, 0 warnings):
 ```bash
 cd bitarena && uv venv && uv pip install -e ".[dev,api,mcp,llm]"
-uv run pytest                                              # 218 passing, 92% coverage
+uv run pytest                                              # 222 passing, 92% coverage
 uv run python scripts/run_arena.py --source bitget --instrument perp   # real-data tournament
 uv run python scripts/demo_firewall.py --symbol BTCUSDT --side buy --notional 999999
 uv run python scripts/llm_debate.py --symbol BTCUSDT      # Qwen debate, firewall-gated
@@ -115,7 +115,7 @@ All under [`evidence/`](./evidence/README.md), reproducible with the commands ab
   funding settled to equity.
 - `bitget_tokenized_aapl/` — tournament on **real Bitget tokenized AAPL** (Track 3).
 - `firewall_demos.json` — ALLOW / ALLOW_CAPPED / REJECT + tamper-detection proof.
-- `firewall_bench.json` — ~0.1 ms per signed verdict (~9,400/sec single core).
+- `firewall_bench.json` — ~0.1 ms per signed verdict (~9,700/sec single core).
 - `funding_carry.json`, `funding_edge_walkforward.json` — the funding edge validated with
   walk-forward + Deflated Sharpe (beats buy-hold in 4/5 real-BTC folds).
 - `walk_forward.json`, `swarm_edge.json` — agent stability + the swarm thesis tested honestly.

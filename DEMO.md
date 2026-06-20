@@ -28,7 +28,7 @@ uv run python scripts/demo_firewall.py --symbol BTCUSDT --side buy --notional 50
 uv run python scripts/verify_cert.py --file v.json     # -> ✓ signature VALID (fully offline)
 ```
 "Don't trust us — verify it yourself. And it's effectively free: ~0.1 ms per signed
-verdict, ~9,400 a second on one core."
+verdict, ~9,700 a second on one core."
 
 Or show it **live** on the deployed service (same signed verdict, public URL):
 ```bash

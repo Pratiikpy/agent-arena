@@ -18,12 +18,14 @@ data), falling back to a synthetic quote only if Bitget is unreachable.
 from __future__ import annotations
 
 import json
+import re
+import time
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, JSONResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from ..config import load_settings
 from ..connectors import ReplayMarketData, synthetic_series
@@ -31,17 +33,19 @@ from ..connectors.bitget import BitgetPublicData
 from ..domain import Certificate, InstrumentType, Side, TradeIntent, default_arena_mandate
 from ..firewall import EvalContext, Firewall, verify_certificate
 
+_AGENT_ID_RE = re.compile(r"[A-Za-z0-9_-]{1,64}")
+
 
 class FirewallRequest(BaseModel):
     agent_id: str = "external-agent"
     symbol: str = "BTCUSDT"
     side: Side
     instrument: InstrumentType = InstrumentType.SPOT
-    notional_usd: float | None = None
-    quantity: float | None = None
-    leverage: float = 1.0
-    equity_usd: float = 10_000.0
-    current_exposure_usd: float = 0.0
+    notional_usd: float | None = Field(None, ge=0, allow_inf_nan=False)
+    quantity: float | None = Field(None, ge=0, allow_inf_nan=False)
+    leverage: float = Field(1.0, ge=0, le=125, allow_inf_nan=False)
+    equity_usd: float = Field(10_000.0, gt=0, allow_inf_nan=False)
+    current_exposure_usd: float = Field(0.0, ge=0, allow_inf_nan=False)
 
 
 def create_app(
@@ -67,7 +71,11 @@ def create_app(
                 return live
         md = ReplayMarketData({symbol: synthetic_series(symbol, n=60, seed=1)})
         md.set_cursor(59)
-        return md.get_quote(symbol, instrument)
+        q = md.get_quote(symbol, instrument)
+        # the synthetic fallback is generated on-demand → stamp it "now" so the real-time
+        # freshness gate treats it as fresh (a genuinely stale *live* quote still rejects,
+        # since live quotes keep their real exchange timestamp).
+        return q.model_copy(update={"ts": int(time.time() * 1000)}) if q is not None else None
 
     @app.get("/health")
     def health() -> dict:
@@ -100,8 +108,8 @@ def create_app(
             equity_usd=req.equity_usd,
             quote=quote,
             current_exposure_usd=req.current_exposure_usd,
-            now_ms=quote.ts if quote else None,
-            max_quote_age_ms=10 ** 15,
+            now_ms=int(time.time() * 1000),
+            max_quote_age_ms=120_000,  # reject quotes older than 2 minutes (real freshness gate)
         )
         verdict = firewall.evaluate(intent, ctx)
         return {
@@ -135,9 +143,13 @@ def create_app(
 
     @app.post("/verify")
     def verify(cert: dict) -> dict:
-        """Independently verify a firewall certificate. Anyone can call this with a
-        certificate obtained anywhere; it checks the embedded signature against the
-        embedded public key — no trust in this server required."""
+        """Independently verify a firewall certificate.
+
+        Reports two distinct properties: ``valid`` = integrity (the signature matches the
+        certificate's embedded key — not tampered), and ``trusted_issuer`` = authenticity
+        (that embedded key matches THIS arena's published issuer key, so a forger who
+        self-signed with their own keypair is rejected). A cert is genuinely from this
+        arena only when both are true."""
         # accept either a bare certificate or a full firewall verdict (pull out its
         # `certificate`), matching the offline verify_cert.py CLI.
         if isinstance(cert.get("certificate"), dict):
@@ -145,14 +157,22 @@ def create_app(
         try:
             c = Certificate(**cert)
         except Exception as exc:  # malformed payload
-            return {"valid": False, "reason": f"malformed certificate: {exc}"}
+            return {"valid": False, "trusted_issuer": False, "reason": f"malformed certificate: {exc}"}
         ok = verify_certificate(c)
+        trusted = verify_certificate(c, expected_public_key_hex=firewall._signer.public_key_hex)
+        if not ok:
+            reason = "signature invalid or tampered"
+        elif trusted:
+            reason = "signature valid and issued by this arena"
+        else:
+            reason = "signature self-consistent but NOT signed by this arena's key (possible forgery)"
         return {
             "valid": ok,
+            "trusted_issuer": trusted,
             "issuer": c.issuer,
             "decision": c.decision.value,
             "intent_hash": c.intent_hash,
-            "reason": "signature valid" if ok else "signature invalid or tampered",
+            "reason": reason,
         }
 
     @app.get("/debate")
@@ -163,9 +183,12 @@ def create_app(
         return JSONResponse({"detail": "no debate run yet"}, status_code=404)
 
     @app.get("/ledger")
-    def ledger(agent: str = "swarm", limit: int = 50):
-        path = evidence / "ledgers" / f"{agent}.jsonl"
-        if not path.exists():
+    def ledger(agent: str = "swarm", limit: int = Query(50, ge=1, le=1000)):
+        if not _AGENT_ID_RE.fullmatch(agent):  # block path traversal (CWE-22) + junk
+            return JSONResponse({"detail": "invalid agent id"}, status_code=400)
+        ledgers_dir = (evidence / "ledgers").resolve()
+        path = (ledgers_dir / f"{agent}.jsonl").resolve()
+        if not path.is_relative_to(ledgers_dir) or not path.exists():  # belt + suspenders
             return JSONResponse({"detail": f"no ledger for agent '{agent}'"}, status_code=404)
         lines = [json.loads(line) for line in path.read_text(encoding="utf-8").splitlines() if line.strip()]
         return {"agent": agent, "count": len(lines), "records": lines[-limit:]}

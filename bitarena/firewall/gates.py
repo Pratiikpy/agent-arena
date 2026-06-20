@@ -66,7 +66,11 @@ def gate_quote_sanity(
         return GateResult(gate="quote", passed=False, detail="crossed/locked order book")
     if quote.mid <= 0:
         return GateResult(gate="quote", passed=False, detail="non-positive price")
-    if now_ms is not None and max_age_ms is not None:
+    if max_age_ms is not None:
+        if now_ms is None:  # a freshness threshold is set but there is no clock -> fail closed
+            return GateResult(
+                gate="quote", passed=False, detail="no clock to evaluate quote age (fail-closed)"
+            )
         age = now_ms - quote.ts
         if age > max_age_ms:
             return GateResult(

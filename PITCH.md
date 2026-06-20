@@ -36,8 +36,8 @@ Bitget's own GetAgent platform.
 - **Independently verifiable** — signed, hash-chained ledger + a public `/verify` endpoint
   and offline verifier.
 - **Effectively free** — a full signed verdict (all gates + Ed25519) takes **~0.1 ms**
-  (~9,400 verdicts/sec, single core): gating every trade is production-cheap.
-- **218 passing tests**, lint-clean, real Bitget data across BTC/ETH/SOL + tokenized AAPL.
+  (~9,700 verdicts/sec, single core): gating every trade is production-cheap.
+- **222 passing tests**, lint-clean, real Bitget data across BTC/ETH/SOL + tokenized AAPL.
 
 ## Why only an AI agent can do this
 The competitors read five analyst perspectives, debate them (the LLM agent argues bull

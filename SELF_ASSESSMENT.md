@@ -8,10 +8,10 @@ here is Agent Arena rated against each dimension — strengths **and** real limi
 | Dimension | Self-rating | One-line |
 |---|---|---|
 | Depth of thesis | 9/10 | Trust = containment + verification; a testable conflict-gating bet; one real (funding) edge, now live in the arena |
-| Runnability | 8/10 | Live signed firewall, real Bitget data, a published on-platform Playbook, 218 tests — but paper, not real-money yet |
+| Runnability | 8/10 | Live signed firewall + **public deploy**, real Bitget data, four published Playbooks, 222 tests — but paper, not real-money yet |
 | Completeness | 9/10 | End-to-end loop, 7 agents, allocator, signed ledger, MCP/API, live UI, four published Playbooks |
 | Novelty & potential | 9/10 | Agent-vs-agent arena + signed firewall + trust-allocator + overfit scoring + live LLM debate |
-| Bitget-native depth | 8/10 | Real public data, **published GetAgent Playbook**, live Qwen, tokenized-stock Track 3 |
+| Bitget-native depth | 8/10 | Real public data, **four published GetAgent Playbooks**, live Qwen, tokenized-stock Track 3 |
 
 ## Depth of thesis — strong
 The core bet is that the bottleneck in agentic trading is **trust, not alpha**:
@@ -24,11 +24,12 @@ edge: the funding-carry agent collects real perpetual funding and ranks consiste
 top-3 by Sharpe across BTC/ETH/SOL.
 
 ## Runnability — strong, with a clear ceiling
-Live signed firewall (curl-able, deploy-ready), real Bitget market data, a **published
-GetAgent Playbook with a real on-platform backtest**, a live Qwen debate agent, and 167
-passing offline tests. **Limit:** trading is paper (no real-money order yet — needs a
-trade-permission key), and the public URL / 3-min video are not yet posted (config and
-storyboard are ready).
+Live signed firewall (publicly callable at **https://bitarena.vercel.app**, also curl-able
+offline), real Bitget market data, **four published GetAgent Playbooks** with real
+on-platform backtests, a live Qwen debate agent, and 222 passing offline tests. The public
+repo (github.com/Pratiikpy/agent-arena, CI green) and the live deploy are both up. **Limit:**
+trading is paper (no real-money order yet — needs a trade-permission key), and the ≤3-min
+demo video is not yet recorded (storyboard ready).
 
 ## Completeness — strong
 Full perceive → decide → firewall → execute → signed ledger → leaderboard → trust-
@@ -60,7 +61,8 @@ live Skill Hub calls and a real dust order remain to be wired.
   server, HTTP API, and independent verifier — reusable by any developer.
 - **Track 3 — US Stock AI:** a tournament on Bitget tokenized AAPL.
 
-## What would move every number up (mostly owner actions)
-Deploy the public URL, post the 3-min demo video, push to public GitHub, place one real
-dust-sized Bitget order, and wire one live Agent Hub Skill. The engineering for all of
-these is in place; what remains is execution and credentials.
+## What would move every number up (the remaining owner actions)
+The public repo and live deploy are already up. What remains: post the ≤3-min demo video,
+place one real dust-sized Bitget order (needs a trade-permission key), and wire one live
+Agent Hub Skill. The engineering for all of these is in place; what remains is recording,
+a trade key, and the post.

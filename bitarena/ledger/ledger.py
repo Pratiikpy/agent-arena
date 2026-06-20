@@ -12,6 +12,7 @@ it is caught only when ``verify`` is given the trusted ``expected_count`` the ar
 from __future__ import annotations
 
 import csv
+import hmac
 from pathlib import Path
 
 from pydantic import BaseModel, ConfigDict
@@ -121,13 +122,20 @@ class SignedLedger:
                 fh.write(record.model_dump_json() + "\n")
         return record
 
-    def verify(self, expected_count: int | None = None) -> tuple[bool, list[str]]:
+    def verify(
+        self, expected_count: int | None = None, expected_public_key_hex: str | None = None
+    ) -> tuple[bool, list[str]]:
         """Re-validate the whole chain: sequence, links, hashes, and signatures.
 
         Interior edits (mutation, reordering, mid-chain deletion) are caught by the chain
         itself. Tail truncation leaves a self-consistent prefix, so pass ``expected_count``
         (a trusted committed length — the arena knows how many trades it appended) to catch
         dropped trailing records.
+
+        Signatures are checked against each record's embedded key (integrity). To also
+        check *authenticity* — that the records were signed by the real arena, not forged
+        with an attacker keypair — pass ``expected_public_key_hex`` (the published issuer
+        key); records signed by any other key are then flagged.
         """
         issues: list[str] = []
         if expected_count is not None and len(self._records) != expected_count:
@@ -146,6 +154,11 @@ class SignedLedger:
             payload = model_canonical(record, exclude=_SIG_EXCLUDE)
             if not verify_bytes(record.public_key_hex, record.signature_hex, payload):
                 issues.append(f"invalid signature at seq {record.seq}")
+            if expected_public_key_hex is not None and not hmac.compare_digest(
+                (record.public_key_hex or "").strip().lower(),
+                expected_public_key_hex.strip().lower(),
+            ):
+                issues.append(f"untrusted issuer key at seq {record.seq}")
             prev = record.record_hash
         return (not issues, issues)
 
