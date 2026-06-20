@@ -104,3 +104,26 @@ def test_arena_settles_funding_into_equity():
     assert res["funding_settlements"] == 3
     # a long position paying positive funding loses a little (longs pay shorts when rate > 0)
     assert res["funding_received"]["benchmark-buyhold"] < 0.0
+
+
+def test_batch_ledgers_are_idempotent_on_rerun(tmp_path):
+    # re-running a batch tournament on the same ledger dir must NOT double records (it used to)
+    led = tmp_path / "ledgers"
+    series = {"BTCUSDT": synthetic_series("BTCUSDT", n=200, seed=1, drift=0.003, vol=0.01)}
+
+    def build():
+        md = ReplayMarketData(series)
+        return Arena(
+            agents=[ConflictGatedSwarm(), MomentumBaseline(), BuyAndHold()],
+            exchange=PaperExchange(md), market=md, symbol="BTCUSDT",
+            signer=Signer.generate(), instrument=InstrumentType.PERP,
+            starting_cash=10_000.0, ledger_dir=led,
+        )
+
+    build().run()
+    counts1 = {f.name: sum(1 for line in f.open(encoding="utf-8") if line.strip()) for f in led.glob("*.jsonl")}
+    build().run()  # second run on the SAME ledger directory
+    counts2 = {f.name: sum(1 for line in f.open(encoding="utf-8") if line.strip()) for f in led.glob("*.jsonl")}
+
+    assert counts1 == counts2  # stable across re-runs, not doubled
+    assert any(v > 0 for v in counts1.values())  # and at least one agent actually traded
