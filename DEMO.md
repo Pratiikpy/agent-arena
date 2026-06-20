@@ -3,6 +3,10 @@
 A tight script for the demo video (max 3 min). Every step is a real command whose
 output is shown on screen. Times are cumulative.
 
+**Live deploy:** the firewall, `/verify`, leaderboard, debate, and UI are deployed at
+**https://bitarena.vercel.app** — you can run the firewall/verify beats against it (browser
+or `curl`) instead of locally, to show it working as a public service.
+
 ## 0:00 – 0:25 · The hook
 > "Everyone's building AI agents that place trades. Nobody's building the layer that
 > decides which agents to trust — and stops any of them from blowing up. That's Agent
@@ -25,6 +29,12 @@ uv run python scripts/verify_cert.py --file v.json     # -> ✓ signature VALID 
 ```
 "Don't trust us — verify it yourself. And it's effectively free: ~0.1 ms per signed
 verdict, ~9,400 a second on one core."
+
+Or show it **live** on the deployed service (same signed verdict, public URL):
+```bash
+curl -s https://bitarena.vercel.app/firewall -H 'content-type: application/json' \
+  -d '{"symbol":"BTCUSDT","side":"buy","notional_usd":999999}'   # -> signed ALLOW_CAPPED
+```
 
 ## 1:05 – 1:40 · A real LLM agent, governed by the firewall
 ```bash
@@ -59,10 +69,10 @@ underperforming on real data — "we publish only when the evidence earns it." (
 `playbook/PUBLISHED.md`.)
 
 ## 2:45 – 3:00 · Infra + UI anyone can plug into
-Show `uvicorn bitarena.api.app:app` serving the production UI at `/` (the firewall
-console, leaderboard, signed ledger, and the independent **Verify** tab), a `curl`
-to `/firewall`, and the MCP server (`vet_trade`, `get_leaderboard`) callable from
-Claude/Cursor. Then the **paper → live** beat: `make live` advances the arena on real
+Open the **live deployed UI at https://bitarena.vercel.app** (the firewall console,
+leaderboard, signed ledger, and the independent **Verify** tab — all served from the public
+deploy; or `uvicorn bitarena.api.app:app` locally), a `curl` to `/firewall`, and the MCP
+server (`vet_trade`, `get_leaderboard`) callable from Claude/Cursor. Then the **paper → live** beat: `make live` advances the arena on real
 Bitget data each run — persisting signed ledgers, funding, and even the agents' learning
 — served at `/live` with a **● LIVE** badge in the UI. Close:
 > "Agent Arena is the trust layer for agentic trading: a signed firewall no agent can

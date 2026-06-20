@@ -4,6 +4,8 @@
 > Built on attributed open-source foundations (see [`NOTICE`](./NOTICE)); the Arena
 > engine, firewall, scoring, signed ledger, live mode, and Bitget integration are original.
 
+**Live:** https://bitarena.vercel.app (signed firewall + `/verify` + UI) · **Code:** https://github.com/Pratiikpy/agent-arena
+
 ## 1. The problem
 
 The first generation of autonomous trading agents is here — agents that read the
