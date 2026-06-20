@@ -2,12 +2,16 @@
 
 from __future__ import annotations
 
-from fastapi.testclient import TestClient
+import pytest
 
-from bitarena.api.app import create_app
-from bitarena.connectors import ReplayMarketData, synthetic_series
-from bitarena.domain.market import InstrumentType
-from bitarena.external_example import run_external_agent
+pytest.importorskip("fastapi")  # API tests need the [api] extra; skip cleanly without it
+
+from fastapi.testclient import TestClient  # noqa: E402
+
+from bitarena.api.app import create_app  # noqa: E402
+from bitarena.connectors import ReplayMarketData, synthetic_series  # noqa: E402
+from bitarena.domain.market import InstrumentType  # noqa: E402
+from bitarena.external_example import run_external_agent  # noqa: E402
 
 
 def test_external_agent_integrates_over_http():

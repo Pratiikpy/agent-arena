@@ -2,12 +2,16 @@
 
 from __future__ import annotations
 
-from starlette.testclient import TestClient
+import pytest
 
-from bitarena.api.app import create_app
-from bitarena.client import FirewallClient
-from bitarena.domain.verdict import Certificate
-from bitarena.firewall.signing import Signer
+pytest.importorskip("fastapi")  # SDK tests need the [api] extra (fastapi/starlette)
+
+from starlette.testclient import TestClient  # noqa: E402
+
+from bitarena.api.app import create_app  # noqa: E402
+from bitarena.client import FirewallClient  # noqa: E402
+from bitarena.domain.verdict import Certificate  # noqa: E402
+from bitarena.firewall.signing import Signer  # noqa: E402
 
 
 def _client() -> FirewallClient:

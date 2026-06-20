@@ -16,7 +16,7 @@
 
 ### For judges — confirm it in 60 seconds
 - **See it live:** open [bitarena.vercel.app](https://bitarena.vercel.app) — the **LIVE FIREWALL** badge ticks a freshly Ed25519-signed verdict on the real BTC price every few seconds.
-- **Run it:** `uv venv && uv pip install -e ".[dev]" && uv run pytest` (242 tests, offline) — or `make verify` for the full gate (tests · lint · doc-numbers · evidence · red-team).
+- **Run it:** `uv venv && uv pip install -e ".[dev,api,mcp]" && uv run pytest` (242 tests, offline) — or `make verify` for the full gate (tests · lint · doc-numbers · evidence · red-team).
 - **Verify the evidence yourself, offline:** `uv run python scripts/verify_evidence.py` → re-checks every signed ledger (9,230 records) + certificate, all pinned to the published issuer.
 - **Integrate in 5 lines:** `uv run python scripts/integrate_example.py` → a third-party bot vets *and* offline-verifies its trades against the live deploy.
 
@@ -74,9 +74,9 @@ Fastest path (needs `uv`): `make setup` then `make demo` (tests + signed verdict
 red-team), or `make serve` for the UI + API at `http://localhost:8000`. Or manually:
 
 ```bash
-# 1. environment (uv recommended)
+# 1. environment (uv recommended) — api+mcp extras let the full suite run
 uv venv
-uv pip install -e ".[dev]"
+uv pip install -e ".[dev,api,mcp]"
 
 # 2. run the test suite (offline, no network, no keys needed)
 uv run pytest

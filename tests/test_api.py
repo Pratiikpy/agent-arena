@@ -2,9 +2,13 @@
 
 from __future__ import annotations
 
-from fastapi.testclient import TestClient
+import pytest
 
-from bitarena.api.app import create_app
+pytest.importorskip("fastapi")  # API tests need the [api] extra; skip cleanly without it
+
+from fastapi.testclient import TestClient  # noqa: E402
+
+from bitarena.api.app import create_app  # noqa: E402
 
 
 def _client(tmp_path=None):
