@@ -169,3 +169,26 @@ The competitors read several analyst perspectives, debate them (the LLM agent li
 argues bull vs bear and down-weights disagreement), size by conviction, and self-grade —
 continuously, with no human. The Arena is the harness that makes a fleet of such agents
 *safe to run and honest to compare*.
+
+## Where this goes (room to grow)
+
+Each next step is an extension of what already ships, not a rewrite:
+
+- **Paper → real-money, same gate.** The Bitget connector already HMAC-signs orders, so placing
+  a real dust-sized order on a trade-permission sub-account flips the arena from paper to live
+  with *no change to the firewall* — every real order is gated and signed exactly as paper ones
+  are (`connectors/bitget/client.py`, `arena/live.py`).
+- **Firewall-as-a-service.** The signed-cert HTTP API + `FirewallClient` SDK + MCP server are the
+  foundation for a hosted, multi-tenant firewall any agent platform integrates; the `Mandate`
+  becomes a per-tenant, user-parameterized contract.
+- **Deeper verification.** The overfit suite (DSR / PSR / PBO) extends to data-snooping and
+  regime-stability certificates — the firewall could certify *"evaluated without lookahead,"* a
+  claim competitors rarely make (`scoring/overfit.py`).
+- **A trust-allocator funding a live fleet.** `TrustAllocator` already routes capital by
+  *verified* performance; pointed at a running fleet it becomes continuous allocation under
+  containment (`arena/allocator.py`).
+- **Richer market structure.** Queue-position limit fills, multi-venue quotes, and options/perp
+  funding plug into the existing fill model and connector protocol.
+
+The thesis scales the way it starts: more agents, more capital, more markets — all behind one
+signed, verifiable safety gate.
