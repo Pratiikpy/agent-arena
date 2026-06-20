@@ -59,3 +59,22 @@ def test_parse_candles_skips_malformed_rows():
     payload = {"data": [["bad"], ["1", "1", "1", "1", "1", "1"]]}
     candles = BitgetPublicData._parse_candles(payload)
     assert len(candles) == 1
+
+
+def test_public_client_degrades_gracefully_on_network_failure(monkeypatch):
+    # /pulse, vet_trade's synthetic fallback, and run_arena all rely on the public client
+    # returning None / [] (never raising) when Bitget is unreachable. Lock that contract so a
+    # future change can't silently make the live endpoints crash offline.
+    import httpx
+
+    from bitarena.domain.market import InstrumentType
+
+    c = BitgetPublicData()
+
+    def boom(*a, **k):
+        raise httpx.ConnectError("network down")
+
+    monkeypatch.setattr(c._client, "get", boom)
+    assert c.get_quote("BTCUSDT", InstrumentType.PERP) is None
+    assert c.get_candles("BTCUSDT", InstrumentType.SPOT, timeframe="1h", limit=10) == []
+    c.close()
