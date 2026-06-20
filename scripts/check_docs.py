@@ -65,6 +65,25 @@ def main() -> int:
                 if abs(n - expected) > tol:
                     problems.append(f"{rel}: {label} cites {n}, expected {expected}")
 
+    # Headline deterministic-evidence figures aren't covered by the regexes above (each appears
+    # once, in a specific phrasing). Guard them as present-string checks: the value formatted from
+    # its evidence file must appear verbatim somewhere in the docs, so a regenerated value can't
+    # silently drift from what the docs claim.
+    fv = json.loads((ROOT / "evidence/firewall_value.json").read_text(encoding="utf-8"))
+    ks = json.loads((ROOT / "evidence/regime_killswitch.json").read_text(encoding="utf-8"))
+    ot = json.loads((ROOT / "evidence/overfit_trap.json").read_text(encoding="utf-8"))
+    combined = "\n".join(
+        (ROOT / rel).read_text(encoding="utf-8") for rel in DOCS if (ROOT / rel).exists()
+    )
+    present = [
+        (f"${round(fv['firewall_saved_usd']):,}", "firewall containment value"),
+        (f"${round(ks['loss_avoided_usd']):,}", "kill-switch loss avoided"),
+        (f"PBO {ot['cross_agent_pbo']:.2f}", "overfit-trap PBO"),
+    ]
+    for token, label in present:
+        if token not in combined:
+            problems.append(f"{label}: evidence shows '{token}' but no doc cites it (stale?)")
+
     if problems:
         print("✗ doc number mismatches:")
         for x in problems:
