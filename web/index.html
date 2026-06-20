@@ -331,7 +331,12 @@ function landing(){
   const mSide=["buy","sell"].map(s=>'<button onclick="App.setSeg(\'mSide\',\''+s+'\')" style="'+seg(state.mSide===s)+'">'+s+'</button>').join("");
   let mr="";
   if(state.mResult){ const C=VC[state.mResult.decision]; mr='<div data-stamp style="margin-top:16px;display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:13px;border:1px solid '+C.line+';background:'+C.bg+';"><span class="mono" style="font-weight:600;font-size:17px;color:'+C.fg+';white-space:nowrap;">'+state.mResult.decision+'</span><span style="flex:1;font-size:13.5px;color:#1d1d1f;">'+esc(state.mResult.reason)+'</span><span class="mono" style="display:inline-flex;align-items:center;gap:5px;font-size:10.5px;font-weight:600;padding:4px 9px;border-radius:6px;background:#effaf3;color:#0b7a4b;border:1px solid #b6e6cb;white-space:nowrap;">✓ signed</span></div>'; }
-  const stats=[["0.09","#0b7a4b","PBO · Robust","the ranking is unlikely to be luck"],["✓","#0b7a4b","Ledger verified","tamper-evident, hash-chained records"],["584","#1d1d1f","Intents gated","194 allowed · 390 capped · 0 rejected"],["7","#1d1d1f","Agents ranked","on 1,000 ticks of real Bitget data"]]
+  // hero tournament stats derive live from /leaderboard (state.hero) so they never drift from
+  // the deployed run; current-accurate fallbacks if the fetch hasn't landed yet.
+  const H=state.hero, hf=(H&&H.firewall&&H.firewall.totals)||null;
+  const hI=hf?hf.intents:641, hA=hf?hf.allow:192, hC=hf?hf.allow_capped:449, hR=hf?hf.reject:0;
+  const hAg=(H&&H.leaderboard&&H.leaderboard.length)||7, hT=(H&&H.ticks)||1000;
+  const stats=[["0","#0b7a4b","Unsafe orders","23-case red-team — every attack blocked"],["✓","#0b7a4b","Ledger verified","tamper-evident, hash-chained records"],[String(hI),"#1d1d1f","Intents gated",hA+" allowed · "+hC+" capped · "+hR+" rejected"],[String(hAg),"#1d1d1f","Agents ranked","on "+hT.toLocaleString()+" ticks of real Bitget data"]]
     .map(s=>'<div style="border:1px solid rgba(0,0,0,.09);border-radius:16px;padding:24px;background:#fff;"><div class="mono" style="font-size:34px;font-weight:600;color:'+s[1]+';line-height:1;">'+s[0]+'</div><div style="margin-top:14px;font-size:14px;font-weight:600;color:#1d1d1f;">'+s[2]+'</div><div style="margin-top:4px;font-size:13px;line-height:1.45;color:#6b7280;">'+s[3]+'</div></div>').join("");
   const steps=[["01","Intent","An agent proposes an order — symbol, side, size. Nothing reaches the exchange yet."],["02","Gate","Eleven checks run in sequence. The order is allowed, capped to the mandate, or rejected outright."],["03","Certificate","A signed verdict is issued — verifiable, tamper-evident, and logged to the chain."]]
     .map(s=>'<div style="border-top:1px solid rgba(0,0,0,.1);padding-top:22px;"><div class="mono" style="font-size:14px;color:#9aa0aa;margin-bottom:14px;">'+s[0]+'</div><div style="font-size:21px;font-weight:600;color:#1d1d1f;margin-bottom:10px;">'+s[1]+'</div><div style="font-size:14.5px;line-height:1.55;color:#6b7280;">'+s[2]+'</div></div>').join("");
@@ -528,6 +533,8 @@ function initPulse(){ pulseTick(); setInterval(pulseTick, 12000); setInterval(re
 render();
 checkHealth();
 initPulse();
+// landing hero stats: pull the real tournament once so the numbers always match the deploy
+api("/leaderboard").then(r=>{ if(r&&r.ok&&r.data){ state.hero=r.data; render(); } }).catch(()=>{});
 </script>
 </body>
 </html>
