@@ -281,6 +281,14 @@ const App = {
   },
   loadLastCert(){ if(state.result&&state.result.cert){ state.verifyInput=JSON.stringify(state.result.cert,null,2); state.verifyResult=null; } else { state.verifyResult={valid:null,reason:"run a firewall check first to get a certificate"}; } render(); },
   verifyPulse(){ if(!pulseData||!pulseData.certificate){ return; } state.verifyInput=JSON.stringify(pulseData.certificate,null,2); state.verifyResult=null; state.view="verify"; try{window.scrollTo(0,0);}catch(e){} render(); App.runVerify(); },
+  tamperAndVerify(){
+    const el=document.getElementById("verifyInput"); const txt=el?el.value:(state.verifyInput||"");
+    let obj; try{ obj=JSON.parse(txt); }catch(e){ state.verifyResult={valid:null,reason:"load or paste a certificate first, then tamper a byte"}; render(); return; }
+    const cert=(obj&&typeof obj==="object"&&obj.certificate)?obj.certificate:obj;
+    if(!cert||!cert.signature_hex){ state.verifyResult={valid:null,reason:"no signature_hex to tamper — load a certificate first"}; render(); return; }
+    const s=cert.signature_hex, i=Math.floor(s.length/2); cert.signature_hex=s.slice(0,i)+(s[i]==="a"?"b":"a")+s.slice(i+1);  // flip one hex char
+    state.verifyInput=JSON.stringify(obj,null,2); state.verifyResult=null; render(); App.runVerify();  // real Web Crypto on the mutated cert -> invalid
+  },
 };
 
 // ---------- result view model ----------
@@ -491,7 +499,7 @@ function verifyView(){
     <h1 style="margin:0 0 14px;font-size:clamp(2rem,4vw,2.9rem);font-weight:700;letter-spacing:-.028em;color:#1d1d1f;">Verify any certificate</h1>\
     <p style="margin:0 0 24px;font-size:1.05rem;line-height:1.55;color:#6b7280;">Paste a firewall certificate (or a full verdict). The Ed25519 signature is verified <b>entirely in your browser</b> (Web Crypto) and pinned to Agent Arena&rsquo;s published key — this page never sends your certificate anywhere. <span class="mono" style="font-size:12px;color:#a0a4ac;">(falls back to POST /verify only if your browser lacks Ed25519)</span></p>\
     <textarea id="verifyInput" oninput="App.set(\'verifyInput\',this.value)" placeholder="paste a certificate or verdict JSON here" style="width:100%;height:230px;background:#f6f6f7;border:1px solid #e6e6e9;border-radius:12px;padding:14px;font-family:\'JetBrains Mono\',monospace;font-size:12px;line-height:1.5;color:#0a0a0a;resize:vertical;">'+esc(state.verifyInput||"")+'</textarea>\
-    <div style="display:flex;gap:10px;margin-top:12px;"><button onclick="App.runVerify()" style="background:#0a0a0a;color:#fff;border:none;border-radius:11px;padding:13px 22px;font-size:14px;font-weight:600;cursor:pointer;">Verify signature →</button><button onclick="App.loadLastCert()" style="background:#fff;color:#0a0a0a;border:1px solid rgba(0,0,0,.16);border-radius:11px;padding:13px 22px;font-size:14px;font-weight:600;cursor:pointer;">Load last verdict</button></div>'+card+'</div>';
+    <div style="display:flex;gap:10px;margin-top:12px;"><button onclick="App.runVerify()" style="background:#0a0a0a;color:#fff;border:none;border-radius:11px;padding:13px 22px;font-size:14px;font-weight:600;cursor:pointer;">Verify signature →</button><button onclick="App.loadLastCert()" style="background:#fff;color:#0a0a0a;border:1px solid rgba(0,0,0,.16);border-radius:11px;padding:13px 22px;font-size:14px;font-weight:600;cursor:pointer;">Load last verdict</button><button onclick="App.tamperAndVerify()" title="Flip one byte of the signature and re-verify — watch it fail" style="background:#fff;color:#c23b30;border:1px solid #f2bdb7;border-radius:11px;padding:13px 22px;font-size:14px;font-weight:600;cursor:pointer;">Tamper a byte ↻</button></div>'+card+'</div>';
 }
 function view(){ switch(state.view){ case "firewall":return firewall(); case "arena":return arena(); case "ledger":return ledger(); case "debate":return debate(); case "verify":return verifyView(); default:return landing(); } }
 function render(){ $("app").innerHTML = nav() + view() + footer(); document.querySelectorAll("#app input:not([name])").forEach((el,i)=>{ el.name = "field" + i; }); }
