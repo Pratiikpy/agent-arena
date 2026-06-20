@@ -72,6 +72,38 @@ def test_firewall_safety_invariants_over_random_inputs():
             assert v.effective_notional_usd is None or v.effective_notional_usd == 0.0
 
 
+def test_firewall_tightening_never_increases_allowed_size():
+    # Safety monotonicity: a STRICTER mandate (lower order cap) or MORE existing exposure can
+    # never make the firewall more permissive. "Tightening can't loosen" — a core invariant.
+    rng = random.Random(7)
+    fw = Firewall(Signer.generate())
+
+    def eff(intent, cap, exposure):
+        base = default_arena_mandate(10_000)
+        m = base.model_copy(
+            update={"hard_caps": base.hard_caps.model_copy(update={"max_order_notional_usd": cap})}
+        )
+        v = fw.evaluate(intent, EvalContext(
+            mandate=m, equity_usd=10_000.0, quote=_quote(),
+            current_exposure_usd=exposure, now_ms=1_000, max_quote_age_ms=60_000,
+        ))
+        return v.effective_notional_usd or 0.0
+
+    for _ in range(1_000):
+        intent = TradeIntent(
+            agent_id="mono", symbol="BTCUSDT",
+            side=rng.choice([Side.BUY, Side.SELL]), notional_usd=rng.uniform(50.0, 10_000.0),
+        )
+        exposure = rng.uniform(0.0, 20_000.0)
+        cap_hi = rng.uniform(1_000.0, 5_000.0)
+        cap_lo = rng.uniform(100.0, cap_hi)  # cap_lo <= cap_hi (stricter order cap)
+
+        # lowering the order cap never increases the allowed size
+        assert eff(intent, cap_lo, exposure) <= eff(intent, cap_hi, exposure) + EPS
+        # raising current exposure never increases the allowed size
+        assert eff(intent, cap_hi, exposure + 5_000.0) <= eff(intent, cap_hi, exposure) + EPS
+
+
 def test_firewall_never_allows_excluded_symbol_over_random_inputs():
     from bitarena.domain import UniverseConstraint
 
