@@ -125,11 +125,11 @@ All under [`evidence/`](./evidence/README.md), reproducible with the commands ab
   4/5 real-BTC folds, driven mainly by staying defensive — carry and price-PnL reported separately).
 - `walk_forward.json`, `swarm_edge.json` — agent stability + the swarm thesis tested honestly.
 - `overfit_trap.json` — the *verification* half quantified: on a no-edge market, DSR + PBO flag
-  naive best-of-N selection as overfit (PBO 0.77) before any capital is risked.
+  naive best-of-N selection as overfit (PBO 0.91) before any capital is risked.
 - `llm_debate.json` — a live Qwen debate, gated by the firewall.
 - `redteam.json` — 20 adversarial attacks + 3 controls; **0 unsafe orders passed**, signed.
 - `firewall_value.json` — the firewall's *containment value* quantified: a misbehaving agent
-  stays **solvent under the mandate** vs **bankrupt unprotected** ($8,341 saved on a $10k account).
+  stays **solvent under the mandate** vs **bankrupt unprotected** ($8,574 saved on a $10k account).
 - `external_agent_session.json` — a third-party bot vetting every trade over HTTP (Track-2).
 - `allocator.json` — the TrustAllocator funding agents by verified performance.
 

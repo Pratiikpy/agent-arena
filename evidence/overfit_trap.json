@@ -3,11 +3,11 @@
   "market": "synthetic random walk (drift 0, vol 1.5%, 600 bars), seed 42",
   "agents_tried": 6,
   "naive_pick": {
-    "agent_id": "rl-qlearn",
-    "raw_sharpe": 0.005044,
-    "total_return": 0.005424
+    "agent_id": "swarm",
+    "raw_sharpe": 0.00418,
+    "total_return": 0.00312
   },
-  "deflated_sharpe": 0.2677,
-  "cross_agent_pbo": 0.7659,
-  "finding": "On a no-edge random walk the verification layer refuses to crown noise: the cross-agent PBO is 0.7659 (naively crowning the in-sample best agent would be overfit ~77% of the time), and the apparent winner ('rl-qlearn') has a Deflated Sharpe of 0.268 after discounting for 6 agents tried \u2014 both flag 'luck, not skill' before any capital is risked. (The best raw Sharpe was only 0.005044: the agents do not manufacture edge from noise, and the statistics confirm it.)"
+  "deflated_sharpe": 0.2965,
+  "cross_agent_pbo": 0.9127,
+  "finding": "On a no-edge random walk the verification layer refuses to crown noise: the cross-agent PBO is 0.9127 (naively crowning the in-sample best agent would be overfit ~91% of the time), and the apparent winner ('swarm') has a Deflated Sharpe of 0.296 after discounting for 6 agents tried \u2014 both flag 'luck, not skill' before any capital is risked. (The best raw Sharpe was only 0.00418: the agents do not manufacture edge from noise, and the statistics confirm it.)"
 }

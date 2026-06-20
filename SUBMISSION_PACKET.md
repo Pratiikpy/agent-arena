@@ -86,8 +86,8 @@ let a fleet of agents be run with real capital. That is what Agent Arena is.
   proof); callable live at `POST /firewall`, independently checkable at `POST /verify`.
 - **Red-team** — `redteam.json`: 20 attacks, **0 unsafe orders passed**, all signed.
 - **Firewall containment value** — `firewall_value.json`: a misbehaving agent stays solvent
-  under the mandate vs bankrupt unprotected ($8,341 saved on a $10k account).
-- **Overfit-detection value** — `overfit_trap.json`: on a no-edge market, DSR + PBO (0.77) flag
+  under the mandate vs bankrupt unprotected ($8,574 saved on a $10k account).
+- **Overfit-detection value** — `overfit_trap.json`: on a no-edge market, DSR + PBO (0.91) flag
   naive best-of-N selection as luck, not skill, before capital is committed.
 - **Tournaments on real Bitget data (1h)** — `bitget_btc_perp/`, `bitget_eth_perp/`,
   `bitget_sol_perp/`, `bitget_tokenized_aapl/` (Track 3): leaderboards + signed
