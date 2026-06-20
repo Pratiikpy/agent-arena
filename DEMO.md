@@ -29,8 +29,11 @@ oversized order is clamped to the mandate). Then prove it can't be faked:
 uv run python scripts/demo_firewall.py --symbol BTCUSDT --side buy --notional 50 > v.json
 uv run python scripts/verify_cert.py --file v.json     # -> ✓ signature VALID (fully offline)
 ```
-"Don't trust us — verify it yourself. And it's effectively free: ~0.1 ms per signed
-verdict, ~9,700 a second on one core."
+Then, even stronger, on the live site: open the **Verify** tab at bitarena.vercel.app, paste the
+certificate, and it shows **"✓ verified in your browser · no server"** — the Ed25519 signature
+is checked client-side (Web Crypto) and pinned to the published issuer; the cert never leaves
+the page. "Don't trust us — verify it yourself, in your own browser. And it's effectively free:
+~0.1 ms per signed verdict, ~9,700 a second on one core."
 
 Or show it **live** on the deployed service (same signed verdict, public URL):
 ```bash
