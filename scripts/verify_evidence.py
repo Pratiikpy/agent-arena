@@ -61,6 +61,14 @@ def _verify_certs() -> tuple[int, list[str]]:
             n += 1
             if not verify_certificate(Certificate(**sr["certificate"]), expected_public_key_hex=ISSUER):
                 bad.append("regime_killswitch: kill-switch reject certificate not verified/pinned")
+    # a real live-order receipt (once placed via scripts/place_live_order.py) is verified too
+    lopath = ROOT / "evidence/live_order_receipt.json"
+    if lopath.exists():
+        cert = json.loads(lopath.read_text(encoding="utf-8")).get("certificate")
+        if cert:
+            n += 1
+            if not verify_certificate(Certificate(**cert), expected_public_key_hex=ISSUER):
+                bad.append("live_order_receipt: order certificate not verified/pinned")
     return n, bad
 
 

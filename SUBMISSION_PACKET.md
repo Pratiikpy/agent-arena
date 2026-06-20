@@ -145,10 +145,24 @@ Everything else — code, tests, evidence, the published Playbooks, docs — is 
 **GitHub topics:** `bitget` `trading-agents` `ai-agents` `crypto` `algorithmic-trading`
 `reinforcement-learning` `mcp` `fastapi` `python` `hackathon`
 
-**Community post / #BitgetHackathon quote-tweet (draft):**
-> Built **Agent Arena** for the @Bitget_AI Hackathon: the trust layer for autonomous
-> trading agents. Every AI order passes a signed safety firewall (0 unsafe in red-team,
-> ~0.1 ms/verdict, verify it yourself), agents are ranked by Deflated Sharpe/PBO — not
-> luck — and a meta-allocator funds the winners. 4 strategies already published on
-> GetAgent, plus a live arena that runs on real Bitget data. #BitgetHackathon
-> Live: https://bitarena.vercel.app · Code: https://github.com/Pratiikpy/agent-arena
+**Community post / #BitgetHackathon (quote the [Bitget tweet](https://x.com/Bitget_AI/status/2062506424085917944), tag @Bitget_AI).**
+Each tweet below is ≤280 chars — post the first as the quote-tweet, the rest as a thread:
+
+> **1/** AI trading agents are here — but who stops one from blowing up?
+>
+> I built **Agent Arena** for #BitgetHackathon @Bitget_AI: a signed safety firewall every
+> agent order must pass, + overfit-aware scoring that funds skill, not luck.
+>
+> Live, verify it yourself 👇 https://bitarena.vercel.app
+
+> **2/** Every verdict is Ed25519-signed — and you can verify it **in your own browser**, no
+> server. A 23-case red-team battery: **0 unsafe orders**. ~0.1 ms per signed verdict, so
+> gating every trade is effectively free.
+
+> **3/** Agents are ranked by Deflated Sharpe / PBO — not raw PnL — so a lucky backtest gets
+> exposed, not crowned. 4 strategies already published on Bitget GetAgent. The arena runs on
+> real Bitget data.
+
+> **4/** Open source (MIT, 242 tests, CI-green): https://github.com/Pratiikpy/agent-arena —
+> deploy it, integrate over MCP/HTTP in minutes, or verify any certificate offline. The trust
+> layer for agentic trading. #BitgetHackathon @Bitget_AI
