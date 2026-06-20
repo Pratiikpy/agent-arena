@@ -1,13 +1,13 @@
 {
   "scenarios": 80,
   "market": "random-walk chop (vol=0.012, n=240 bars)",
-  "mean_return_diff": 0.00864,
-  "median_return_diff": 0.01417,
+  "mean_return_diff": 0.00898,
+  "median_return_diff": 0.01157,
   "swarm_beats_momentum_rate": 0.588,
-  "t_stat": 1.056,
+  "t_stat": 1.076,
   "ci95": [
-    -0.00687,
-    0.0239
+    -0.00701,
+    0.02467
   ],
   "significant": false
 }
