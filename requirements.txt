@@ -1,0 +1,8 @@
+# Runtime deps for the serverless API deploy (Vercel). The full project uses pyproject.toml;
+# this is the minimal set the FastAPI app imports (no scipy/openai/mcp needed to serve).
+fastapi
+pydantic>=2.6
+numpy>=1.26
+cryptography>=42.0
+httpx>=0.27
+python-dotenv>=1.0
