@@ -19,6 +19,7 @@
 - **Run it:** `uv venv && uv pip install -e ".[dev,api,mcp]" && uv run pytest` (251 tests, offline) — or `make verify` for the full gate (tests · lint · doc-numbers · evidence · red-team).
 - **Verify the evidence yourself, offline:** `uv run python scripts/verify_evidence.py` → re-checks every signed ledger (9,230 records) + certificate, all pinned to the published issuer.
 - **Integrate in 5 lines:** `uv run python scripts/integrate_example.py` → a third-party bot vets *and* offline-verifies its trades against the live deploy.
+- **Read the threat model:** [`THREAT_MODEL.md`](./THREAT_MODEL.md) — every threat mapped to the gate that stops it and the test/red-team case that proves it, with honest residual risks.
 
 ---
 

@@ -101,6 +101,13 @@ let a fleet of agents be run with real capital. That is what Agent Arena is.
 - **Live LLM debate** — `llm_debate.json`: a real Qwen analyst debate, firewall-gated.
 - **Capital allocator** — `allocator.json`: trust-weighted vs equal-weight.
 
+## Security rigor (Track 2 depth)
+
+See `THREAT_MODEL.md` — a real threat model for the firewall: 15 enumerated threats, each
+mapped to the gate/mechanism that stops it and the test or red-team case that proves it, plus
+the residual risks it does *not* cover (host/key compromise, oracle trust). For a safety-firewall
+project this is the artifact that separates "some gates" from a threat-modeled system.
+
 ## Honesty note (judges reward this)
 
 See `SELF_ASSESSMENT.md` — a rubric-by-rubric rating with real limits stated, not hidden
