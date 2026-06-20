@@ -127,3 +127,31 @@ def test_batch_ledgers_are_idempotent_on_rerun(tmp_path):
 
     assert counts1 == counts2  # stable across re-runs, not doubled
     assert any(v > 0 for v in counts1.values())  # and at least one agent actually traded
+
+
+def test_a_custom_agent_competes_and_is_scored():
+    # The extensibility contract behind scripts/custom_agent_example.py: any object with an
+    # agent_id and decide(obs) -> TradeIntent | None is a first-class, ranked competitor —
+    # firewall-gated and scored like the built-ins. Locks it against an agent-protocol change.
+    from bitarena.domain.market import Side
+    from bitarena.domain.intent import TradeIntent
+
+    class MyAgent:
+        agent_id = "my-custom"
+
+        def decide(self, obs):
+            return TradeIntent(agent_id="my-custom", symbol="BTCUSDT", side=Side.BUY,
+                               instrument=InstrumentType.PERP, notional_usd=100.0, ts=obs.ts)
+
+    series = {"BTCUSDT": synthetic_series("BTCUSDT", n=120, seed=3, drift=0.002, vol=0.01)}
+    md = ReplayMarketData(series)
+    arena = Arena(agents=[MyAgent(), BuyAndHold()], exchange=PaperExchange(md), market=md,
+                  symbol="BTCUSDT", signer=Signer.generate(), instrument=InstrumentType.PERP,
+                  starting_cash=10_000.0)
+    res = arena.run()
+
+    board = {r["agent_id"]: r for r in res["leaderboard"]}
+    assert "my-custom" in board                      # scored + ranked like a built-in
+    assert board["my-custom"]["rank"] in (1, 2)
+    assert board["my-custom"]["final_equity"] > 0
+    assert res["firewall"]["totals"]["intents"] > 0  # its orders went through the firewall
