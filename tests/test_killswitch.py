@@ -95,3 +95,37 @@ def test_firewall_killswitch_permits_genuine_de_risk_in_crash():
         _ctx(MarketRegime.FAST_RISK_OFF, position_qty=long_qty, exposure=5_000.0),
     )
     assert v.decision.value == "ALLOW"
+
+
+def test_engine_kill_switch_fires_in_a_crash_not_in_calm():
+    # End-to-end: the ArenaEngine computes the market regime from the tape itself and the
+    # firewall's kill-switch (the `market_regime` gate) blocks NEW exposure in a fast crash —
+    # but stays out of the way in calm. This locks the engine->regime->firewall wiring, not
+    # just the gate in isolation.
+    from bitarena.arena import Arena
+    from bitarena.connectors import PaperExchange, ReplayMarketData
+    from bitarena.domain.market import Candle, InstrumentType
+    from bitarena.firewall import Signer
+
+    class AlwaysBuy:
+        agent_id = "buyer"
+
+        def decide(self, obs):
+            return TradeIntent(agent_id="buyer", symbol="BTCUSDT", side=Side.BUY,
+                               instrument=InstrumentType.PERP, notional_usd=20.0, ts=obs.ts)
+
+    def regime_rejects(prices):
+        candles = [Candle(ts=i * 3_600_000, open=p, high=p, low=p, close=p, volume=1.0)
+                   for i, p in enumerate(prices)]
+        md = ReplayMarketData({"BTCUSDT": candles})
+        arena = Arena(agents=[AlwaysBuy()], exchange=PaperExchange(md), market=md,
+                      symbol="BTCUSDT", signer=Signer.generate(),
+                      instrument=InstrumentType.PERP, starting_cash=100_000.0)
+        arena.run()
+        return arena.stats["buyer"]["reject_reasons"].get("market_regime", 0)
+
+    calm = regime_rejects([100.0] * 30)  # flat tape -> NORMAL regime throughout
+    crash = regime_rejects([100.0] * 18 + [98, 96, 93, 90, 88, 86, 85, 84, 83, 82, 81, 80])  # ~18% fast crash
+
+    assert calm == 0    # the kill-switch does NOT fire in calm
+    assert crash > 0    # the kill-switch DOES fire once the tape is in a fast crash
