@@ -1,9 +1,10 @@
 """Place ONE real, firewall-gated, dust-sized order on Bitget — the paper → live step.
 
 SAFETY, by design:
-  * Dry-run by default — it places **nothing** unless you pass ``--confirm``.
-  * It needs Bitget **trade-permission** keys in the environment (read-only keys can fetch
-    data but cannot place orders). Use a dedicated sub-account.
+  * Dry-run by default — it places **nothing** unless you pass ``--confirm``. The dry-run
+    previews the firewall-gated order from public market data with **no keys at all**.
+  * Only ``--confirm`` needs Bitget **trade-permission** keys (read-only keys can fetch data
+    but cannot place orders). Use a dedicated sub-account.
   * It only ever submits an order the firewall **ALLOWs**, at the firewall's effective
     (possibly capped) size — even your own real order is gated and signed.
 
@@ -22,7 +23,7 @@ import sys
 from pathlib import Path
 
 from bitarena.config import load_settings
-from bitarena.connectors.bitget import BitgetConnector
+from bitarena.connectors.bitget import BitgetConnector, BitgetPublicData
 from bitarena.domain import InstrumentType, Side, TradeIntent, default_arena_mandate
 from bitarena.firewall import EvalContext, Firewall, verify_certificate
 
@@ -44,17 +45,20 @@ def main() -> int:
     args = ap.parse_args()
 
     s = load_settings()
-    if not (s.bitget_api_key and s.bitget_secret_key and s.bitget_passphrase):
-        print("✗ needs Bitget TRADE-permission keys in .env (BITGET_API_KEY / SECRET / PASSPHRASE).")
-        print("  read-only keys can fetch market data but cannot place orders.")
+    side = Side.BUY if args.side == "buy" else Side.SELL
+    has_keys = bool(s.bitget_api_key and s.bitget_secret_key and s.bitget_passphrase)
+    if args.confirm and not has_keys:
+        print("✗ --confirm needs Bitget TRADE-permission keys in .env (BITGET_API_KEY / SECRET / PASSPHRASE).")
+        print("  read-only keys can fetch market data but cannot place orders. (The dry-run works without keys.)")
         return 2
 
-    side = Side.BUY if args.side == "buy" else Side.SELL
-    conn = BitgetConnector(s.bitget_api_key, s.bitget_secret_key, s.bitget_passphrase)
-    quote = conn.get_quote(args.symbol, InstrumentType.SPOT)
+    # The dry-run preview needs only public market data + the firewall; only placing (--confirm)
+    # uses the authenticated connector. So the gated order can be previewed without credentials.
+    pub = BitgetPublicData()
+    quote = pub.get_quote(args.symbol, InstrumentType.SPOT)
+    pub.close()
     if quote is None or quote.mid <= 0:
         print(f"✗ no live quote for {args.symbol}")
-        conn.close()
         return 2
 
     equity = args.equity or max(args.notional * 200.0, 1_000.0)
@@ -94,7 +98,9 @@ def main() -> int:
     else:
         eff = verdict.effective_notional_usd
         print(f"→ placing a REAL ${eff:,.2f} {args.side} on {args.symbol} (gated by the firewall)…")
+        conn = BitgetConnector(s.bitget_api_key, s.bitget_secret_key, s.bitget_passphrase)
         res = conn.place_order(symbol=args.symbol, side=side, notional_usd=eff, instrument=InstrumentType.SPOT)
+        conn.close()
         receipt["placed"] = bool(res.accepted)
         receipt["order"] = {
             "accepted": res.accepted, "order_id": getattr(res, "order_id", ""),
@@ -103,7 +109,6 @@ def main() -> int:
         }
         print(f"  → accepted={res.accepted} order_id={getattr(res, 'order_id', '')} {getattr(res, 'reason', '')}")
 
-    conn.close()
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps(receipt, indent=2), encoding="utf-8")

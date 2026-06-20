@@ -23,4 +23,7 @@ dist/
 # live-mode tournament served at GET /live); `make live` advances it locally on fresh Bitget data.
 .runtime/
 
+# Generated on demand by scripts/place_live_order.py (dry-run preview or the real trade record).
+evidence/live_order_receipt.json
+
 .vercel
