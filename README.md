@@ -141,10 +141,12 @@ assert v.verify(fw.issuer_key())    # signature intact AND signed by this arena 
 
 Full runnable example: `uv run python scripts/integrate_example.py` (hits the live deploy).
 
-**Verify it yourself** — every certificate is independently checkable, with no trust
-in this server: `POST /verify` re-checks a certificate's Ed25519 signature against its
-embedded public key, `GET /pubkey` returns the issuer key, and the offline CLI needs
-nothing but the cert:
+**Verify it yourself** — every certificate is independently checkable, with no trust in
+this server. The [**Verify tab**](https://bitarena.vercel.app) checks the Ed25519 signature
+**entirely in your browser** (Web Crypto) and pins the embedded key to the published issuer —
+the certificate never leaves your machine. Offline, `scripts/verify_cert.py` and
+`FirewallClient.verify()` need nothing but the cert; `POST /verify` and `GET /pubkey` are the
+server-side equivalents:
 
 ```bash
 uv run python scripts/demo_firewall.py --symbol BTCUSDT --side buy --notional 50 > v.json
