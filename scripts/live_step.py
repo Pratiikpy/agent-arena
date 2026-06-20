@@ -73,7 +73,9 @@ def main() -> None:
         return
 
     settings = load_settings()
-    firewall = Firewall.with_key(settings.signing_key_path)
+    # prefer the env-injected canonical key (ARENA_SIGNING_KEY_B64) so scheduled CI runs sign
+    # with the published issuer; falls back to the local key file for local runs
+    firewall = Firewall.with_settings(settings)
     roster = [
         ConflictGatedSwarm(), RegimeAgent(), PersonaTeam(), QLearningAgent(), MomentumBaseline(), BuyAndHold(),
     ]
