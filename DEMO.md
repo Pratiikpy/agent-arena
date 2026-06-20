@@ -13,7 +13,9 @@ or `curl`) instead of locally, to show it working as a public service.
 > Arena: a live safety firewall and proving ground for autonomous trading agents on
 > Bitget."
 
-Show the architecture diagram from the README.
+Open **https://bitarena.vercel.app** and point at the **LIVE FIREWALL** badge ticking in the
+corner — the real BTC price and a freshly Ed25519-signed verdict every few seconds, on the
+public URL. "This is live right now." Then show the architecture diagram from the README.
 
 ## 0:25 – 1:05 · The firewall is real, signed, and verifiable by anyone
 Run, on screen:
@@ -72,9 +74,12 @@ underperforming on real data — "we publish only when the evidence earns it." (
 Open the **live deployed UI at https://bitarena.vercel.app** (the firewall console,
 leaderboard, signed ledger, and the independent **Verify** tab — all served from the public
 deploy; or `uvicorn bitarena.api.app:app` locally), a `curl` to `/firewall`, and the MCP
-server (`vet_trade`, `get_leaderboard`) callable from Claude/Cursor. Then the **paper → live** beat: `make live` advances the arena on real
-Bitget data each run — persisting signed ledgers, funding, and even the agents' learning
-— served at `/live` with a **● LIVE** badge in the UI. Close:
+server (`vet_trade`, `get_leaderboard`) callable from Claude/Cursor. Then show a third party
+integrating in seconds — `uv run python scripts/integrate_example.py` runs a bot that vets and
+**offline-verifies** every trade against the live deploy (ALLOW / CAPPED / REJECT). Then the
+**paper → live** beat: `make live` advances the arena on real Bitget data each run —
+persisting signed ledgers, funding, and even the agents' learning — served at `/live`, with
+the **LIVE FIREWALL** heartbeat badge ticking the live price + a fresh signed verdict. Close:
 > "Agent Arena is the trust layer for agentic trading: a signed firewall no agent can
 > bypass, overfit-aware scoring that tells you which agents deserve capital, three
 > strategies already live on Bitget, and an arena that runs live on a schedule. It runs
