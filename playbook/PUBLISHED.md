@@ -13,6 +13,12 @@ backtested and deliberately *withheld* (see below):
 | Momentum Breakout (Donchian, ETH) | `849d200f-…-708a472556d5` | 0.58 | 1.42 | +15.8% |
 | Adaptive Regime (Conflict-Gated, ETH) | `1fb29226-…-9a18a03ee539` | 2.15 | 3.34 | +0.05% |
 
+> **Basis note (so the numbers can't mislead):** "Budget return" is net PnL ÷ the **$1,000
+> strategy budget** — i.e. ≈100× the account-basis return, because each strategy traded a $1k
+> budget inside a ~$100k account. Drawdowns are reported **account-basis**. To compare return
+> and drawdown on *one* basis, use the account-basis figures (e.g. BTC breakout: **+0.40%
+> return vs 0.26% drawdown** — not the cross-basis +39.7% vs 0.26%).
+
 The ETH regime row shows the honest tension the overfit-aware lens is built for: the
 **best risk-adjusted ratios** of the set (Sharpe 2.15, profit factor 3.34) on a **near-flat
 absolute return** (+$0.49 net) — the conflict-gate kept it highly selective on ETH, so it
@@ -53,17 +59,19 @@ not guarantee live results.
 
 - **Name:** `momentum-breakout-btc` · **strategy_id:** `7f86f156-1034-4494-9969-731da4e3ec4f`
 - **version:** `0.0.1` · **status:** published · **backtest_support:** full
-- **Official backtest** (1,000 hourly BTC bars, real equity curve): net PnL **+$397**
-  (+39.7% on the $1,000 budget), **Sharpe 1.68**, **profit factor 2.33**, win rate 40.9%
-  (44 trades), max drawdown 0.26%. Classic breakout profile: fewer wins, larger winners.
+- **Official backtest** (1,000 hourly BTC bars, real equity curve): net PnL **+$397** —
+  **+0.40% account-basis** (≈+39.7% on the $1,000 deployed budget), **Sharpe 1.68**,
+  **profit factor 2.33**, win rate 40.9% (44 trades), max drawdown **0.26% (account basis)** —
+  return and drawdown on the same basis: +0.40% vs 0.26%. Classic breakout: fewer wins, larger winners.
 - Package in [`momentum-breakout/`](./momentum-breakout/).
 
 ## Playbook 3 — Momentum Breakout (Donchian, ETH)
 
 - **Name:** `momentum-breakout-eth` · **strategy_id:** `849d200f-5b58-459a-b610-708a472556d5`
 - **version:** `0.0.1` · **status:** published · **backtest_support:** full
-- **Official backtest** (1,000 hourly ETH bars, real equity curve): net PnL **+$158**
-  (+15.8% on the $1,000 budget), **Sharpe 0.58**, **profit factor 1.42**, win rate 28%
+- **Official backtest** (1,000 hourly ETH bars, real equity curve): net PnL **+$158** —
+  **+0.16% account-basis** (≈+15.8% on the $1,000 deployed budget), **Sharpe 0.58**,
+  **profit factor 1.42**, win rate 28%
   (50 trades). The same validated breakout engine as the BTC Playbook, deployed to ETH —
   a genuine win on a second market (low win rate, larger winners; PF>1).
 - Package in [`momentum-breakout-eth/`](./momentum-breakout-eth/).

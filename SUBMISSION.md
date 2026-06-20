@@ -117,7 +117,8 @@ All under [`evidence/`](./evidence/README.md), reproducible with the commands ab
 - `firewall_demos.json` — ALLOW / ALLOW_CAPPED / REJECT + tamper-detection proof.
 - `firewall_bench.json` — ~0.1 ms per signed verdict (~9,700/sec single core).
 - `funding_carry.json`, `funding_edge_walkforward.json` — the funding edge validated with
-  walk-forward + Deflated Sharpe (beats buy-hold in 4/5 real-BTC folds).
+  walk-forward + Deflated Sharpe (modest real carry + downside-avoidance; beats buy-hold in
+  4/5 real-BTC folds, driven mainly by staying defensive — carry and price-PnL reported separately).
 - `walk_forward.json`, `swarm_edge.json` — agent stability + the swarm thesis tested honestly.
 - `overfit_trap.json` — the *verification* half quantified: on a no-edge market, DSR + PBO flag
   naive best-of-N selection as overfit (PBO 0.77) before any capital is risked.
@@ -139,8 +140,10 @@ fields), and signed `ledgers/*.jsonl`.
   four core mechanisms (firewall, ledger, scoring, accounting) are **property-tested over
   thousands of randomized inputs**; the red-team proves 0 unsafe orders pass.
 - The one real edge, made live: the **funding-carry agent** collects real perpetual
-  funding and is consistently top-3 by Sharpe across BTC/ETH/SOL, beating buy-hold in 4/5
-  walk-forward folds — and it's a live, correctly-accounted arena competitor.
+  funding (modest — ~0.03%/fold of harvested carry) and stays defensive; it ranks
+  consistently top-3 by Sharpe across BTC/ETH/SOL and beats buy-hold in 4/5 walk-forward
+  folds — driven *mainly by downside-avoidance, not carry income* (we report both
+  separately). It's a live, correctly-accounted arena competitor.
 - Four strategies **published on Bitget's GetAgent platform** with real backtests.
 - The scoring tells the truth: with the full roster the synthetic run reports `PBO ≈ 0.83`
   (the in-sample winner is mostly luck), the regime scenario `PBO ≈ 0.03` (robust ranking).
