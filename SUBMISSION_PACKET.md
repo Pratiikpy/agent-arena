@@ -71,7 +71,7 @@ let a fleet of agents be run with real capital. That is what Agent Arena is.
 | **Public GitHub + complete README** | ✅ **Live:** https://github.com/Pratiikpy/agent-arena (public, CI green, v0.1.0). README has install/run/integrate/examples. |
 | **Thesis clearly stated** | The four-part description above (also in `SUBMISSION.md`). |
 | **Verifiable usage record** (≥1) | Multiple — see below. |
-| **Deployment link** (optional) | **[YOU]** deploy via `DEPLOY.md` (Dockerfile + render.yaml ready); UI+API served at `/`. |
+| **Deployment link** (optional) | ✅ **Live:** https://bitarena.vercel.app — UI + signed firewall + `/verify`, callable now. |
 | **Backtest report w/ code** | Four published Playbooks on Bitget (on-platform) **+** `evidence/` reproducible runs with code in `bitarena/`. |
 | **Demo video** (≤3 min) | **[YOU]** record using `DEMO.md` storyboard. |
 | **Community post** (optional award) | **[YOU]** quote the Bitget tweet, tag #BitgetHackathon + @Bitget_AI. |
@@ -117,8 +117,11 @@ fallbacks). Honest self-assessment is an explicit scoring criterion.
    CI green, **v0.1.0** released, 10 topics set). Secrets audited: `.env`/`.keys`/`*.pem`
    excluded, no Playbook/Qwen keys in any tracked file. Push updates with
    `git add -A && git commit -m "..." && git push` from `.research/bitarena`.
-2. **[YOU]** Deploy (`DEPLOY.md`) — connect Render to the repo (it auto-builds from
-   `render.yaml`); paste the public URL (UI + API + `/verify`). *Needs your hosting account.*
+2. ✅ **DONE — live at https://bitarena.vercel.app** (UI + signed firewall + `/verify`,
+   deployed to Vercel under your account). The headline (firewall / verify / leaderboard /
+   UI) is stateless and runs serverless; for the continuously-running *stateful* arena
+   (`/live`), a container host (`render.yaml` / `DEPLOY.md`) is the path. *To re-deploy:
+   `vercel --prod` from `.research/bitarena` (already linked to the `bitarena` project).*
 3. **[YOU]** Record the ≤3-min demo video (`DEMO.md`) and paste the link.
 4. **[YOU]** Post the #BitgetHackathon quote-tweet; paste the link.
 5. **[YOU]** Submit with your registration UID, primary track = Trading Infra.
@@ -143,4 +146,4 @@ Everything else — code, tests, evidence, the published Playbooks, docs — is 
 > ~0.1 ms/verdict, verify it yourself), agents are ranked by Deflated Sharpe/PBO — not
 > luck — and a meta-allocator funds the winners. 4 strategies already published on
 > GetAgent, plus a live arena that runs on real Bitget data. #BitgetHackathon
-> [repo link] [demo link]
+> Live: https://bitarena.vercel.app · Code: https://github.com/Pratiikpy/agent-arena

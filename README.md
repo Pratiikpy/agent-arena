@@ -8,6 +8,8 @@
 
 **A live proving ground and safety firewall for autonomous trading agents on Bitget.**
 
+**▶ Live:** **[bitarena.vercel.app](https://bitarena.vercel.app)** — call the signed firewall and verify a verdict yourself (browser or `curl`).
+
 > Built on open-source foundations (Vibe-Trading, FinRL, TradingAgents and others).
 > See [`NOTICE`](./NOTICE) for full attribution. The Arena engine, safety firewall,
 > scoring, signed ledger, and Bitget integration are original work.
