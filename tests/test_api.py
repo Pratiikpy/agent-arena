@@ -129,3 +129,20 @@ def test_verify_reports_trusted_issuer_and_catches_forgery():
     forged = Signer.generate().sign_certificate(Certificate(**cert))  # attacker self-signs
     bad = client.post("/verify", json=forged.model_dump()).json()
     assert bad["valid"] is True and bad["trusted_issuer"] is False  # integrity ok, but NOT this arena
+
+
+def test_debate_endpoint_returns_a_gated_debate():
+    # /debate is a judge-facing Track-1 surface (the LLM debate). Confirm it serves a
+    # structured, firewall-gated debate (signals + a verdict), not an error.
+    r = _client().get("/debate")
+    assert r.status_code == 200
+    body = r.json()
+    assert isinstance(body.get("signals"), list) and body["signals"]
+    assert body["verdict"]["decision"] in ("ALLOW", "ALLOW_CAPPED", "REJECT", "HOLD")
+    assert body.get("rationale")
+
+
+def test_root_serves_the_ui():
+    r = _client().get("/")
+    assert r.status_code == 200
+    assert "Agent Arena" in r.text  # the production single-page UI is served at /
