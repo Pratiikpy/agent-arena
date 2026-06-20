@@ -43,6 +43,15 @@ def test_psr_monotonic_and_bounded():
     assert 0.0 <= weak < strong <= 1.0
 
 
+def test_psr_matches_bailey_lopez_de_prado_reference():
+    # PSR(SR*) = Phi( (SR - SR*) * sqrt(n-1) / sqrt(1 - skew*SR + (kurt-1)/4 * SR^2) ).
+    # Hand-computed references (not the implementation), so this proves the formula, not just bounds:
+    #   SR=0.5, n=10, skew=0, kurt=3 -> var=1.125, z=1.41421 -> Phi=0.921350
+    assert abs(probabilistic_sharpe_ratio(0.5, 10, sr_benchmark=0.0, skew=0.0, kurt=3.0) - 0.921350) < 1e-5
+    #   SR=1.0, n=25, skew=-0.5, kurt=4 -> var=1.75, z=3.70329 -> Phi=0.999455
+    assert abs(probabilistic_sharpe_ratio(1.0, 25, sr_benchmark=0.0, skew=-0.5, kurt=4.0) - 0.999455) < 1e-5
+
+
 def test_expected_max_sharpe_increases_with_trials():
     a = expected_max_sharpe(0.01, 10)
     b = expected_max_sharpe(0.01, 1000)
