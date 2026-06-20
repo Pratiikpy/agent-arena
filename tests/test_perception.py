@@ -85,6 +85,19 @@ def test_agent_hub_reads_brief(tmp_path):
     assert sigs[0].source == "agent_hub:macro"  # not a fallback
 
 
+def test_agent_hub_default_brief_dir_from_env(tmp_path, monkeypatch):
+    # The live path is WIRED, not just plumbed: a brief in $BITARENA_BRIEFS_DIR is picked up
+    # with NO brief_dir passed (previously brief_dir defaulted to None -> always fallback, so a
+    # real Skill brief would never have been used).
+    (tmp_path / "sentiment_BTCUSDT.json").write_text(
+        json.dumps({"score": -0.4, "confidence": 0.8, "summary": "fear elevated"}))
+    monkeypatch.setenv("BITARENA_BRIEFS_DIR", str(tmp_path))
+    src = AgentHubPerception("sentiment")  # no brief_dir argument -> resolves the env default
+    sigs = src.observe("BTCUSDT", _market(), ts=0)
+    assert sigs[0].value == -0.4 and sigs[0].confidence == 0.8
+    assert sigs[0].source == "agent_hub:sentiment"  # a live brief, not "(fallback)"
+
+
 def test_aggregate_all_sources():
     sources = [TechnicalPerception(), *agent_hub_sources()]
     bundle = aggregate("BTCUSDT", 0, sources, _market())

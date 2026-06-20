@@ -8,7 +8,7 @@ here is Agent Arena rated against each dimension — strengths **and** real limi
 | Dimension | Self-rating | One-line |
 |---|---|---|
 | Depth of thesis | 9/10 | Trust = containment + verification; a testable conflict-gating bet; one real (funding) edge, now live in the arena |
-| Runnability | 8/10 | Live deploy with a ticking `/pulse` heartbeat + a real `/live` tournament, real Bitget data, four Playbooks, 254 tests — a gated real-money order is one command away (needs a trade key) |
+| Runnability | 8/10 | Live deploy with a ticking `/pulse` heartbeat + a real `/live` tournament, real Bitget data, four Playbooks, 255 tests — a gated real-money order is one command away (needs a trade key) |
 | Completeness | 9/10 | End-to-end loop, 7 agents, allocator, signed ledger, market kill-switch, in-browser verify, client SDK + MCP, live UI, four Playbooks |
 | Novelty & potential | 9/10 | Agent-vs-agent arena + signed firewall (issuer-pinned, fleet kill-switch) + trust-allocator + overfit scoring + live LLM debate + browser-side verification |
 | Bitget-native depth | 8/10 | Real public data, **four published GetAgent Playbooks**, live Qwen, tokenized-stock Track 3 |
@@ -28,7 +28,7 @@ Live signed firewall at **https://bitarena.vercel.app** (also curl-able offline)
 **continuously-ticking `/pulse` heartbeat** — a fresh Ed25519-signed verdict on the live BTC
 price every few seconds — and a **real, signed `/live` tournament** served from the deploy.
 Real Bitget market data, **four published GetAgent Playbooks**, a live Qwen debate agent, and
-254 passing offline tests; the public repo (CI green) and the deploy are both up. **The paper →
+255 passing offline tests; the public repo (CI green) and the deploy are both up. **The paper →
 live step is one gated command** — `scripts/place_live_order.py --confirm` places only the
 firewall-ALLOWed size and writes a signed receipt. **Limit:** trading is still paper (the real
 order needs a trade-permission key + a go-ahead), and the ≤3-min demo video is not yet recorded
@@ -44,7 +44,9 @@ resumes state between scheduled invocations. The firewall also gained a **market
 kill-switch** (forces the fleet de-risk-only in a fast crash), **issuer-pinned + in-browser
 (Web Crypto) certificate verification**, a `FirewallClient` SDK, and a one-command
 whole-evidence verifier; the deterministic evidence is reproducible and idempotent. **Limit:**
-Agent Hub Skills run as honest offline fallbacks (not live calls), and the other agents are
+Agent Hub Skills run as honest, clearly-tagged offline fallbacks; the live path is now *wired*
+(drop a Skill brief in `evidence/briefs/` — or point `$BITARENA_BRIEFS_DIR` — and the channel
+goes live automatically), it just awaits a real on-platform brief. The other agents are
 deterministic functions of market history by design (no cross-run learning).
 
 *Precise scope of "no agent can bypass":* the firewall is the **single execution chokepoint**
@@ -66,18 +68,19 @@ faithful harness, not yet tick-level live execution.
 Real Bitget v2 public data (verified live), **four Playbooks published on Bitget's own
 GetAgent platform** (real Sharpe/curves; a systematic 2×3 study, four winners published and
 three losers withheld), Qwen via the hackathon proxy, a tokenized-US-stock competitor
-(Track 3, `RAAPLUSDT`), and an authenticated-key code path. **Limit:**
-live Skill Hub calls and a real dust order remain to be wired.
+(Track 3, across **six** tokenized US stocks — `tokenized_stock_sweep.json`), and an
+authenticated-key code path. **Limit:** a real dust order and a real on-platform Agent Hub
+brief remain — the Skill-brief path itself is now wired (see `evidence/briefs/`).
 
 ## Track coverage (all three)
 - **Track 1 — Trading Agent:** seven autonomous perceive→decide→execute agents (incl. a funding-carry competitor).
 - **Track 2 — Trading Infra:** the firewall, signed ledger, overfit benchmark, MCP
   server, HTTP API, and independent verifier — reusable by any developer.
-- **Track 3 — US Stock AI:** a tournament on Bitget tokenized AAPL.
+- **Track 3 — US Stock AI:** the arena + firewall across six Bitget tokenized US stocks.
 
 ## What would move every number up (the remaining owner actions)
 The public repo and live deploy are already up. What remains: post the ≤3-min demo video
 (or show `make showcase`), place one real dust-sized Bitget order — **the gated tooling is
 ready** (`scripts/place_live_order.py --confirm`); it only needs a trade-permission key — and
-wire one live Agent Hub Skill. The engineering for all of these is in place; what remains is
-recording, a trade key, and the post.
+drop one real Agent Hub Skill brief into `evidence/briefs/` (the path is wired). The engineering
+for all of these is in place; what remains is recording, a trade key, a brief, and the post.

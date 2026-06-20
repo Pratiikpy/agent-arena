@@ -14,6 +14,7 @@ agent sizes by how much they agree.
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 import numpy as np
@@ -41,6 +42,11 @@ class AgentHubPerception:
             raise ValueError(f"unknown Agent Hub skill: {skill}")
         self.skill = skill
         self.name = f"agent_hub:{skill}"
+        # When no brief dir is given, look in $BITARENA_BRIEFS_DIR (or the conventional
+        # evidence/briefs/) so a real Skill brief dropped there is picked up automatically —
+        # the live path is wired, not just plumbed. Absent any brief it stays the tagged fallback.
+        if brief_dir is None:
+            brief_dir = os.environ.get("BITARENA_BRIEFS_DIR") or "evidence/briefs"
         self._dir = Path(brief_dir) if brief_dir else None
 
     def observe(
