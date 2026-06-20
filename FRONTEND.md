@@ -94,7 +94,8 @@ For each screen: **purpose · data it shows · components · states · backing e
   - `effective_notional_usd` (and, when capped, the "from $X → $Y" framing)
   - a **gates checklist** — each gate name with a pass/fail tick (`halt`, `expiry`,
     `universe`, `instrument`, `quote`, `min_price`, `daily_count`, `leverage`,
-    `max_order_notional`, `max_total_exposure`, `max_leverage_exposure`)
+    `market_regime` (the fleet kill-switch), `max_order_notional`, `max_total_exposure`,
+    `max_leverage_exposure`)
   - the **Certificate block** (§4.3)
 - **Presets:** buttons that pre-fill interesting cases: "tiny order → ALLOW",
   "huge order → CAPPED", "exposure full → REJECT". (Designers: these make the demo sing.)
