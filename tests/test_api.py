@@ -18,6 +18,20 @@ def test_health():
     assert body["status"] == "ok" and body["issuer"]
 
 
+def test_pulse_is_live_and_signed():
+    r = _client().get("/pulse")
+    assert r.status_code == 200
+    body = r.json()
+    assert body["server_time_ms"] > 0
+    assert body["data_source"] in ("bitget-live", "synthetic")
+    assert body["quote"]["mid"] and body["quote"]["mid"] > 0
+    assert body["quote"]["age_ms"] is not None and body["quote"]["age_ms"] < 120_000  # fresh
+    assert body["verdict"]["decision"] in ("ALLOW", "ALLOW_CAPPED", "REJECT")
+    assert body["issuer"]
+    assert body["certificate"] is not None
+    assert body["certificate_valid"] is True  # the heartbeat verdict is genuinely signed
+
+
 def test_firewall_allow_signed():
     r = _client().post("/firewall", json={"symbol": "BTCUSDT", "side": "buy", "notional_usd": 50})
     assert r.status_code == 200

@@ -81,6 +81,54 @@ def create_app(
     def health() -> dict:
         return {"status": "ok", "issuer": firewall.issuer, "version": app.version}
 
+    @app.get("/pulse")
+    def pulse() -> dict:
+        """Live heartbeat: a freshly Ed25519-signed firewall verdict on the latest BTC quote,
+        stamped with the server time. Every call is fresh — poll it to watch the signed firewall
+        run live. ``data_source`` is reported honestly (``bitget-live`` when the real quote is
+        reachable, else a fresh ``synthetic`` quote)."""
+        now_ms = int(time.time() * 1000)
+        symbol, instrument = "BTCUSDT", InstrumentType.PERP
+        source, quote = "synthetic", None
+        if market_client is not None:
+            quote = market_client.get_quote(symbol, instrument)
+            if quote is not None:
+                source = "bitget-live"
+        if quote is None:
+            md = ReplayMarketData({symbol: synthetic_series(symbol, n=60, seed=now_ms % 100_000)})
+            md.set_cursor(59)
+            q = md.get_quote(symbol, instrument)
+            quote = q.model_copy(update={"ts": now_ms}) if q is not None else None
+        intent = TradeIntent(
+            agent_id="pulse", symbol=symbol, side=Side.BUY,
+            instrument=instrument, notional_usd=50.0,
+        )
+        mandate = default_arena_mandate(10_000.0, allowed_symbols=(symbol,))
+        ctx = EvalContext(
+            mandate=mandate, equity_usd=10_000.0, quote=quote,
+            now_ms=now_ms, max_quote_age_ms=120_000,
+        )
+        verdict = firewall.evaluate(intent, ctx)
+        cert = verdict.certificate
+        return {
+            "server_time_ms": now_ms,
+            "data_source": source,
+            "quote": {
+                "symbol": symbol,
+                "mid": quote.mid if quote else None,
+                "ts": quote.ts if quote else None,
+                "age_ms": (now_ms - quote.ts) if quote else None,
+            },
+            "verdict": {
+                "decision": verdict.decision.value,
+                "effective_notional_usd": verdict.effective_notional_usd,
+                "reason": verdict.reason,
+            },
+            "issuer": firewall.issuer,
+            "certificate": cert.model_dump() if cert else None,
+            "certificate_valid": verify_certificate(cert) if cert else None,
+        }
+
     @app.get("/", response_class=HTMLResponse)
     def index() -> str:
         page = web / "index.html"

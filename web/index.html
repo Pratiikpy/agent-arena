@@ -421,8 +421,47 @@ function verifyView(){
 function view(){ switch(state.view){ case "firewall":return firewall(); case "arena":return arena(); case "ledger":return ledger(); case "debate":return debate(); case "verify":return verifyView(); default:return landing(); } }
 function render(){ $("app").innerHTML = nav() + view() + footer(); document.querySelectorAll("#app input:not([name])").forEach((el,i)=>{ el.name = "field" + i; }); }
 
+// ---------- live pulse: a continuously-updating signed firewall heartbeat ----------
+let pulseData = null, pulseAt = 0, pulseFail = 0;
+function pulseEl(){
+  let el = $("pulse");
+  if(!el){
+    el = document.createElement("div"); el.id = "pulse";
+    el.style.cssText = "position:fixed;right:16px;bottom:16px;z-index:50;background:#0a0a0a;color:#fff;border-radius:12px;padding:10px 14px;font-family:'JetBrains Mono',monospace;font-size:11.5px;line-height:1.55;box-shadow:0 4px 20px rgba(0,0,0,.22);max-width:300px;";
+    el.title = "Live signed firewall heartbeat — GET /pulse. Each verdict is freshly Ed25519-signed.";
+    document.body.appendChild(el);
+  }
+  return el;
+}
+function renderPulse(){
+  const el = pulseEl();
+  if(!pulseData){ el.innerHTML = '<span style="color:#9aa0aa;">○ connecting to live firewall…</span>'; return; }
+  const d = pulseData, ago = Math.max(0, Math.round((Date.now()-pulseAt)/1000));
+  const live = d.data_source === "bitget-live";
+  const dot = pulseFail ? "#c23b30" : "#34d399";
+  const dec = d.verdict ? d.verdict.decision : "—";
+  const vc = dec === "REJECT" ? "#f2bdb7" : "#86efac";
+  const px = d.quote && d.quote.mid ? ("$" + Number(d.quote.mid).toLocaleString("en-US",{maximumFractionDigits:2})) : "—";
+  el.innerHTML =
+    '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">'+
+      '<span style="width:8px;height:8px;border-radius:50%;background:'+dot+';box-shadow:0 0 8px '+dot+';display:inline-block;"></span>'+
+      '<b style="letter-spacing:.06em;">LIVE FIREWALL</b>'+
+      '<span style="color:#9aa0aa;margin-left:auto;">'+(live?"bitget":"synthetic")+'</span>'+
+    '</div>'+
+    '<div style="color:#cbd0d8;">BTC '+px+' · <span style="color:'+vc+';font-weight:600;">'+esc(dec)+'</span></div>'+
+    '<div style="color:#7a8089;margin-top:2px;">signed '+ago+'s ago · issuer '+esc((d.issuer||"").slice(0,8))+'</div>';
+}
+async function pulseTick(){
+  try{ const r = await fetch(API + "/pulse"); if(!r.ok) throw 0;
+    pulseData = await r.json(); pulseAt = Date.now(); pulseFail = 0;
+  }catch(e){ pulseFail++; }
+  renderPulse();
+}
+function initPulse(){ pulseTick(); setInterval(pulseTick, 12000); setInterval(renderPulse, 1000); }
+
 render();
 checkHealth();
+initPulse();
 </script>
 </body>
 </html>
