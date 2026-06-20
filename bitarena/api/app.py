@@ -117,7 +117,8 @@ def create_app(
                 "symbol": symbol,
                 "mid": quote.mid if quote else None,
                 "ts": quote.ts if quote else None,
-                "age_ms": (now_ms - quote.ts) if quote else None,
+                # clamp at 0: a live exchange ts can run a few ms ahead of the server clock
+                "age_ms": max(0, now_ms - quote.ts) if quote else None,
             },
             "verdict": {
                 "decision": verdict.decision.value,
