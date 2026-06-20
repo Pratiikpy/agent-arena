@@ -26,8 +26,8 @@ def main() -> int:
     args = ap.parse_args()
 
     fw = FirewallClient(args.base_url)
-    issuer = fw.issuer_key()
-    print(f"firewall: {args.base_url}  ·  issuer {issuer[:16]}…\n")
+    issuer_key = fw.issuer_key()
+    print(f"firewall: {args.base_url}  ·  issuer key {issuer_key[:16]}…\n")
 
     # my bot's proposed trades — the firewall decides which may be placed, and at what size.
     # (symbol, side, notional, current_exposure) — the last trade is at the exposure cap.
@@ -39,7 +39,7 @@ def main() -> int:
     placed = 0
     for symbol, side, notional, exposure in trades:
         v = fw.vet(symbol, side, notional_usd=notional, current_exposure_usd=exposure)
-        trusted = v.verify(issuer)  # offline: signature intact AND signed by this arena
+        trusted = v.verify(issuer_key)  # offline: signature intact AND signed by this arena
         eff = v.effective_notional_usd or 0.0
         print(f"  {side:<4} {symbol:<9} ${notional:>10,.0f}  ->  {v.decision:<13} "
               f"eff=${eff:>9,.2f}  verified={trusted}")
