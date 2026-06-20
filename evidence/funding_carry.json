@@ -1,0 +1,366 @@
+{
+  "intervals_per_year": 1095,
+  "source": "bitget:history-fund-rate",
+  "symbols": {
+    "BTCUSDT": {
+      "intervals": 270,
+      "pct_positive_funding": 0.537,
+      "mean_funding_per_interval": -2.33e-06,
+      "passive_carry": {
+        "intervals": 270,
+        "total_return": -0.00063,
+        "annualized_return": -0.002551,
+        "sharpe_annualized": -1.0514,
+        "max_drawdown": -0.004252,
+        "pct_positive": 0.537,
+        "psr": 0.2992,
+        "sr_per_period": -0.031772
+      },
+      "adaptive_sweep": [
+        {
+          "intervals": 270,
+          "total_return": 0.007461,
+          "annualized_return": 0.030607,
+          "sharpe_annualized": 24.7432,
+          "max_drawdown": 0.0,
+          "pct_positive": 0.537,
+          "psr": 1.0,
+          "sr_per_period": 0.747738,
+          "threshold": 0.0
+        },
+        {
+          "intervals": 270,
+          "total_return": 0.006029,
+          "annualized_return": 0.024676,
+          "sharpe_annualized": 19.2498,
+          "max_drawdown": 0.0,
+          "pct_positive": 0.263,
+          "psr": 1.0,
+          "sr_per_period": 0.581728,
+          "threshold": 5e-05
+        },
+        {
+          "intervals": 270,
+          "total_return": 0.0,
+          "annualized_return": 0.0,
+          "sharpe_annualized": 0.0,
+          "max_drawdown": 0.0,
+          "pct_positive": 0.0,
+          "psr": 0.5,
+          "sr_per_period": 0.0,
+          "threshold": 0.0001
+        },
+        {
+          "intervals": 270,
+          "total_return": 0.0,
+          "annualized_return": 0.0,
+          "sharpe_annualized": 0.0,
+          "max_drawdown": 0.0,
+          "pct_positive": 0.0,
+          "psr": 0.5,
+          "sr_per_period": 0.0,
+          "threshold": 0.0002
+        }
+      ],
+      "adaptive_best": {
+        "intervals": 270,
+        "total_return": 0.007461,
+        "annualized_return": 0.030607,
+        "sharpe_annualized": 24.7432,
+        "max_drawdown": 0.0,
+        "pct_positive": 0.537,
+        "psr": 1.0,
+        "sr_per_period": 0.747738,
+        "threshold": 0.0
+      },
+      "deflated_sharpe_best": 1.0,
+      "n_trials": 4,
+      "walk_forward_passive": [
+        {
+          "intervals": 68,
+          "total_return": -0.000666,
+          "annualized_return": -0.01067,
+          "sharpe_annualized": -4.7516,
+          "max_drawdown": -0.001247,
+          "pct_positive": 0.4559,
+          "psr": 0.1166,
+          "sr_per_period": -0.143592,
+          "fold": 1
+        },
+        {
+          "intervals": 68,
+          "total_return": -0.003225,
+          "annualized_return": -0.050687,
+          "sharpe_annualized": -19.571,
+          "max_drawdown": -0.00323,
+          "pct_positive": 0.3382,
+          "psr": 0.0,
+          "sr_per_period": -0.591433,
+          "fold": 2
+        },
+        {
+          "intervals": 67,
+          "total_return": 0.002308,
+          "annualized_return": 0.038404,
+          "sharpe_annualized": 17.5079,
+          "max_drawdown": -0.000443,
+          "pct_positive": 0.7164,
+          "psr": 0.9998,
+          "sr_per_period": 0.529087,
+          "fold": 3
+        },
+        {
+          "intervals": 67,
+          "total_return": 0.000961,
+          "annualized_return": 0.015828,
+          "sharpe_annualized": 9.3122,
+          "max_drawdown": -0.000405,
+          "pct_positive": 0.6418,
+          "psr": 0.9872,
+          "sr_per_period": 0.281414,
+          "fold": 4
+        }
+      ]
+    },
+    "ETHUSDT": {
+      "intervals": 270,
+      "pct_positive_funding": 0.6926,
+      "mean_funding_per_interval": 2.682e-05,
+      "passive_carry": {
+        "intervals": 270,
+        "total_return": 0.007267,
+        "annualized_return": 0.029799,
+        "sharpe_annualized": 12.597,
+        "max_drawdown": -0.001617,
+        "pct_positive": 0.6926,
+        "psr": 1.0,
+        "sr_per_period": 0.380681
+      },
+      "adaptive_sweep": [
+        {
+          "intervals": 270,
+          "total_return": 0.012051,
+          "annualized_return": 0.049779,
+          "sharpe_annualized": 36.5515,
+          "max_drawdown": 0.0,
+          "pct_positive": 0.6926,
+          "psr": 1.0,
+          "sr_per_period": 1.104581,
+          "threshold": 0.0
+        },
+        {
+          "intervals": 270,
+          "total_return": 0.010336,
+          "annualized_return": 0.042583,
+          "sharpe_annualized": 28.7159,
+          "max_drawdown": 0.0,
+          "pct_positive": 0.4481,
+          "psr": 1.0,
+          "sr_per_period": 0.867792,
+          "threshold": 5e-05
+        },
+        {
+          "intervals": 270,
+          "total_return": 0.0,
+          "annualized_return": 0.0,
+          "sharpe_annualized": 0.0,
+          "max_drawdown": 0.0,
+          "pct_positive": 0.0,
+          "psr": 0.5,
+          "sr_per_period": 0.0,
+          "threshold": 0.0001
+        },
+        {
+          "intervals": 270,
+          "total_return": 0.0,
+          "annualized_return": 0.0,
+          "sharpe_annualized": 0.0,
+          "max_drawdown": 0.0,
+          "pct_positive": 0.0,
+          "psr": 0.5,
+          "sr_per_period": 0.0,
+          "threshold": 0.0002
+        }
+      ],
+      "adaptive_best": {
+        "intervals": 270,
+        "total_return": 0.012051,
+        "annualized_return": 0.049779,
+        "sharpe_annualized": 36.5515,
+        "max_drawdown": 0.0,
+        "pct_positive": 0.6926,
+        "psr": 1.0,
+        "sr_per_period": 1.104581,
+        "threshold": 0.0
+      },
+      "deflated_sharpe_best": 1.0,
+      "n_trials": 4,
+      "walk_forward_passive": [
+        {
+          "intervals": 68,
+          "total_return": 0.001015,
+          "annualized_return": 0.016476,
+          "sharpe_annualized": 7.7356,
+          "max_drawdown": -0.000579,
+          "pct_positive": 0.6029,
+          "psr": 0.9595,
+          "sr_per_period": 0.233768,
+          "fold": 1
+        },
+        {
+          "intervals": 68,
+          "total_return": -9.7e-05,
+          "annualized_return": -0.001565,
+          "sharpe_annualized": -0.5099,
+          "max_drawdown": -0.001593,
+          "pct_positive": 0.6176,
+          "psr": 0.4493,
+          "sr_per_period": -0.015408,
+          "fold": 2
+        },
+        {
+          "intervals": 67,
+          "total_return": 0.005104,
+          "annualized_return": 0.086759,
+          "sharpe_annualized": 77.5935,
+          "max_drawdown": -3.3e-05,
+          "pct_positive": 0.9701,
+          "psr": 1.0,
+          "sr_per_period": 2.344866,
+          "fold": 3
+        },
+        {
+          "intervals": 67,
+          "total_return": 0.001233,
+          "annualized_return": 0.020337,
+          "sharpe_annualized": 11.4082,
+          "max_drawdown": -0.000733,
+          "pct_positive": 0.5821,
+          "psr": 0.9968,
+          "sr_per_period": 0.344755,
+          "fold": 4
+        }
+      ]
+    },
+    "SOLUSDT": {
+      "intervals": 270,
+      "pct_positive_funding": 0.5852,
+      "mean_funding_per_interval": 3.37e-06,
+      "passive_carry": {
+        "intervals": 270,
+        "total_return": 0.000909,
+        "annualized_return": 0.00369,
+        "sharpe_annualized": 1.4358,
+        "max_drawdown": -0.00255,
+        "pct_positive": 0.5852,
+        "psr": 0.7546,
+        "sr_per_period": 0.043391
+      },
+      "adaptive_sweep": [
+        {
+          "intervals": 270,
+          "total_return": 0.008221,
+          "annualized_return": 0.033763,
+          "sharpe_annualized": 28.1139,
+          "max_drawdown": 0.0,
+          "pct_positive": 0.5852,
+          "psr": 1.0,
+          "sr_per_period": 0.849598,
+          "threshold": 0.0
+        },
+        {
+          "intervals": 270,
+          "total_return": 0.006403,
+          "annualized_return": 0.026223,
+          "sharpe_annualized": 20.7699,
+          "max_drawdown": 0.0,
+          "pct_positive": 0.2963,
+          "psr": 1.0,
+          "sr_per_period": 0.627664,
+          "threshold": 5e-05
+        },
+        {
+          "intervals": 270,
+          "total_return": 0.0,
+          "annualized_return": 0.0,
+          "sharpe_annualized": 0.0,
+          "max_drawdown": 0.0,
+          "pct_positive": 0.0,
+          "psr": 0.5,
+          "sr_per_period": 0.0,
+          "threshold": 0.0001
+        },
+        {
+          "intervals": 270,
+          "total_return": 0.0,
+          "annualized_return": 0.0,
+          "sharpe_annualized": 0.0,
+          "max_drawdown": 0.0,
+          "pct_positive": 0.0,
+          "psr": 0.5,
+          "sr_per_period": 0.0,
+          "threshold": 0.0002
+        }
+      ],
+      "adaptive_best": {
+        "intervals": 270,
+        "total_return": 0.008221,
+        "annualized_return": 0.033763,
+        "sharpe_annualized": 28.1139,
+        "max_drawdown": 0.0,
+        "pct_positive": 0.5852,
+        "psr": 1.0,
+        "sr_per_period": 0.849598,
+        "threshold": 0.0
+      },
+      "deflated_sharpe_best": 1.0,
+      "n_trials": 4,
+      "walk_forward_passive": [
+        {
+          "intervals": 68,
+          "total_return": -0.000318,
+          "annualized_return": -0.005111,
+          "sharpe_annualized": -1.9013,
+          "max_drawdown": -0.001865,
+          "pct_positive": 0.5147,
+          "psr": 0.3135,
+          "sr_per_period": -0.057457,
+          "fold": 1
+        },
+        {
+          "intervals": 68,
+          "total_return": 0.000716,
+          "annualized_return": 0.011595,
+          "sharpe_annualized": 6.9926,
+          "max_drawdown": -0.000358,
+          "pct_positive": 0.6176,
+          "psr": 0.9504,
+          "sr_per_period": 0.211317,
+          "fold": 2
+        },
+        {
+          "intervals": 67,
+          "total_return": 0.002008,
+          "annualized_return": 0.033325,
+          "sharpe_annualized": 14.2853,
+          "max_drawdown": -0.000396,
+          "pct_positive": 0.7463,
+          "psr": 0.9958,
+          "sr_per_period": 0.431702,
+          "fold": 3
+        },
+        {
+          "intervals": 67,
+          "total_return": -0.001494,
+          "annualized_return": -0.024142,
+          "sharpe_annualized": -7.7939,
+          "max_drawdown": -0.00255,
+          "pct_positive": 0.4627,
+          "psr": 0.0115,
+          "sr_per_period": -0.23553,
+          "fold": 4
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,25 @@
+# Secrets / keys
+.env
+.env.*
+!.env.example
+.keys/
+*.pem
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+*.egg-info/
+build/
+dist/
+
+# Arena runtime state (kept out of git; the curated evidence/ is committed deliberately).
+# evidence/live/ is volatile state written by scripts/live_step.py (portfolios, growing
+# ledgers, cursor) — regenerate it with `make live`, don't commit the churn.
+.runtime/
+evidence/live/

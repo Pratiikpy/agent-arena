@@ -1,0 +1,13 @@
+{
+  "description": "Verification value: on a no-edge random walk, naive 'pick the best Sharpe' crowns luck. The Deflated Sharpe (discounted for N agents tried) and the PBO flag the overfit before capital is committed.",
+  "market": "synthetic random walk (drift 0, vol 1.5%, 600 bars), seed 42",
+  "agents_tried": 6,
+  "naive_pick": {
+    "agent_id": "rl-qlearn",
+    "raw_sharpe": 0.005044,
+    "total_return": 0.005424
+  },
+  "deflated_sharpe": 0.2677,
+  "cross_agent_pbo": 0.7659,
+  "finding": "On a no-edge random walk the verification layer refuses to crown noise: the cross-agent PBO is 0.7659 (naively crowning the in-sample best agent would be overfit ~77% of the time), and the apparent winner ('rl-qlearn') has a Deflated Sharpe of 0.268 after discounting for 6 agents tried \u2014 both flag 'luck, not skill' before any capital is risked. (The best raw Sharpe was only 0.005044: the agents do not manufacture edge from noise, and the statistics confirm it.)"
+}

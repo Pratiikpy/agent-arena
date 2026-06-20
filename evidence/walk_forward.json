@@ -1,0 +1,123 @@
+{
+  "folds": 5,
+  "per_fold": [
+    {
+      "fold": 1,
+      "bars": 200,
+      "results": {
+        "swarm": 0.0,
+        "baseline-momentum": -0.01316,
+        "persona-team": -0.00037,
+        "benchmark-buyhold": -0.02858,
+        "regime": -0.00674,
+        "rl-qlearn": -0.02896
+      }
+    },
+    {
+      "fold": 2,
+      "bars": 200,
+      "results": {
+        "benchmark-buyhold": 0.00114,
+        "swarm": 0.0,
+        "persona-team": -5e-05,
+        "baseline-momentum": -0.01725,
+        "rl-qlearn": -0.01194,
+        "regime": -0.01528
+      }
+    },
+    {
+      "fold": 3,
+      "bars": 200,
+      "results": {
+        "baseline-momentum": 0.04566,
+        "regime": 0.04513,
+        "persona-team": 0.00144,
+        "swarm": 0.00198,
+        "benchmark-buyhold": -0.08574,
+        "rl-qlearn": -0.01516
+      }
+    },
+    {
+      "fold": 4,
+      "bars": 200,
+      "results": {
+        "baseline-momentum": 0.02326,
+        "benchmark-buyhold": -0.00785,
+        "swarm": -0.00108,
+        "persona-team": -0.00055,
+        "regime": -0.01325,
+        "rl-qlearn": -0.02093
+      }
+    },
+    {
+      "fold": 5,
+      "bars": 200,
+      "results": {
+        "baseline-momentum": 0.01073,
+        "persona-team": 0.00025,
+        "benchmark-buyhold": 0.0021,
+        "regime": -0.00082,
+        "swarm": -0.0003,
+        "rl-qlearn": -0.01112
+      }
+    }
+  ],
+  "summary": {
+    "swarm": {
+      "folds": 5,
+      "mean_return": 0.00012,
+      "std_return": 0.00113,
+      "pct_positive_folds": 0.2,
+      "worst_fold": -0.00108,
+      "best_fold": 0.00198,
+      "consistency": 0.105
+    },
+    "baseline-momentum": {
+      "folds": 5,
+      "mean_return": 0.00985,
+      "std_return": 0.02611,
+      "pct_positive_folds": 0.6,
+      "worst_fold": -0.01725,
+      "best_fold": 0.04566,
+      "consistency": 0.377
+    },
+    "persona-team": {
+      "folds": 5,
+      "mean_return": 0.00014,
+      "std_return": 0.00079,
+      "pct_positive_folds": 0.4,
+      "worst_fold": -0.00055,
+      "best_fold": 0.00144,
+      "consistency": 0.181
+    },
+    "benchmark-buyhold": {
+      "folds": 5,
+      "mean_return": -0.02378,
+      "std_return": 0.03677,
+      "pct_positive_folds": 0.4,
+      "worst_fold": -0.08574,
+      "best_fold": 0.0021,
+      "consistency": -0.647
+    },
+    "regime": {
+      "folds": 5,
+      "mean_return": 0.00181,
+      "std_return": 0.02488,
+      "pct_positive_folds": 0.2,
+      "worst_fold": -0.01528,
+      "best_fold": 0.04513,
+      "consistency": 0.073
+    },
+    "rl-qlearn": {
+      "folds": 5,
+      "mean_return": -0.01762,
+      "std_return": 0.00742,
+      "pct_positive_folds": 0.0,
+      "worst_fold": -0.02896,
+      "best_fold": -0.01112,
+      "consistency": -2.375
+    }
+  },
+  "source": "bitget:1h:1000bars",
+  "symbol": "BTCUSDT"
+}

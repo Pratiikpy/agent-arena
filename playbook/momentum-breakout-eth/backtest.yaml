@@ -1,0 +1,33 @@
+venue:
+  name: BINANCE
+  account_type: MARGIN
+  oms_type: NETTING
+  starting_balances:
+    - amount: 100000
+      currency: USDT
+
+strategy:
+  module: strategy
+  class: DonchianBreakoutStrategy
+  config_class: DonchianBreakoutConfig
+  config:
+    order_id_tag: "001"
+    trade_size: "1.0"
+    entry_period: 20
+    exit_period: 10
+
+instrument:
+  id: ETHUSDT.BINANCE
+  kind: perpetual
+  raw_symbol: ETHUSDT
+  base_currency: ETH
+  quote_currency: USDT
+  settlement_currency: USDT
+  price_precision: 2
+  size_precision: 3
+  price_increment: "0.01"
+  size_increment: "0.001"
+  lot_size: "0.001"
+  maker_fee: "0.0002"
+  taker_fee: "0.0005"
+  bar_type: ETHUSDT.BINANCE-1-HOUR-LAST-EXTERNAL

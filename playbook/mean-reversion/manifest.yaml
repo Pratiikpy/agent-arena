@@ -1,0 +1,90 @@
+name: mean-reversion-eth
+display_name: "Mean Reversion (RSI + Bands)"
+version: "0.1.0"
+description: "ETH perpetual mean-reversion — fades oversold/overbought stretches and exits back at the mean"
+long_description: |
+  This Playbook trades ETH perpetual futures with a mean-reversion approach. Its
+  thesis is that inside range-bound or oscillating markets, price tends to snap back
+  toward its recent average after it gets stretched too far in either direction —
+  the crowd over-reacts, then the move reverts. The strategy is built to harvest
+  those snap-backs and is intentionally the opposite style from a trend follower:
+  it sells strength and buys weakness rather than chasing momentum.
+
+  Entry is contrarian and waits for an actual stretch. When price has been pushed
+  to an oversold extreme and sits near the lower edge of its volatility band, the
+  strategy reads exhaustion and enters long; when price is overbought and pressed
+  against the upper band, it enters short. It does not try to catch every wiggle —
+  it waits for a genuine extension where the odds of a reversion are higher, and it
+  stays out when nothing is stretched.
+
+  Exits target the mean. A long is closed as price reverts back toward the middle of
+  its band and momentum normalizes; a short is closed symmetrically. The strategy
+  takes profit into the reversion rather than holding for a full trend, accepting
+  many small, quick round-trips. There is no expectation of riding a big move — the
+  edge is the repeated return to average, not continuation.
+
+  Subscribers can tune leverage, the per-strategy margin budget, and the trading
+  symbol. Higher leverage scales both gains and drawdowns equally and does not make
+  the strategy more selective. Margin budget is the capital the platform sizes orders
+  against and the denominator for return percentage, so treat it as your maximum risk
+  on this Playbook. Choosing a different supported symbol applies the same reversion
+  logic to that market.
+
+  The critical risk is a strong trend: fading a market that keeps running in one
+  direction produces a string of losing contrarian trades and the worst drawdowns
+  this style can incur. Breakouts, gap-driven news, thin liquidity, and persistent
+  funding dislocation also hurt it. Past historical backtest performance does not
+  guarantee live results, and live execution pays fees and slippage — only subscribe
+  with capital whose drawdown you can tolerate.
+
+market_type: contract
+trading_symbols: ["ETHUSDT"]
+tags: ["mean-reversion", "rsi", "bollinger", "range", "eth", "contract"]
+
+decision_mode: deterministic
+backtest_support: full
+runtime_profile: deterministic
+execution_mode: signal_only
+follow_trade_supported: false
+
+strategy_config:
+  trading_symbols: ["ETHUSDT"]
+  bar_interval: "1h"
+  rsi_period: 14
+  bb_period: 20
+  bb_k: 2.0
+  rsi_low: 30.0
+  rsi_high: 70.0
+  stop_low: -0.05
+  stop_high: 1.05
+  trade_size: "1.0"
+  leverage: 3
+  margin_budget: "1000"
+
+user_config_schema:
+  trading_symbols:
+    type: array
+    item_type: string
+    default: ["ETHUSDT"]
+    options: ["ETHUSDT", "BTCUSDT", "SOLUSDT"]
+    aliases:
+      eth: ETHUSDT
+      btc: BTCUSDT
+      sol: SOLUSDT
+    min_items: 1
+    max_items: 1
+    label: "Trading symbol"
+  leverage:
+    type: integer
+    default: 3
+    min: 1
+    max: 10
+    aliases:
+      3x: 3
+      5x: 5
+    label: "Leverage"
+  margin_budget:
+    type: string
+    default: "1000"
+    pattern: "^[0-9]+(\\.[0-9]+)?$"
+    label: "Margin budget USDT"

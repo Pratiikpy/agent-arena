@@ -1,0 +1,60 @@
+{
+  "description": "On-platform GetAgent backtests for every Playbook the factory authored. A systematic 2x3 study (two strategies x BTC/ETH/SOL) plus an ETH mean-reversion. The four BTC/ETH winners are published; the three losers are withheld. Metrics are as returned by the Bitget GetAgent sandbox (real equity curves); 'budget_return_pct' is net PnL over the $1,000 strategy margin budget, 'account_net_usd' is the change on the 100,000 USDT venue balance.",
+  "venue": "Bitget GetAgent (backtest_support: full, 1h bars)",
+  "strategies": ["momentum-breakout (Donchian channel)", "adaptive-regime (conflict-gated)"],
+  "assets": ["BTCUSDT", "ETHUSDT", "SOLUSDT"],
+  "published": [
+    {
+      "name": "momentum-breakout-btc",
+      "strategy_id": "7f86f156-1034-4494-9969-731da4e3ec4f",
+      "sharpe": 1.68, "profit_factor": 2.33, "win_rate": 0.409, "trades": 44,
+      "budget_return_pct": 39.7, "max_drawdown_pct": 0.26, "status": "published"
+    },
+    {
+      "name": "adaptive-regime-conflict-gated",
+      "asset": "BTCUSDT",
+      "strategy_id": "93af5b33-8a16-43ea-8e45-b653c68f6558",
+      "sharpe": 0.72, "profit_factor": 1.74, "win_rate": 0.441, "trades": 68,
+      "budget_return_pct": 13.1, "max_drawdown_pct": 0.26, "status": "published"
+    },
+    {
+      "name": "momentum-breakout-eth",
+      "strategy_id": "849d200f-5b58-459a-b610-708a472556d5",
+      "sharpe": 0.58, "profit_factor": 1.42, "win_rate": 0.28, "trades": 50,
+      "budget_return_pct": 15.8, "status": "published"
+    },
+    {
+      "name": "adaptive-regime-eth",
+      "strategy_id": "1fb29226-9515-496c-a059-9a18a03ee539",
+      "sharpe": 2.15, "profit_factor": 3.34, "win_rate": 0.548, "trades": 62,
+      "account_net_usd": 0.49, "max_drawdown_pct": 0.24, "status": "published",
+      "note": "Best risk-adjusted ratios of the set, but a near-flat absolute return — the conflict-gate stayed highly selective on ETH. Published as a genuine positive; not a strong absolute performer."
+    }
+  ],
+  "withheld": [
+    {
+      "name": "mean-reversion-eth",
+      "sharpe": -1.07, "profit_factor": 0.95, "win_rate": 0.52,
+      "budget_return_pct": -16.5, "status": "withheld",
+      "reason": "Fading a sustained ETH trend lost money — exactly the failure mode the strategy's own docs warn about."
+    },
+    {
+      "name": "momentum-breakout-sol",
+      "sharpe": -0.68, "profit_factor": 1.01, "win_rate": 0.423, "trades": 52,
+      "account_net_usd": -0.14, "status": "withheld",
+      "reason": "Breakout edge that holds on BTC/ETH did not hold on SOL (breakeven-to-negative); SOL's volatility produced more false breakouts."
+    },
+    {
+      "name": "adaptive-regime-sol",
+      "sharpe": -0.55, "profit_factor": 0.92, "win_rate": 0.351, "trades": 74,
+      "account_net_usd": -0.16, "status": "withheld",
+      "reason": "Regime edge also broke on SOL (PF < 1, negative Sharpe). Both strategies fail on SOL — a clean asset-specific result."
+    }
+  ],
+  "summary": {
+    "published": 4,
+    "withheld": 3,
+    "finding": "Both strategies win on BTC and ETH and break on SOL's higher volatility. The factory publishes only what the evidence earns.",
+    "reproduce": "Upload each package in playbook/<name>/ via POST /api/v1/playbook/upload, then POST /api/v1/playbook/run with the returned draft_id; poll GET /api/v1/playbook/run?run_id=..."
+  }
+}

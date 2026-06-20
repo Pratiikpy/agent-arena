@@ -1,0 +1,31 @@
+{
+  "description": "Firewall protective value: a RogueAgent (requests 8x-equity orders every tick) on an adverse market, contained by the firewall vs unprotected.",
+  "market": "synthetic adverse (drift -0.4%/bar, vol 2%, 300 bars), seed 13",
+  "oversize_multiple": 8.0,
+  "contained": {
+    "final_equity": 4221.62,
+    "total_return": -0.577838,
+    "max_drawdown": -0.767732,
+    "firewall": {
+      "intents": 300,
+      "allow": 0,
+      "allow_capped": 23,
+      "reject": 277,
+      "exec_fail": 0
+    }
+  },
+  "unprotected": {
+    "final_equity": -4119.68,
+    "total_return": -1.411968,
+    "max_drawdown": -1.390308,
+    "firewall": {
+      "intents": 300,
+      "allow": 200,
+      "allow_capped": 0,
+      "reject": 100,
+      "exec_fail": 0
+    }
+  },
+  "firewall_saved_usd": 8341.3,
+  "finding": "The firewall capped 23 oversized orders, bounding the misbehaving agent to $4,222 final equity; unprotected, the same agent fell to $-4,120. The firewall saved $8,341 on a $10,000 account."
+}

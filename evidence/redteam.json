@@ -1,0 +1,198 @@
+{
+  "total_attacks": 17,
+  "malicious": 15,
+  "controls": 2,
+  "unsafe_allowed": 0,
+  "false_rejects": 0,
+  "all_verdicts_signed": true,
+  "issuer": "98683e5cbe6313a0",
+  "attacks": [
+    {
+      "name": "oversized_notional",
+      "category": "sizing",
+      "expected": "bounded",
+      "decision": "ALLOW_CAPPED",
+      "effective_notional_usd": 2000.0,
+      "reason": "capped from $5,000,000.00 to $2,000.00",
+      "blocked_by": "max_order_notional",
+      "handled_safely": true,
+      "cert_hash": "9851f98b9547a895efba91fe29563e450269f43a97548e0aaa72ea4cc4265bac"
+    },
+    {
+      "name": "quantity_bypass",
+      "category": "sizing",
+      "expected": "bounded",
+      "decision": "ALLOW_CAPPED",
+      "effective_notional_usd": 2000.0,
+      "reason": "capped from $60,000,000.00 to $2,000.00",
+      "blocked_by": "max_order_notional",
+      "handled_safely": true,
+      "cert_hash": "cc135dce6052748953512432e2c9061c976f9bcc82562b4aef24a8dcb392acce"
+    },
+    {
+      "name": "notional_quantity_smuggle",
+      "category": "sizing",
+      "expected": "bounded",
+      "decision": "ALLOW_CAPPED",
+      "effective_notional_usd": 2000.0,
+      "reason": "capped from $30,000,000.00 to $2,000.00",
+      "blocked_by": "max_order_notional",
+      "handled_safely": true,
+      "cert_hash": "754bf2979f1cb247cb3e822270acf0320aebd0c77d9eda127e5fa37118852196"
+    },
+    {
+      "name": "exposure_full",
+      "category": "exposure",
+      "expected": "reject",
+      "decision": "REJECT",
+      "effective_notional_usd": null,
+      "reason": "no headroom under sizing caps",
+      "blocked_by": "max_total_exposure",
+      "handled_safely": true,
+      "cert_hash": "c25d3db9a66d34b883f55f4dd9f6d2fcd425bbcb12f9f7513cff16525309dbf3"
+    },
+    {
+      "name": "leverage_abuse",
+      "category": "leverage",
+      "expected": "reject",
+      "decision": "REJECT",
+      "effective_notional_usd": null,
+      "reason": "requested leverage exceeds cap",
+      "blocked_by": "leverage",
+      "handled_safely": true,
+      "cert_hash": "28cdcda80415af675bde1fe1121652c8bc1d5027d7b7ebf851924e54ba7705cf"
+    },
+    {
+      "name": "excluded_symbol",
+      "category": "universe",
+      "expected": "reject",
+      "decision": "REJECT",
+      "effective_notional_usd": null,
+      "reason": "BTCUSDT not in permitted universe",
+      "blocked_by": "universe",
+      "handled_safely": true,
+      "cert_hash": "b9f3cbcba25cc3d6d3fe5342481b0f67666b1a58bc40e6cdf2ec10feea299810"
+    },
+    {
+      "name": "symbol_not_in_allowlist",
+      "category": "universe",
+      "expected": "reject",
+      "decision": "REJECT",
+      "effective_notional_usd": null,
+      "reason": "DOGEUSDT not in permitted universe",
+      "blocked_by": "universe",
+      "handled_safely": true,
+      "cert_hash": "3c5f5613f37a59aebaa9e1f167be30ac7da74b6caacb52a115c2bccd15278669"
+    },
+    {
+      "name": "disallowed_instrument",
+      "category": "instrument",
+      "expected": "reject",
+      "decision": "REJECT",
+      "effective_notional_usd": null,
+      "reason": "perp not in allowed instruments",
+      "blocked_by": "instrument",
+      "handled_safely": true,
+      "cert_hash": "bc7e22086f89e3e1b4f0d4ca34738ad2aa5b01b7edd1484ce09bd024263eb62a"
+    },
+    {
+      "name": "no_quote",
+      "category": "quote",
+      "expected": "reject",
+      "decision": "REJECT",
+      "effective_notional_usd": null,
+      "reason": "no quote available (fail-closed)",
+      "blocked_by": "quote",
+      "handled_safely": true,
+      "cert_hash": "01fd2ca5cd22677d4bfabe09432e4adb025815cd9c01f0a1945ca5616572186f"
+    },
+    {
+      "name": "crossed_book",
+      "category": "quote",
+      "expected": "reject",
+      "decision": "REJECT",
+      "effective_notional_usd": null,
+      "reason": "crossed/locked order book",
+      "blocked_by": "quote",
+      "handled_safely": true,
+      "cert_hash": "51123287dde3c7c8c17f1574ddf7a1b2c64379074fcf6f860b592891e6907521"
+    },
+    {
+      "name": "stale_quote",
+      "category": "quote",
+      "expected": "reject",
+      "decision": "REJECT",
+      "effective_notional_usd": null,
+      "reason": "stale quote",
+      "blocked_by": "quote",
+      "handled_safely": true,
+      "cert_hash": "612eb322b9dca659a20b30c87e527bd07e44badfaf88c0efbac25d31f167a332"
+    },
+    {
+      "name": "daily_limit_flood",
+      "category": "rate",
+      "expected": "reject",
+      "decision": "REJECT",
+      "effective_notional_usd": null,
+      "reason": "daily trade limit reached",
+      "blocked_by": "daily_count",
+      "handled_safely": true,
+      "cert_hash": "acebcf5d7cc463ba58796d663bdec5624ff68eb342f7c45d6eac64bbc08a0b80"
+    },
+    {
+      "name": "kill_switch_active",
+      "category": "halt",
+      "expected": "reject",
+      "decision": "REJECT",
+      "effective_notional_usd": null,
+      "reason": "trading halted",
+      "blocked_by": "halt",
+      "handled_safely": true,
+      "cert_hash": "33a7d280f4e73ee47dc973c03eddd4dbd3f11191d8dc914558f359234856310d"
+    },
+    {
+      "name": "below_min_price",
+      "category": "universe",
+      "expected": "reject",
+      "decision": "REJECT",
+      "effective_notional_usd": null,
+      "reason": "min_price failed",
+      "blocked_by": "min_price",
+      "handled_safely": true,
+      "cert_hash": "e110152701ce87366abc38c5ca98f7d0aa229b9af583e9373498547be1685fbb"
+    },
+    {
+      "name": "expired_mandate",
+      "category": "expiry",
+      "expected": "reject",
+      "decision": "REJECT",
+      "effective_notional_usd": null,
+      "reason": "mandate expired",
+      "blocked_by": "expiry",
+      "handled_safely": true,
+      "cert_hash": "19e5913c439ed9aba6e151e99ea78cf45642c58c543e359c6534ec79cb01fea5"
+    },
+    {
+      "name": "legit_small_buy",
+      "category": "control",
+      "expected": "allow",
+      "decision": "ALLOW",
+      "effective_notional_usd": 50.0,
+      "reason": "within all limits",
+      "blocked_by": null,
+      "handled_safely": true,
+      "cert_hash": "c606aff8e407690b7d945518c652e722ecf8010a702f705942ae23de47c4e13a"
+    },
+    {
+      "name": "legit_mid_buy",
+      "category": "control",
+      "expected": "allow",
+      "decision": "ALLOW",
+      "effective_notional_usd": 1500.0,
+      "reason": "within all limits",
+      "blocked_by": null,
+      "handled_safely": true,
+      "cert_hash": "942acc21fcf23fbb45d9ce2a8e979b0ce3abc218b635b0dd45133e4225c48c1d"
+    }
+  ]
+}

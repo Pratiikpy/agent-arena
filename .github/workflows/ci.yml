@@ -1,0 +1,22 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Set up Python
+        run: uv python install 3.11
+      - name: Install (dev + api + mcp + llm)
+        run: uv pip install --system -e ".[dev,api,mcp,llm]"
+      - name: Lint (ruff)
+        run: uvx ruff check .
+      - name: Run tests (offline)
+        run: pytest -q

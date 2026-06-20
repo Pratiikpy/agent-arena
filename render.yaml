@@ -1,0 +1,19 @@
+# Render blueprint — one-click deploy of the Agent Arena firewall API.
+# https://render.com  ->  New  ->  Blueprint  ->  point at this repo.
+services:
+  - type: web
+    name: agent-arena
+    runtime: docker
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      # Generate with: uv run python scripts/gen_signing_key.py  (set as a secret)
+      - key: ARENA_SIGNING_KEY_B64
+        sync: false
+      # Optional: enables the live Qwen debate agent
+      - key: BITGET_QWEN_API_KEY
+        sync: false
+      - key: QWEN_BASE_URL
+        value: https://hackathon.bitgetops.com/v1
+      - key: QWEN_MODEL
+        value: qwen3.6-plus

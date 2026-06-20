@@ -1,0 +1,100 @@
+name: adaptive-regime-conflict-gated
+display_name: "Adaptive Regime (Conflict-Gated)"
+version: "0.1.0"
+description: "BTC perpetual strategy that trend-follows in trends, mean-reverts in ranges, and stays flat when signals conflict"
+long_description: |
+  This Playbook trades BTC perpetual futures and captures two different market
+  behaviors with one adaptive policy. Its thesis is that no single style works in
+  every regime: directional moves reward trend-following, quiet ranges reward
+  fading extremes, and the costly mistakes happen in between, when conviction is
+  low and signals disagree. So the strategy first reads the market regime and
+  only then chooses how to act, aiming to stay out of the chop that punishes
+  one-trick systems.
+
+  To enter, it measures whether price is in a committed directional regime or a
+  contained range. When a clear trend is present it opens in the direction of
+  that trend, going long with upward momentum and short with downward momentum.
+  When the market is clearly ranging instead, it flips logic and fades stretched
+  moves, opening long after an oversold washout and short after an overbought
+  push, using a momentum oscillator together with a volatility-band position read
+  for confirmation.
+
+  Exits are symmetric with entries. A trend position is closed when the
+  directional read fades or flips; a range position is closed as price reverts
+  back toward the band center. Crucially, whenever the regime is ambiguous — trend
+  strength is weak and the trend and mean-reversion reads point in conflicting
+  directions — the strategy holds no position at all. Flat is treated as a valid,
+  deliberate decision rather than a missed opportunity, which is the core of its
+  conflict-gating behavior.
+
+  Subscribers can tune leverage, the per-strategy margin budget, and the trading
+  symbol. Raising leverage amplifies both gains and drawdowns equally and does not
+  make the strategy more selective. The margin budget is the capital the platform
+  sizes orders against and uses as the denominator for return percentage, so treat
+  it as the most you are willing to risk on this Playbook. Choosing a different
+  supported symbol re-applies the same regime logic to that market.
+
+  The strategy underperforms in fast regime transitions, where a trend collapses
+  into a range or a range breaks into a trend before the regime read catches up,
+  producing late entries or whipsaw exits. Gap-driven moves around major news,
+  thin liquidity, and persistent funding dislocation can also hurt it. Historical
+  backtest results are not a guarantee of live performance, and live execution
+  pays fees and slippage that erode edge — only subscribe if you can tolerate the
+  drawdown this style can incur.
+
+market_type: contract
+trading_symbols: ["BTCUSDT"]
+tags: ["regime", "adaptive", "trend", "mean-reversion", "btc", "contract"]
+
+decision_mode: deterministic
+backtest_support: full
+runtime_profile: deterministic
+execution_mode: signal_only
+follow_trade_supported: false
+
+strategy_config:
+  trading_symbols: ["BTCUSDT"]
+  bar_interval: "1h"
+  ema_fast: 12
+  ema_slow: 48
+  rsi_period: 14
+  bb_period: 20
+  bb_k: 2.0
+  trend_threshold: 0.012
+  range_threshold: 0.004
+  rsi_low: 35.0
+  rsi_high: 65.0
+  trade_size: "0.05"
+  leverage: 3
+  margin_budget: "1000"
+
+user_config_schema:
+  trading_symbols:
+    type: array
+    item_type: string
+    default: ["BTCUSDT"]
+    options: ["BTCUSDT", "ETHUSDT", "SOLUSDT"]
+    aliases:
+      btc: BTCUSDT
+      bitcoin: BTCUSDT
+      eth: ETHUSDT
+      ethereum: ETHUSDT
+      sol: SOLUSDT
+    min_items: 1
+    max_items: 1
+    label: "Trading symbol"
+  leverage:
+    type: integer
+    default: 3
+    min: 1
+    max: 10
+    aliases:
+      3x: 3
+      5x: 5
+      10x: 10
+    label: "Leverage"
+  margin_budget:
+    type: string
+    default: "1000"
+    pattern: "^[0-9]+(\\.[0-9]+)?$"
+    label: "Margin budget USDT"

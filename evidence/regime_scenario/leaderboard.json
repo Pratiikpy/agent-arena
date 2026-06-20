@@ -1,0 +1,185 @@
+{
+  "symbol": "BTCUSDT",
+  "instrument": "perp",
+  "ticks": 600,
+  "starting_cash": 10000.0,
+  "issuer": "98683e5cbe6313a0",
+  "leaderboard": [
+    {
+      "agent_id": "benchmark-buyhold",
+      "final_equity": 11557.31,
+      "trades": 4,
+      "fees_usd": 3.94,
+      "psr": 0.898,
+      "total_return": 0.155731,
+      "sharpe": 0.052309,
+      "sortino": 0.050529,
+      "max_drawdown": -0.097915,
+      "volatility": 0.004835,
+      "win_rate": 0.545,
+      "profit_factor": 1.160906,
+      "calmar": 1.59047,
+      "periods": 600,
+      "rank": 1
+    },
+    {
+      "agent_id": "rl-qlearn",
+      "final_equity": 9932.56,
+      "trades": 190,
+      "fees_usd": 217.84,
+      "psr": 0.4421,
+      "total_return": -0.006744,
+      "sharpe": -0.005963,
+      "sortino": -0.006408,
+      "max_drawdown": -0.029274,
+      "volatility": 0.00166,
+      "win_rate": 0.428333,
+      "profit_factor": 0.966976,
+      "calmar": -0.230366,
+      "periods": 600,
+      "rank": 2
+    },
+    {
+      "agent_id": "baseline-momentum",
+      "final_equity": 9506.86,
+      "trades": 108,
+      "fees_usd": 114.18,
+      "psr": 0.3099,
+      "total_return": -0.049314,
+      "sharpe": -0.020138,
+      "sortino": -0.018232,
+      "max_drawdown": -0.159373,
+      "volatility": 0.003822,
+      "win_rate": 0.475,
+      "profit_factor": 0.940371,
+      "calmar": -0.309427,
+      "periods": 600,
+      "rank": 3
+    },
+    {
+      "agent_id": "persona-team",
+      "final_equity": 9939.39,
+      "trades": 65,
+      "fees_usd": 10.48,
+      "psr": 0.1099,
+      "total_return": -0.006061,
+      "sharpe": -0.048311,
+      "sortino": -0.044266,
+      "max_drawdown": -0.009591,
+      "volatility": 0.000209,
+      "win_rate": 0.42,
+      "profit_factor": 0.785509,
+      "calmar": -0.631983,
+      "periods": 600,
+      "rank": 4
+    },
+    {
+      "agent_id": "regime",
+      "final_equity": 8983.2,
+      "trades": 125,
+      "fees_usd": 139.06,
+      "psr": 0.0893,
+      "total_return": -0.10168,
+      "sharpe": -0.053358,
+      "sortino": -0.045995,
+      "max_drawdown": -0.184481,
+      "volatility": 0.00325,
+      "win_rate": 0.443333,
+      "profit_factor": 0.799003,
+      "calmar": -0.551166,
+      "periods": 600,
+      "rank": 5
+    },
+    {
+      "agent_id": "swarm",
+      "final_equity": 9812.3,
+      "trades": 51,
+      "fees_usd": 21.79,
+      "psr": 0.0502,
+      "total_return": -0.01877,
+      "sharpe": -0.062295,
+      "sortino": -0.054519,
+      "max_drawdown": -0.025188,
+      "volatility": 0.000505,
+      "win_rate": 0.415,
+      "profit_factor": 0.65606,
+      "calmar": -0.74521,
+      "periods": 600,
+      "rank": 6
+    }
+  ],
+  "firewall": {
+    "totals": {
+      "intents": 543,
+      "allow": 205,
+      "allow_capped": 338,
+      "reject": 0,
+      "exec_fail": 0
+    },
+    "by_agent": {
+      "swarm": {
+        "intents": 51,
+        "allow": 51,
+        "allow_capped": 0,
+        "reject": 0,
+        "exec_fail": 0,
+        "reject_reasons": {}
+      },
+      "regime": {
+        "intents": 125,
+        "allow": 26,
+        "allow_capped": 99,
+        "reject": 0,
+        "exec_fail": 0,
+        "reject_reasons": {}
+      },
+      "persona-team": {
+        "intents": 65,
+        "allow": 65,
+        "allow_capped": 0,
+        "reject": 0,
+        "exec_fail": 0,
+        "reject_reasons": {}
+      },
+      "rl-qlearn": {
+        "intents": 190,
+        "allow": 36,
+        "allow_capped": 154,
+        "reject": 0,
+        "exec_fail": 0,
+        "reject_reasons": {}
+      },
+      "baseline-momentum": {
+        "intents": 108,
+        "allow": 25,
+        "allow_capped": 83,
+        "reject": 0,
+        "exec_fail": 0,
+        "reject_reasons": {}
+      },
+      "benchmark-buyhold": {
+        "intents": 4,
+        "allow": 2,
+        "allow_capped": 2,
+        "reject": 0,
+        "exec_fail": 0,
+        "reject_reasons": {}
+      }
+    }
+  },
+  "overfitting": {
+    "pbo": 0.0317,
+    "insufficient": false,
+    "n_combinations": 252
+  },
+  "ledger_verified": true,
+  "ledger_entries": {
+    "swarm": 267,
+    "regime": 250,
+    "persona-team": 290,
+    "rl-qlearn": 760,
+    "baseline-momentum": 648,
+    "benchmark-buyhold": 24
+  },
+  "label": "regime(trend-chop-trend)"
+}

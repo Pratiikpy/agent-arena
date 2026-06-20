@@ -1,0 +1,17 @@
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.keys/
+*.pem
+.env
+.env.*
+!.env.example
+# ship only the evidence the API serves (real signed leaderboard / ledgers / debate)
+evidence/*
+!evidence/last_run
+!evidence/llm_debate.json
+tests/
+.git/
+.github/
+*.egg-info/

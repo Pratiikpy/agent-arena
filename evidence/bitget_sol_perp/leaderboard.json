@@ -1,0 +1,221 @@
+{
+  "symbol": "SOLUSDT",
+  "instrument": "perp",
+  "ticks": 1000,
+  "starting_cash": 10000.0,
+  "issuer": "98683e5cbe6313a0",
+  "leaderboard": [
+    {
+      "agent_id": "baseline-momentum",
+      "final_equity": 11186.96,
+      "trades": 155,
+      "fees_usd": 156.06,
+      "psr": 0.8711,
+      "total_return": 0.118696,
+      "sharpe": 0.035601,
+      "sortino": 0.037759,
+      "max_drawdown": -0.084209,
+      "volatility": 0.003304,
+      "win_rate": 0.478,
+      "profit_factor": 1.1168,
+      "calmar": 1.409542,
+      "periods": 1000,
+      "rank": 1
+    },
+    {
+      "agent_id": "funding-carry",
+      "final_equity": 10561.87,
+      "trades": 98,
+      "fees_usd": 99.27,
+      "psr": 0.8358,
+      "total_return": 0.056187,
+      "sharpe": 0.030956,
+      "sortino": 0.031287,
+      "max_drawdown": -0.031582,
+      "volatility": 0.001819,
+      "win_rate": 0.474,
+      "profit_factor": 1.183668,
+      "calmar": 1.779077,
+      "periods": 1000,
+      "rank": 2
+    },
+    {
+      "agent_id": "regime",
+      "final_equity": 9867.78,
+      "trades": 198,
+      "fees_usd": 205.75,
+      "psr": 0.465,
+      "total_return": -0.013222,
+      "sharpe": -0.002778,
+      "sortino": -0.002852,
+      "max_drawdown": -0.106722,
+      "volatility": 0.003083,
+      "win_rate": 0.45,
+      "profit_factor": 0.987868,
+      "calmar": -0.123894,
+      "periods": 1000,
+      "rank": 3
+    },
+    {
+      "agent_id": "persona-team",
+      "final_equity": 9987.83,
+      "trades": 57,
+      "fees_usd": 8.95,
+      "psr": 0.3932,
+      "total_return": -0.001217,
+      "sharpe": -0.00859,
+      "sortino": -0.008856,
+      "max_drawdown": -0.002769,
+      "volatility": 0.000141,
+      "win_rate": 0.478,
+      "profit_factor": 0.959715,
+      "calmar": -0.439576,
+      "periods": 1000,
+      "rank": 4
+    },
+    {
+      "agent_id": "swarm",
+      "final_equity": 9918.96,
+      "trades": 51,
+      "fees_usd": 21.34,
+      "psr": 0.2661,
+      "total_return": -0.008104,
+      "sharpe": -0.019756,
+      "sortino": -0.01894,
+      "max_drawdown": -0.010789,
+      "volatility": 0.000408,
+      "win_rate": 0.487,
+      "profit_factor": 0.853414,
+      "calmar": -0.751121,
+      "periods": 1000,
+      "rank": 5
+    },
+    {
+      "agent_id": "benchmark-buyhold",
+      "final_equity": 8633.17,
+      "trades": 5,
+      "fees_usd": 4.12,
+      "psr": 0.1492,
+      "total_return": -0.136683,
+      "sharpe": -0.032876,
+      "sortino": -0.032117,
+      "max_drawdown": -0.242467,
+      "volatility": 0.004202,
+      "win_rate": 0.492,
+      "profit_factor": 0.907971,
+      "calmar": -0.563719,
+      "periods": 1000,
+      "rank": 6
+    },
+    {
+      "agent_id": "rl-qlearn",
+      "final_equity": 9566.86,
+      "trades": 275,
+      "fees_usd": 322.54,
+      "psr": 0.0431,
+      "total_return": -0.043314,
+      "sharpe": -0.051911,
+      "sortino": -0.049611,
+      "max_drawdown": -0.050816,
+      "volatility": 0.000846,
+      "win_rate": 0.429,
+      "profit_factor": 0.737065,
+      "calmar": -0.852359,
+      "periods": 1000,
+      "rank": 7
+    }
+  ],
+  "firewall": {
+    "totals": {
+      "intents": 839,
+      "allow": 288,
+      "allow_capped": 551,
+      "reject": 0,
+      "exec_fail": 0
+    },
+    "by_agent": {
+      "swarm": {
+        "intents": 51,
+        "allow": 51,
+        "allow_capped": 0,
+        "reject": 0,
+        "exec_fail": 0,
+        "reject_reasons": {}
+      },
+      "regime": {
+        "intents": 198,
+        "allow": 66,
+        "allow_capped": 132,
+        "reject": 0,
+        "exec_fail": 0,
+        "reject_reasons": {}
+      },
+      "persona-team": {
+        "intents": 57,
+        "allow": 57,
+        "allow_capped": 0,
+        "reject": 0,
+        "exec_fail": 0,
+        "reject_reasons": {}
+      },
+      "rl-qlearn": {
+        "intents": 275,
+        "allow": 31,
+        "allow_capped": 244,
+        "reject": 0,
+        "exec_fail": 0,
+        "reject_reasons": {}
+      },
+      "baseline-momentum": {
+        "intents": 155,
+        "allow": 46,
+        "allow_capped": 109,
+        "reject": 0,
+        "exec_fail": 0,
+        "reject_reasons": {}
+      },
+      "benchmark-buyhold": {
+        "intents": 5,
+        "allow": 3,
+        "allow_capped": 2,
+        "reject": 0,
+        "exec_fail": 0,
+        "reject_reasons": {}
+      },
+      "funding-carry": {
+        "intents": 98,
+        "allow": 34,
+        "allow_capped": 64,
+        "reject": 0,
+        "exec_fail": 0,
+        "reject_reasons": {}
+      }
+    }
+  },
+  "overfitting": {
+    "pbo": 0.127,
+    "insufficient": false,
+    "n_combinations": 252
+  },
+  "ledger_verified": true,
+  "ledger_entries": {
+    "swarm": 136,
+    "regime": 396,
+    "persona-team": 280,
+    "rl-qlearn": 690,
+    "baseline-momentum": 313,
+    "benchmark-buyhold": 14,
+    "funding-carry": 98
+  },
+  "funding_settlements": 270,
+  "funding_received": {
+    "swarm": -0.66671,
+    "regime": -6.527605,
+    "persona-team": -0.130163,
+    "rl-qlearn": 1.998121,
+    "baseline-momentum": -2.33871,
+    "benchmark-buyhold": -5.256527,
+    "funding-carry": 16.191898
+  },
+  "source": "bitget:1h:1000bars"
+}

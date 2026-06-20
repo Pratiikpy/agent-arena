@@ -1,0 +1,58 @@
+{
+  "allow": {
+    "decision": "ALLOW",
+    "reason": "within all limits",
+    "effective_notional_usd": 50.0,
+    "certificate": {
+      "version": 1,
+      "intent_hash": "779b7c303be232bf3d89f10f7824665221120f9dc6da6df193abfac4f2ae9348",
+      "decision": "ALLOW",
+      "effective_notional_usd": 50.0,
+      "issued_at": "2026-06-20T09:36:47.861569+00:00",
+      "issuer": "98683e5cbe6313a0",
+      "nonce": "Nd5GwECJ3K4BJuuO",
+      "signature_hex": "9f77e51ee0b269bdbba0616851e88f983b688d3760df4a6f17bf9c076419b828a3bfc9f0e89795f538c63b0486c63e66c749a8efbd1572b0f830b6f785519102",
+      "public_key_hex": "c2f8243b0d573587f285c830a868acd19249d17d59ecbf9329e796dfed6fb630"
+    },
+    "certificate_valid": true
+  },
+  "allow_capped": {
+    "decision": "ALLOW_CAPPED",
+    "reason": "capped from $999,999.00 to $2,000.00",
+    "effective_notional_usd": 2000.0,
+    "certificate": {
+      "version": 1,
+      "intent_hash": "51e1f82959bb4fa9137b21ecf1ca0ca47ef57d6832a8913a6873b028482eb83c",
+      "decision": "ALLOW_CAPPED",
+      "effective_notional_usd": 2000.0,
+      "issued_at": "2026-06-20T09:36:47.862568+00:00",
+      "issuer": "98683e5cbe6313a0",
+      "nonce": "xwdcTWB82Du6410N",
+      "signature_hex": "7f6a1b84e90e2a736b3e208a51fe451cf369adb3ed1f46a2ded6252705609bf2cd2800a82efd5b0af820b1b26fb9b80330c38681f0ed0652b53af35bab5a340b",
+      "public_key_hex": "c2f8243b0d573587f285c830a868acd19249d17d59ecbf9329e796dfed6fb630"
+    },
+    "certificate_valid": true
+  },
+  "reject": {
+    "decision": "REJECT",
+    "reason": "no headroom under sizing caps",
+    "effective_notional_usd": null,
+    "certificate": {
+      "version": 1,
+      "intent_hash": "58686a05e6c251833edb7124207fecbb25a2ada7f6791ba0830a6b441b0d796f",
+      "decision": "REJECT",
+      "effective_notional_usd": null,
+      "issued_at": "2026-06-20T09:36:47.862568+00:00",
+      "issuer": "98683e5cbe6313a0",
+      "nonce": "1gH2cfEtSjGgeOzL",
+      "signature_hex": "c2c9c39a3a6ebdd85fa3720d4ee7a6270a909ef9a8f2977034f9a0c34105180d795add91fafd77508c7a4b18becfe5cd9dc0e92835fd2fadd0a9e25c7217010d",
+      "public_key_hex": "c2f8243b0d573587f285c830a868acd19249d17d59ecbf9329e796dfed6fb630"
+    },
+    "certificate_valid": true
+  },
+  "tamper_detection": {
+    "original_valid": true,
+    "after_mutation_valid": false,
+    "note": "mutating any signed field invalidates the certificate"
+  }
+}

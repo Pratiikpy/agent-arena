@@ -1,0 +1,56 @@
+bitarena
+Copyright (c) 2026 Prateek Tripathi
+
+This product is original work by Prateek Tripathi. It is built on, integrates,
+and adapts ideas and patterns from the open-source projects listed below. Each
+upstream project retains its own copyright and license; this NOTICE preserves
+attribution as those licenses require. Where a component is a clean
+reimplementation of an idea (not a verbatim copy), that is stated explicitly.
+
+--------------------------------------------------------------------------------
+Vibe-Trading — HKUDS — MIT License
+https://github.com/HKUDS/Vibe-Trading
+  The pre-trade safety design in `bitarena/firewall/` (an immutable
+  bounded-autonomy mandate, a fail-closed pre-trade gate, and the
+  halt / daily-count / universe / notional / exposure / leverage checks) is a
+  clean reimplementation inspired by Vibe-Trading's live order-guard and mandate
+  model. The optional "swarm" competitor agent can wrap Vibe-Trading when it is
+  installed in the environment.
+
+FinRL — AI4Finance Foundation — MIT License
+https://github.com/AI4Finance-Foundation/FinRL
+  Available (optionally, via the `[rl]` extra) as a heavier RL competitor; the default
+  RL agent is an original, dependency-free tabular Q-learner.
+
+TradingAgents — Tauric Research — Apache-2.0
+https://github.com/TauricResearch/TradingAgents
+  Analyst-persona debate patterns inform the persona competitor agent.
+
+VectorBT — Oleg Polakow
+https://github.com/polakowo/vectorbt
+  Referenced for large-scale vectorized backtesting (optional extra).
+
+Qlib — Microsoft — MIT License
+https://github.com/microsoft/qlib
+  Referenced for factor-research and alpha definitions.
+
+--------------------------------------------------------------------------------
+Mathematical methods are reimplemented from their source papers as factual
+content (mathematical formulas are not copyrightable), with citations:
+
+  - Bailey, D. H. & Lopez de Prado, M. (2014). "The Deflated Sharpe Ratio:
+    Correcting for Selection Bias, Backtest Overfitting and Non-Normality."
+  - Bailey, Borwein, Lopez de Prado, Zhu (2017). "The Probability of Backtest
+    Overfitting." Journal of Computational Finance.
+
+The single-asset quant factors in `bitarena/perception/factors.py` are
+reimplemented in NumPy from the published formulas (factual content) of:
+  - Kakushadze, Z. (2015). "101 Formulaic Alphas" (arXiv:1601.00991).
+  - Guotai Junan Securities (2014). "191 Short-period Trading Alpha Factors."
+  - Microsoft Qlib "Alpha158" feature set (Apache-2.0).
+Only formulas are reproduced; no prose, tables, or upstream code.
+
+--------------------------------------------------------------------------------
+Bitget, Bitget Agent Hub, and GetAgent / Playbook are products of Bitget. This
+project integrates their public APIs. It is not affiliated with, sponsored by,
+or endorsed by Bitget.

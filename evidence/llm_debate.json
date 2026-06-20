@@ -1,0 +1,131 @@
+{
+  "symbol": "BTCUSDT",
+  "instrument": "perp",
+  "source": "bitget:120bars",
+  "qwen_available": true,
+  "decision_source": "qwen",
+  "rationale": "Sharp disagreement between mean-reversion bounce and trend breakdown; low agreement forces flat per risk protocol.",
+  "signals": [
+    {
+      "name": "momentum",
+      "source": "technical",
+      "value": -0.024,
+      "confidence": 0.998608985238669
+    },
+    {
+      "name": "trend",
+      "source": "technical",
+      "value": -0.02,
+      "confidence": 0.998608985238669
+    },
+    {
+      "name": "mean_reversion",
+      "source": "technical",
+      "value": 0.576,
+      "confidence": 0.7988871881909353
+    },
+    {
+      "name": "rsi",
+      "source": "technical",
+      "value": 0.283,
+      "confidence": 0.7988871881909353
+    },
+    {
+      "name": "stochastic",
+      "source": "quant_factors",
+      "value": -0.503,
+      "confidence": 0.5409465020576354
+    },
+    {
+      "name": "williams_r",
+      "source": "quant_factors",
+      "value": -0.503,
+      "confidence": 0.5409465020576354
+    },
+    {
+      "name": "roc",
+      "source": "quant_factors",
+      "value": -0.009,
+      "confidence": 0.5409465020576354
+    },
+    {
+      "name": "macd",
+      "source": "quant_factors",
+      "value": -0.011,
+      "confidence": 0.5409465020576354
+    },
+    {
+      "name": "bollinger_pctb",
+      "source": "quant_factors",
+      "value": 0.5,
+      "confidence": 0.48685185185187185
+    },
+    {
+      "name": "cci",
+      "source": "quant_factors",
+      "value": -0.605,
+      "confidence": 0.5409465020576354
+    },
+    {
+      "name": "obv",
+      "source": "quant_factors",
+      "value": -0.018,
+      "confidence": 0.4327572016461083
+    },
+    {
+      "name": "kmid",
+      "source": "quant_factors",
+      "value": 0.003,
+      "confidence": 0.3786625514403448
+    },
+    {
+      "name": "autocorr",
+      "source": "quant_factors",
+      "value": 0.332,
+      "confidence": 0.32456790123458124
+    },
+    {
+      "name": "donchian",
+      "source": "quant_factors",
+      "value": -0.703,
+      "confidence": 0.5409465020576354
+    },
+    {
+      "name": "macro",
+      "source": "agent_hub:macro(fallback)",
+      "value": 0.024,
+      "confidence": 0.4
+    },
+    {
+      "name": "sentiment",
+      "source": "agent_hub:sentiment(fallback)",
+      "value": 0.583,
+      "confidence": 0.4
+    },
+    {
+      "name": "news",
+      "source": "agent_hub:news(fallback)",
+      "value": -0.014,
+      "confidence": 0.4
+    },
+    {
+      "name": "onchain",
+      "source": "agent_hub:onchain(fallback)",
+      "value": -0.031,
+      "confidence": 0.4
+    },
+    {
+      "name": "technical",
+      "source": "agent_hub:technical(fallback)",
+      "value": -0.035,
+      "confidence": 0.4
+    }
+  ],
+  "net_signal": -0.006,
+  "agreement": 0.037,
+  "intent": null,
+  "verdict": {
+    "decision": "HOLD",
+    "reason": "no conviction -> no order"
+  }
+}

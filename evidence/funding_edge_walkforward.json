@@ -1,0 +1,54 @@
+{
+  "folds": 5,
+  "per_fold": [
+    {
+      "fold": 1,
+      "bars": 200,
+      "settlements": 25,
+      "funding_carry_return": -0.00776,
+      "buyhold_return": -0.02957,
+      "excess": 0.02181,
+      "carry_usd": 2.8212
+    },
+    {
+      "fold": 2,
+      "bars": 200,
+      "settlements": 25,
+      "funding_carry_return": 0.00709,
+      "buyhold_return": 0.0008,
+      "excess": 0.00629,
+      "carry_usd": 2.0056
+    },
+    {
+      "fold": 3,
+      "bars": 200,
+      "settlements": 25,
+      "funding_carry_return": 0.05261,
+      "buyhold_return": -0.09188,
+      "excess": 0.14449,
+      "carry_usd": 2.8657
+    },
+    {
+      "fold": 4,
+      "bars": 200,
+      "settlements": 25,
+      "funding_carry_return": 0.0,
+      "buyhold_return": -0.01627,
+      "excess": 0.01627,
+      "carry_usd": 0.0
+    },
+    {
+      "fold": 5,
+      "bars": 200,
+      "settlements": 25,
+      "funding_carry_return": -0.00653,
+      "buyhold_return": 0.00268,
+      "excess": -0.00921,
+      "carry_usd": 0.2378
+    }
+  ],
+  "mean_excess_vs_buyhold": 0.03593,
+  "beats_buyhold_rate": 0.8,
+  "total_carry_usd": 7.9303,
+  "symbol": "BTCUSDT"
+}

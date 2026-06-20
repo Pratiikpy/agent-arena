@@ -1,0 +1,89 @@
+name: momentum-breakout-sol
+display_name: "Momentum Breakout (Donchian, SOL)"
+version: "0.1.0"
+description: "SOL perpetual breakout strategy — enters on a channel breakout, exits on the opposite channel"
+long_description: |
+  This Playbook trades SOL perpetual futures with a classic breakout approach. Its
+  thesis is that the start of a real directional move shows up as price pushing
+  beyond the range it has held recently: when buyers are willing to pay above the
+  recent ceiling, or sellers to hit below the recent floor, that break tends to be
+  followed by continuation rather than immediate reversal. The strategy is built to
+  ride those continuations and to ignore quiet, contained chop where breakouts are
+  false more often than not.
+
+  Entry is breakout-driven and momentum-aligned. When price closes above the upper
+  edge of its recent trading channel, the strategy reads that as a bullish breakout
+  and enters long; when price closes below the lower edge, it enters short. It does
+  not predict the break or fade extremes — it waits for the range to give way before
+  committing, accepting some lateness in exchange for confirmation.
+
+  Exit uses a tighter opposite channel as a trailing stop. A long is closed when
+  price falls back through the lower edge of a shorter recent channel; a short is
+  closed when price pushes back above the upper edge of that shorter channel. There
+  is no fixed profit target — the strategy lets winners run until the trailing
+  channel is broken, and cuts losers when the breakout fails and price snaps back
+  into the range. Many small failed breakouts are accepted as the cost of catching
+  the occasional sustained trend.
+
+  SOL is more volatile than BTC or ETH, producing larger, cleaner breakouts but also
+  sharper false ones. The same engine is applied here, so behavior is directly
+  comparable across the three markets.
+
+  Subscribers can tune leverage, the per-strategy margin budget, and the trading
+  symbol. Higher leverage amplifies gains and drawdowns equally and does not make the
+  strategy more selective. Margin budget is what the platform sizes orders against and
+  the denominator for return percentage — treat it as your maximum risk here. A
+  different supported symbol applies the same breakout logic to that market.
+
+  The strategy underperforms in choppy, range-bound markets that produce repeated
+  false breakouts and whipsaw losses, and around gap-driven news that blows through
+  stops. Thin liquidity and persistent funding dislocation can also erode results.
+  Past performance does not guarantee live results, and live execution pays fees and
+  slippage — only subscribe with capital whose drawdown you can tolerate.
+
+market_type: contract
+trading_symbols: ["SOLUSDT"]
+tags: ["breakout", "momentum", "donchian", "trend", "sol", "contract"]
+
+decision_mode: deterministic
+backtest_support: full
+runtime_profile: deterministic
+execution_mode: signal_only
+follow_trade_supported: false
+
+strategy_config:
+  trading_symbols: ["SOLUSDT"]
+  bar_interval: "1h"
+  entry_period: 20
+  exit_period: 10
+  trade_size: "20.0"
+  leverage: 3
+  margin_budget: "1000"
+
+user_config_schema:
+  trading_symbols:
+    type: array
+    item_type: string
+    default: ["SOLUSDT"]
+    options: ["SOLUSDT", "BTCUSDT", "ETHUSDT"]
+    aliases:
+      sol: SOLUSDT
+      btc: BTCUSDT
+      eth: ETHUSDT
+    min_items: 1
+    max_items: 1
+    label: "Trading symbol"
+  leverage:
+    type: integer
+    default: 3
+    min: 1
+    max: 10
+    aliases:
+      3x: 3
+      5x: 5
+    label: "Leverage"
+  margin_budget:
+    type: string
+    default: "1000"
+    pattern: "^[0-9]+(\\.[0-9]+)?$"
+    label: "Margin budget USDT"

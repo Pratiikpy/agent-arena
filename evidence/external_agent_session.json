@@ -1,0 +1,435 @@
+{
+  "agent": "external-rsi-bot",
+  "symbol": "BTCUSDT",
+  "decisions": 53,
+  "allowed": 53,
+  "allow_capped": 0,
+  "rejected": 0,
+  "all_verdicts_signed": true,
+  "log": [
+    {
+      "ts": 1781839740000,
+      "rsi": 73.6,
+      "side": "sell",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781839800000,
+      "rsi": 69.6,
+      "side": "sell",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781839860000,
+      "rsi": 78.8,
+      "side": "sell",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781839920000,
+      "rsi": 78.9,
+      "side": "sell",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781839980000,
+      "rsi": 69.1,
+      "side": "sell",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781840040000,
+      "rsi": 67.7,
+      "side": "sell",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781840280000,
+      "rsi": 24.5,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781840340000,
+      "rsi": 24.5,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781840400000,
+      "rsi": 33.6,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781840460000,
+      "rsi": 27.2,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781840520000,
+      "rsi": 24.7,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781840580000,
+      "rsi": 19.9,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781840640000,
+      "rsi": 27.8,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781840700000,
+      "rsi": 25.4,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781840760000,
+      "rsi": 31.5,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781840880000,
+      "rsi": 33.6,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781841180000,
+      "rsi": 70.4,
+      "side": "sell",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781841240000,
+      "rsi": 68.3,
+      "side": "sell",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781841360000,
+      "rsi": 67.9,
+      "side": "sell",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781841420000,
+      "rsi": 71.9,
+      "side": "sell",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781841540000,
+      "rsi": 65.9,
+      "side": "sell",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781842440000,
+      "rsi": 67.1,
+      "side": "sell",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781842500000,
+      "rsi": 84.6,
+      "side": "sell",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781842560000,
+      "rsi": 83.9,
+      "side": "sell",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781842620000,
+      "rsi": 90.9,
+      "side": "sell",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781842680000,
+      "rsi": 70.9,
+      "side": "sell",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781843040000,
+      "rsi": 33.5,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781843100000,
+      "rsi": 32.1,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781843160000,
+      "rsi": 32.6,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781843220000,
+      "rsi": 30.0,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781843280000,
+      "rsi": 28.7,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781843340000,
+      "rsi": 28.4,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781843400000,
+      "rsi": 21.9,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781843460000,
+      "rsi": 13.9,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781843520000,
+      "rsi": 17.2,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781843580000,
+      "rsi": 15.4,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781843640000,
+      "rsi": 20.3,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781843700000,
+      "rsi": 18.5,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781843760000,
+      "rsi": 18.7,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781843820000,
+      "rsi": 14.8,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781843880000,
+      "rsi": 9.7,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781843940000,
+      "rsi": 9.9,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781844000000,
+      "rsi": 18.6,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781844060000,
+      "rsi": 22.7,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781844120000,
+      "rsi": 26.5,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781844180000,
+      "rsi": 25.9,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781844240000,
+      "rsi": 34.4,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781844540000,
+      "rsi": 68.4,
+      "side": "sell",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781844900000,
+      "rsi": 31.3,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781844960000,
+      "rsi": 27.6,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781845020000,
+      "rsi": 28.4,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781845080000,
+      "rsi": 28.6,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    },
+    {
+      "ts": 1781845140000,
+      "rsi": 31.3,
+      "side": "buy",
+      "decision": "ALLOW",
+      "effective_notional_usd": 200.0,
+      "cert_valid": true
+    }
+  ]
+}
