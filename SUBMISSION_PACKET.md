@@ -8,7 +8,13 @@ fill (credentials / hosting / posting).
 > `forms.gle/mGrppbHw6gz5jmot8` (Resources table). They differ. **Confirm which is live before
 > submitting** — submitting to the wrong/closed form means *not submitted = disqualified*. Also
 > baseline-or-DQ: your **UID must match registration**, and **all links public / no login**
-> (GitHub ✓, deploy ✓ no-login → a demo video is *optional*, not required).
+> (GitHub ✓, deploy ✓ no-login).
+>
+> ⚠️ **Demo video — sources conflict, so don't assume it's optional.** The per-track summary says
+> the video is optional unless the demo needs a login (ours doesn't), but a Track-2-specific line
+> says *required*. Safe path: **record the ≤3-min `DEMO.md` video** OR submit **primary = Track 1
+> or Track 3** (video is explicitly optional there, and #1 is judged across all tracks anyway).
+> Do NOT submit primary=Track 2 with no video on the "no-login → optional" assumption.
 
 ---
 
