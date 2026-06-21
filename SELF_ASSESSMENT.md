@@ -26,9 +26,11 @@ top-3 by Sharpe across BTC/ETH/SOL.
 ## Runnability — strong, with a clear ceiling
 Live signed firewall at **https://bitarena.vercel.app** (also curl-able offline), with a
 **continuously-ticking `/pulse` heartbeat** — a fresh Ed25519-signed verdict on the live BTC
-price every few seconds — and a **real, signed `/live` tournament** served from the deploy.
-Real Bitget market data, **four published GetAgent Playbooks**, a live Qwen debate agent, and
-255 passing offline tests; the public repo (CI green) and the deploy are both up. **The paper →
+price every few seconds — and a **signed `/live` tournament snapshot** served from the deploy
+(advanced by a scheduled step; the serverless deploy is stateless, so it serves the last
+committed snapshot). Real Bitget market data, **four published GetAgent Playbooks**, a Qwen
+debate agent (a recorded snapshot on the serverless deploy; live on the container/offline path),
+and 255 passing offline tests; the public repo (CI green) and the deploy are both up. **The paper →
 live step is one gated command** — `scripts/place_live_order.py --confirm` places only the
 firewall-ALLOWed size and writes a signed receipt. **Limit:** trading is still paper (the real
 order needs a trade-permission key + a go-ahead), and the ≤3-min demo video is not yet recorded

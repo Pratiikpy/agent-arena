@@ -197,10 +197,23 @@ def create_app(
 
     @app.get("/live")
     def live():
-        """The continuously-growing live tournament (written by scripts/live_step.py)."""
+        """A signed live-arena snapshot (advanced by scripts/live_step.py — continuously-growing
+        only when that runs on a schedule; the serverless deploy is stateless and does not advance
+        on its own, so this endpoint serves the last committed snapshot. See /pulse for the
+        continuously-live signed heartbeat)."""
         for path in (evidence.parent / "live" / "leaderboard.json", Path("evidence/live/leaderboard.json")):
             if path.exists():
-                return json.loads(path.read_text(encoding="utf-8"))
+                data = json.loads(path.read_text(encoding="utf-8"))
+                if isinstance(data, dict):  # label honestly so "I curled it twice and it didn't
+                    data.setdefault("mode", "snapshot")  # move" is answered before it's discovered
+                    data.setdefault(
+                        "snapshot_note",
+                        "A signed snapshot of a resumable live arena, served from the deploy. The "
+                        "deploy is stateless serverless, so it does not advance on its own — run "
+                        "scripts/live_step.py (cron/worker) to grow it. For a continuously-live "
+                        "signed surface, see /pulse.",
+                    )
+                return data
         return JSONResponse({"detail": "no live arena yet — run scripts/live_step.py"}, status_code=404)
 
     @app.get("/pubkey")
@@ -246,7 +259,16 @@ def create_app(
     def debate():
         for path in (evidence / "llm_debate.json", evidence.parent / "llm_debate.json", Path("evidence/llm_debate.json")):
             if path.exists():
-                return json.loads(path.read_text(encoding="utf-8"))
+                data = json.loads(path.read_text(encoding="utf-8"))
+                if isinstance(data, dict):  # label honestly: the serverless deploy has no Qwen key,
+                    data.setdefault("mode", "snapshot")  # so this is a recording, not a live call
+                    data.setdefault(
+                        "snapshot_note",
+                        "Recorded Qwen debate, served from the signed evidence pack. The deployed "
+                        "API is serverless and holds no model key, so debates are not generated "
+                        "live here — run the offline/container path for a fresh one.",
+                    )
+                return data
         return JSONResponse({"detail": "no debate run yet"}, status_code=404)
 
     @app.get("/ledger")
