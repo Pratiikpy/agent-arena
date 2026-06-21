@@ -209,10 +209,18 @@ ledger, and Bitget integration are original work, with **no imports or copies** 
 (clean reimplementation of public ideas; see `NOTICE`). The statistics are reimplemented from the
 source papers (Bailey & López de Prado), formulas only.
 
-**"Is the trading edge real?"** One structural edge is — funding carry, validated with
-walk-forward + Deflated Sharpe on real Bitget funding history. The secondary conflict-gating bet
-is **directional but not statistically significant**, and we report that rather than hide it
-(`evidence/swarm_edge.json`). The product is the *trust layer*, not a secret alpha.
+**"Does it make money?"** Yes — with real, reproducible evidence, and we don't fake it. The four
+strategies published on Bitget's GetAgent return up to **+39.7% on the strategy budget at profit
+factor 2.33** (BTC momentum-breakout), with profit factors **1.42–3.34** across the set — real
+on-platform backtests, not paper math. The **funding-carry** agent harvests a genuine low-risk
+yield (**+3.1% annualized** on BTC, adaptive — skipping negative-funding intervals; its very high
+Sharpe reflects funding's *low variance*, not big returns), and it ranks **top-3 by Sharpe across
+BTC/ETH/SOL** in the live tournaments while collecting real funding. The honesty that makes this
+credible: on **flat** price data, active price-directional agents do **not** reliably beat
+buy-hold, and the conflict-gated swarm's chop edge is **directional but not statistically
+significant** — both reported, not hidden (`evidence/swarm_edge.json`, `funding_carry.json`,
+`playbook_backtests.json`). The money is structural carry + published regime/momentum strategies,
+never a cherry-picked curve.
 
 **"Is it actually live, or just slides?"** Live at **bitarena.vercel.app** — the landing ticks a
 fresh signed verdict on the **real BTC price every few seconds** (`/pulse`). **Click the badge**
