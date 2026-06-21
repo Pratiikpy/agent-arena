@@ -153,6 +153,12 @@ def create_app(
         page = web / "index.html"
         return page.read_text(encoding="utf-8") if page.exists() else "<h1>Agent Arena</h1>"
 
+    @app.get("/proof-deck", response_class=HTMLResponse)
+    @app.get("/proof-deck.html", response_class=HTMLResponse)
+    def proof_deck() -> str:
+        page = web / "proof-deck.html"
+        return page.read_text(encoding="utf-8") if page.exists() else "<h1>proof deck not found</h1>"
+
     @app.post("/firewall")
     def firewall_eval(req: FirewallRequest) -> dict:
         try:
