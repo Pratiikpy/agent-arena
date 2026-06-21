@@ -212,10 +212,16 @@ function mockDebate(){ return { rationale:"Oversold RSI favors bounce, but weak 
     {name:"sentiment",source:"agent_hub:sentiment",value:0.828,confidence:0.400},{name:"onchain",source:"agent_hub:onchain",value:0.310,confidence:0.550},
     {name:"orderflow",source:"agent_hub:news",value:-0.220,confidence:0.610},{name:"analyst",source:"agent_hub:macro",value:-0.050,confidence:0.480},
     {name:"macro",source:"agent_hub:technical",value:0.120,confidence:0.350} ]}; }
+function mockAllocator(){ return { symbol:"BTCUSDT", trust_minus_equal_usd:1109.46,
+  trust_allocated:{fund_final_equity:56986.05}, equal_weight:{fund_final_equity:55876.59},
+  weights_history:[{tick:550,
+    weights:{swarm:0.0199,"persona-team":0.0199,"rl-qlearn":0.0199,"baseline-momentum":0.3142,"benchmark-buyhold":0.626},
+    dsr:{swarm:0.1224,"persona-team":0.7602,"rl-qlearn":0.7428,"baseline-momentum":0.9651,"benchmark-buyhold":0.9645},
+    scores:{swarm:-0.0002,"persona-team":0.0026,"rl-qlearn":0.0032,"baseline-momentum":0.0897,"benchmark-buyhold":0.1112}}]}; }
 
 // ---------- actions ----------
 const App = {
-  go(v){ state.view=v; try{window.scrollTo(0,0);}catch(e){} if(v==="arena")App.loadLb(); if(v==="ledger")App.loadLed(); if(v==="debate")App.loadDeb(); render(); },
+  go(v){ state.view=v; try{window.scrollTo(0,0);}catch(e){} if(v==="arena")App.loadLb(); if(v==="allocator")App.loadAlloc(); if(v==="ledger")App.loadLed(); if(v==="debate")App.loadDeb(); render(); },
   set(k,v){ state[k]=v; },
   setSeg(k,v){ state[k]=v; render(); },
   setSize(v){ state[state.sizeMode==="notional"?"notional":"quantity"]=v; },
@@ -258,6 +264,7 @@ const App = {
   },
   async loadLed(){ try{ const r=await api("/ledger?agent="+encodeURIComponent(state.ledgerAgent)+"&limit=10"); state.led=r.ok?r.data:genLedger(state.ledgerAgent); }catch(e){ state.led=genLedger(state.ledgerAgent); } render(); },
   async loadDeb(){ if(state.deb) return; try{ const r=await api("/debate"); state.deb=r.ok?r.data:mockDebate(); }catch(e){ state.deb=mockDebate(); } render(); },
+  async loadAlloc(){ if(state.alloc) return; try{ const r=await api("/allocator"); state.alloc=r.ok?r.data:mockAllocator(); }catch(e){ state.alloc=mockAllocator(); } render(); },
   setLedgerAgent(a){ state.ledgerAgent=a; state.openRow=-1; state.led=null; App.loadLed(); },
   async runVerify(){
     const el=document.getElementById("verifyInput"); const txt=el?el.value:(state.verifyInput||""); state.verifyInput=txt;
@@ -335,7 +342,7 @@ function buildResult(r){
 
 // ---------- views ----------
 function nav(){
-  const items=[["OVERVIEW","landing"],["FIREWALL","firewall"],["ARENA","arena"],["LEDGER","ledger"],["DEBATE","debate"],["VERIFY","verify"]]
+  const items=[["OVERVIEW","landing"],["FIREWALL","firewall"],["ARENA","arena"],["ALLOCATOR","allocator"],["LEDGER","ledger"],["DEBATE","debate"],["VERIFY","verify"]]
     .map(n=>'<button onclick="App.go(\''+n[1]+'\')" style="'+navStyle(state.view===n[1])+'">'+n[0]+'</button>').join("");
   const dotColor = state.online ? "#0b7a4b" : "#b3b8c0";
   return '<nav style="position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:rgba(255,255,255,.8);backdrop-filter:saturate(180%) blur(16px);-webkit-backdrop-filter:saturate(180%) blur(16px);border-bottom:1px solid rgba(0,0,0,.06);">\
@@ -523,7 +530,35 @@ function verifyView(){
     <textarea id="verifyInput" oninput="App.set(\'verifyInput\',this.value)" placeholder="paste a certificate or verdict JSON here" style="width:100%;height:230px;background:#f6f6f7;border:1px solid #e6e6e9;border-radius:12px;padding:14px;font-family:\'JetBrains Mono\',monospace;font-size:12px;line-height:1.5;color:#0a0a0a;resize:vertical;">'+esc(state.verifyInput||"")+'</textarea>\
     <div style="display:flex;gap:10px;margin-top:12px;"><button onclick="App.runVerify()" style="background:#0a0a0a;color:#fff;border:none;border-radius:11px;padding:13px 22px;font-size:14px;font-weight:600;cursor:pointer;">Verify signature →</button><button onclick="App.loadLastCert()" style="background:#fff;color:#0a0a0a;border:1px solid rgba(0,0,0,.16);border-radius:11px;padding:13px 22px;font-size:14px;font-weight:600;cursor:pointer;">Load last verdict</button><button onclick="App.tamperAndVerify()" title="Flip one byte of the signature and re-verify — watch it fail" style="background:#fff;color:#c23b30;border:1px solid #f2bdb7;border-radius:11px;padding:13px 22px;font-size:14px;font-weight:600;cursor:pointer;">Tamper a byte ↻</button></div>'+card+'</div>';
 }
-function view(){ switch(state.view){ case "firewall":return firewall(); case "arena":return arena(); case "ledger":return ledger(); case "debate":return debate(); case "verify":return verifyView(); default:return landing(); } }
+function allocatorView(){
+  const d=state.alloc||mockAllocator();
+  const wh=d.weights_history||[]; const last=wh[wh.length-1]||{weights:{},dsr:{},scores:{}};
+  const W=last.weights||{}, DSR=last.dsr||{}, SC=last.scores||{};
+  const trust=(d.trust_allocated||{}).fund_final_equity||0, equal=(d.equal_weight||{}).fund_final_equity||0, delta=d.trust_minus_equal_usd||0;
+  const ids=Object.keys(W).sort((a,b)=>(W[b]||0)-(W[a]||0));
+  const rows=ids.map(aid=>{ const w=W[aid]||0, dsr=DSR[aid], sc=SC[aid]; const skill=dsr!=null&&dsr>=0.95;
+    const col=w>=0.2?"#0b7a4b":(w<=0.03?"#c23b30":"#9a6b00");
+    return '<div style="display:grid;grid-template-columns:1.4fr 3fr 0.8fr 0.9fr;gap:14px;align-items:center;padding:13px 0;border-bottom:1px solid rgba(0,0,0,.06);">\
+      <span class="mono" style="font-size:13.5px;color:#1d1d1f;">'+esc(aid)+'</span>\
+      <div style="position:relative;height:22px;background:#f1f1f2;border-radius:6px;overflow:hidden;"><div style="position:absolute;left:0;top:0;bottom:0;width:'+(w*100).toFixed(1)+'%;background:'+col+';opacity:.85;"></div><span class="mono" style="position:absolute;left:8px;top:50%;transform:translateY(-50%);font-size:11.5px;color:#1d1d1f;">'+(w*100).toFixed(1)+'%</span></div>\
+      <span class="mono" style="font-size:12.5px;text-align:right;color:'+(skill?"#0b7a4b":"#9aa0aa")+';" title="Deflated Sharpe — skill confidence; >=0.95 funded">'+(dsr!=null?Number(dsr).toFixed(2):"—")+'</span>\
+      <span class="mono" style="font-size:12.5px;text-align:right;color:'+((sc||0)>=0?"#6b7280":"#c23b30")+';">'+(sc!=null?((sc>=0?"+":"")+Number(sc).toFixed(3)):"—")+'</span>\
+    </div>'; }).join("");
+  return '<div style="max-width:1180px;margin:0 auto;padding:56px 40px 80px;">\
+    <div style="font-size:12px;font-weight:600;letter-spacing:.2em;color:#6b7280;margin-bottom:12px;">CAPITAL ALLOCATION</div>\
+    <h1 style="margin:0 0 10px;font-size:clamp(2rem,4vw,2.9rem);font-weight:700;letter-spacing:-.028em;color:#1d1d1f;">Fund by verified trust.</h1>\
+    <p style="margin:0 0 26px;max-width:660px;font-size:1.05rem;line-height:1.55;color:#6b7280;">The allocator sizes each agent\'s capital by its rolling performance <b>deflated by skill confidence (DSR)</b> — a lucky streak that can\'t be told from noise is discounted, so capital flows to skill, not luck. The firewall still gates every order.</p>\
+    <div data-rise style="display:flex;gap:34px;flex-wrap:wrap;padding:20px 24px;background:#fafafa;border:1px solid rgba(0,0,0,.08);border-radius:16px;margin-bottom:18px;">\
+      <div><div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:#9aa0aa;">TRUST FUND</div><div class="mono" style="font-size:18px;color:#1d1d1f;margin-top:4px;">'+fmt(trust)+'</div></div>\
+      <div><div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:#9aa0aa;">EQUAL-WEIGHT</div><div class="mono" style="font-size:18px;color:#6b7280;margin-top:4px;">'+fmt(equal)+'</div></div>\
+      <div><div style="font-size:10px;font-weight:600;letter-spacing:.14em;color:#9aa0aa;">TRUST − EQUAL</div><div class="mono" style="font-size:18px;color:'+(delta>=0?"#0b7a4b":"#c23b30")+';margin-top:4px;">'+(delta>=0?"+":"")+fmt(delta)+'</div></div>\
+    </div>\
+    <div data-rise style="border:1px solid rgba(0,0,0,.09);border-radius:16px;padding:20px 24px;background:#fff;">\
+      <div style="display:grid;grid-template-columns:1.4fr 3fr 0.8fr 0.9fr;gap:14px;font-size:10px;font-weight:600;letter-spacing:.1em;color:#9aa0aa;padding-bottom:8px;border-bottom:1px solid rgba(0,0,0,.08);"><span>AGENT</span><span>CAPITAL ALLOCATED</span><span style="text-align:right;">DSR</span><span style="text-align:right;">SCORE</span></div>'+rows+'\
+      <p style="margin:16px 0 0;font-size:12.5px;line-height:1.5;color:#9aa0aa;">Green DSR (≥0.95) = skill-confident, funded; low DSR = likely luck, starved toward the floor. Capital follows verified trust, not raw return — the verification layer applied to money.</p>\
+    </div></div>';
+}
+function view(){ switch(state.view){ case "firewall":return firewall(); case "arena":return arena(); case "allocator":return allocatorView(); case "ledger":return ledger(); case "debate":return debate(); case "verify":return verifyView(); default:return landing(); } }
 function render(){ $("app").innerHTML = nav() + view() + footer(); document.querySelectorAll("#app input:not([name])").forEach((el,i)=>{ el.name = "field" + i; }); }
 
 // ---------- live pulse: a continuously-updating signed firewall heartbeat ----------

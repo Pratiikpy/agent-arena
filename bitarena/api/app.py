@@ -271,6 +271,14 @@ def create_app(
                 return data
         return JSONResponse({"detail": "no debate run yet"}, status_code=404)
 
+    @app.get("/allocator")
+    def allocator():
+        """The TrustAllocator result: capital flows to DSR-verified skill, not lucky streaks."""
+        for path in (evidence / "allocator.json", evidence.parent / "allocator.json", Path("evidence/allocator.json")):
+            if path.exists():
+                return json.loads(path.read_text(encoding="utf-8"))
+        return JSONResponse({"detail": "no allocator run yet"}, status_code=404)
+
     @app.get("/ledger")
     def ledger(agent: str = "swarm", limit: int = Query(50, ge=1, le=1000)):
         if not _AGENT_ID_RE.fullmatch(agent):  # block path traversal (CWE-22) + junk
