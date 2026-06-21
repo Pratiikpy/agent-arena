@@ -16,10 +16,17 @@ import math
 from itertools import combinations
 
 import numpy as np
-from scipy.stats import kurtosis as _kurtosis
-from scipy.stats import norm
-from scipy.stats import rankdata
-from scipy.stats import skew as _skew
+
+try:
+    # scipy is an offline-only dependency (the scoring + backtest path). The serverless API serves
+    # pre-computed leaderboards and never recomputes these statistics, so the package must still
+    # import where scipy is absent (a slim serverless bundle).
+    from scipy.stats import kurtosis as _kurtosis
+    from scipy.stats import norm
+    from scipy.stats import rankdata
+    from scipy.stats import skew as _skew
+except ImportError:  # pragma: no cover - slim runtime without scipy
+    _kurtosis = norm = rankdata = _skew = None  # type: ignore[assignment]
 
 EULER_MASCHERONI = 0.5772156649015329
 
