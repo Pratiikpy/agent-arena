@@ -6,7 +6,8 @@ the (closed) underlying and gap at re-open. Classifying a timestamp as regular-s
 ``closed`` lets the firewall treat off-hours tokenized-stock trading as higher-risk, and lets the
 risk study quantify that risk.
 
-DST-aware (standard US rules: 2nd Sunday of March → 1st Sunday of November). It does **not** exclude
+DST-aware using the **post-2007** US rules (2nd Sunday of March → 1st Sunday of November; pre-2007
+rules differed and are out of scope — the tokenized-stock data is current). It does **not** exclude
 US market holidays — a holiday weekday is classified ``open`` by hour, a small, documented
 over-count of open hours (the off-hours risk it measures is, if anything, *understated* as a result).
 Self-contained: no ``tzdata`` dependency (zoneinfo has no tz database on Windows).
@@ -37,8 +38,13 @@ def _us_dst(dt_utc: datetime) -> bool:
 
 
 def us_eastern(ts_ms: int) -> datetime:
-    """Convert an epoch-ms timestamp to a naive US-Eastern ``datetime`` (DST-aware)."""
-    dt_utc = datetime.fromtimestamp(ts_ms / 1000, tz=timezone.utc)
+    """Convert an epoch-ms timestamp to a naive US-Eastern ``datetime`` (DST-aware).
+
+    Builds UTC via ``timedelta`` rather than ``datetime.fromtimestamp`` — the latter raises
+    ``OSError`` on negative / pre-epoch timestamps on Windows, which would throw *out* of the
+    fail-closed firewall. This keeps a malformed timestamp from ever crashing the gate.
+    """
+    dt_utc = datetime(1970, 1, 1, tzinfo=timezone.utc) + timedelta(milliseconds=ts_ms)
     offset = -4 if _us_dst(dt_utc) else -5
     return (dt_utc + timedelta(hours=offset)).replace(tzinfo=None)
 

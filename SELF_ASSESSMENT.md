@@ -8,7 +8,7 @@ here is Agent Arena rated against each dimension — strengths **and** real limi
 | Dimension | Self-rating | One-line |
 |---|---|---|
 | Depth of thesis | 9/10 | Trust = containment + verification; a testable conflict-gating bet; one real (funding) edge, now live in the arena |
-| Runnability | 8/10 | Live deploy with a ticking `/pulse` heartbeat + a real `/live` tournament, real Bitget data, four Playbooks, 266 tests — a gated real-money order is one command away (needs a trade key) |
+| Runnability | 8/10 | Live deploy with a ticking `/pulse` heartbeat + a real `/live` tournament, real Bitget data, four Playbooks, 267 tests — a gated real-money order is one command away (needs a trade key) |
 | Completeness | 9/10 | End-to-end loop, 7 agents, allocator, signed ledger, market kill-switch, in-browser verify, client SDK + MCP, live UI, four Playbooks |
 | Novelty & potential | 9/10 | Agent-vs-agent arena + signed firewall (issuer-pinned, fleet kill-switch) + trust-allocator + overfit scoring + live LLM debate + browser-side verification |
 | Bitget-native depth | 8/10 | Real public data, **four published GetAgent Playbooks**, live Qwen, tokenized-stock Track 3 |
@@ -30,7 +30,7 @@ price every few seconds — and a **signed `/live` tournament snapshot** served 
 (advanced by a scheduled step; the serverless deploy is stateless, so it serves the last
 committed snapshot). Real Bitget market data, **four published GetAgent Playbooks**, a Qwen
 debate agent (a recorded snapshot on the serverless deploy; live on the container/offline path),
-and 266 passing offline tests; the public repo (CI green) and the deploy are both up. **The paper →
+and 267 passing offline tests; the public repo (CI green) and the deploy are both up. **The paper →
 live step is one gated command** — `scripts/place_live_order.py --confirm` places only the
 firewall-ALLOWed size and writes a signed receipt. **Limit:** trading is still paper (the real
 order needs a trade-permission key + a go-ahead), and the ≤3-min demo video is not yet recorded

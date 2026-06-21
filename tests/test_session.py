@@ -51,6 +51,12 @@ def test_us_eastern_offset_dst_aware():
     assert us_eastern(_ms(2026, 1, 15, 19)).hour == 14  # EST (-5)
 
 
+def test_malformed_timestamp_never_raises():
+    # negative / pre-epoch timestamps must not throw out of the fail-closed gate (Windows OSError)
+    for bad in (-1_000, 0, -86_400_000):
+        assert us_equity_session(bad) in ("open", "closed")
+
+
 # -- firewall session gate --------------------------------------------------
 
 def _harness():
