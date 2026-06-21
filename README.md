@@ -68,6 +68,8 @@ Each is signed or sandboxed, live on the demo's **Lab** tab and over HTTP:
 
 Served at `/personas`, `/brains`, `/strategy`, `/reflection`, `/memo`, `/debate`.
 
+<img src="docs/screenshots/lab.png" alt="The Lab — seven innovations, live on the demo" width="760" />
+
 ## Architecture
 
 ```

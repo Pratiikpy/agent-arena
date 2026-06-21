@@ -119,6 +119,13 @@ let a fleet of agents be run with real capital. That is what Agent Arena is.
 - **Capital allocator** — `allocator.json`: trust-weighted vs equal-weight, **DSR-adjusted** so
   capital flows to skill-confidence and starves likely-luck (+$1,109 vs equal-weight). The
   verification layer applied to money, visible live in the **Allocator** tab.
+- **The Lab — seven signed/sandboxed innovations** (all in `evidence/`, served over HTTP, shown
+  on the **Lab** tab, reproducible via `scripts/`): named personas; a per-agent reflection memory
+  (`reflection.json`) that grades its own calls; an Ed25519-signed, tamper-evident bull/bear/judge
+  debate transcript (`llm_debate.json`); a signed trade memo bound to the verdict cert
+  (`trade_memo.json`); natural-language → a sandboxed, backtest-gated agent (`nl_strategy.json`);
+  a multi-brain model arena (`model_arena.json`); and real Bitget analyst briefs (`evidence/briefs/`,
+  real technicals + funding). 311 tests, CI-green.
 
 ## Security rigor (Track 2 depth)
 
