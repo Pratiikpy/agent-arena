@@ -118,7 +118,7 @@ def _reversion(pooled: list[tuple[float, float]]) -> dict | None:
         interp = ("no significant predictability — off-hours moves are risk/noise, not a reliable "
                   "signal; capping (not trading) them is the right response")
     return {"n_transitions": len(pooled), "pooled_corr": round(corr, 4), "permutation_p": round(p, 4),
-            "interpretation": interp, "note": "720 1h bars per stock (~1 month); small sample, reported honestly"}
+            "interpretation": interp, "note": "720 1h candles per stock (~6 weeks calendar; the feed is sparse off-hours); small sample, reported honestly"}
 
 
 def main() -> int:
@@ -150,6 +150,9 @@ def main() -> int:
                        "Bitget tokenized US stocks on real 1h candles — the ghost-price dislocation a "
                        "session-aware firewall gate contains. US holidays not excluded (understates off-hours).",
         "stocks": len(ok),
+        # measured share is over RETURNED 1h candles (the feed is sparse off-hours); the structural
+        # wall-clock truth for a 24/7 instrument vs a 32.5h/week US session is higher (~80.65%).
+        "wallclock_off_hours_share": round((168 - 6.5 * 5) / 168, 4),
         "median_off_hours_bar_share": round(float(np.median([s["off_hours_bar_share"] for s in ok])), 4) if ok else None,
         "median_off_to_open_vol_ratio": round(float(np.median(ratios)), 3) if ratios else None,
         "max_reopen_gap_p95_abs_pct": round(max((s["reopen_gap_p95_abs_pct"] for s in ok), default=0.0), 4),

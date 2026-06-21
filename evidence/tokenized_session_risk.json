@@ -1,6 +1,7 @@
 {
   "description": "Track 3 depth: off-hours ('closed') vs regular-session ('open') risk in Bitget tokenized US stocks on real 1h candles \u2014 the ghost-price dislocation a session-aware firewall gate contains. US holidays not excluded (understates off-hours).",
   "stocks": 6,
+  "wallclock_off_hours_share": 0.8065,
   "median_off_hours_bar_share": 0.7604,
   "median_off_to_open_vol_ratio": 0.648,
   "max_reopen_gap_p95_abs_pct": 2.2195,
@@ -9,7 +10,7 @@
     "pooled_corr": 0.1092,
     "permutation_p": 0.154,
     "interpretation": "no significant predictability \u2014 off-hours moves are risk/noise, not a reliable signal; capping (not trading) them is the right response",
-    "note": "720 1h bars per stock (~1 month); small sample, reported honestly"
+    "note": "720 1h candles per stock (~6 weeks calendar; the feed is sparse off-hours); small sample, reported honestly"
   },
   "per_stock": [
     {
@@ -19,7 +20,7 @@
       "off_hours_bar_share": 0.7597,
       "open_session_vol": 0.00441,
       "closed_session_vol": 0.003076,
-      "off_to_open_vol_ratio": 0.698,
+      "off_to_open_vol_ratio": 0.697,
       "reopen_gaps": 29,
       "reopen_gap_mean_abs_pct": 0.467,
       "reopen_gap_p95_abs_pct": 1.0669

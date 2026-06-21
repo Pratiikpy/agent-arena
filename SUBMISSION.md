@@ -96,8 +96,8 @@ One project, three tracks (eligible for all-tracks judging):
 - **US Stock AI** — *breadth and depth*. **Breadth:** tournaments + firewall across **six**
   Bitget tokenized US stocks (AAPL, TSLA, NVDA, MSFT, GOOGL, META); every order gated, **0 unsafe**
   (`tokenized_stock_sweep.json`). **Depth:** a tokenized-stock-specific **session-aware firewall
-  gate** — because **~76% of tokenized-stock trading *hours* are off-hours** (the underlying US
-  market is closed) and the rToken can gap **1–2.2% (p95) at re-open** (`tokenized_session_risk.json`), the gate
+  gate** — because **~76% of tokenized-stock 1h candles fall off-hours** (~81% of the 24/7 week;
+  the underlying US market is closed) and the rToken can gap **1–2.2% (p95) at re-open** (`tokenized_session_risk.json`), the gate
   tightens the per-order cap off-hours instead of trading a stale "ghost price." DST-aware,
   red-teamed (the *session* case), threat-modeled (row 16).
 
