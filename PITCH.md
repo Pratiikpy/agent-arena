@@ -32,7 +32,7 @@ Bitget's own GetAgent platform.
 
 ## Proof it's real (not slides)
 - **Live signed firewall** — curl a verdict in 10 seconds; tamper any field and the
-  signature dies. A 24-case red-team battery: **0 unsafe orders ever passed.**
+  signature dies. A 25-case red-team battery: **0 unsafe orders ever passed.**
 - **It makes money — four published Bitget Playbooks** that profit on real on-platform
   backtests: **profit factors 1.42–3.34** (BTC breakout wins **2.33×** its losses — **+0.40% on a
   0.26% drawdown** account-basis, ≈+39.7% on the deployed $1k budget; both bases shown so the

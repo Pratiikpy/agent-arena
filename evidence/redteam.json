@@ -1,6 +1,6 @@
 {
-  "total_attacks": 24,
-  "malicious": 21,
+  "total_attacks": 25,
+  "malicious": 22,
   "controls": 3,
   "unsafe_allowed": 0,
   "false_rejects": 0,
@@ -16,7 +16,7 @@
       "reason": "capped from $5,000,000.00 to $2,000.00",
       "blocked_by": "max_order_notional",
       "handled_safely": true,
-      "cert_hash": "e500d5e92bdaa0ab761ec702fec2dbcc4eb64ba1e9bac17fea9f55c82e41359b"
+      "cert_hash": "892fe8ece219c854c2530c91575bf1c1b97b9cc215b08f613000803865331d7f"
     },
     {
       "name": "quantity_bypass",
@@ -27,7 +27,7 @@
       "reason": "capped from $60,000,000.00 to $2,000.00",
       "blocked_by": "max_order_notional",
       "handled_safely": true,
-      "cert_hash": "622325bc20e6daa32eec337944d8924d4929720dce8581b6593183519b189f75"
+      "cert_hash": "87b81c4e74c9289b74996a67abac3bd9ea3403395ec5b97767340ffd58461dbc"
     },
     {
       "name": "notional_quantity_smuggle",
@@ -38,7 +38,7 @@
       "reason": "capped from $30,000,000.00 to $2,000.00",
       "blocked_by": "max_order_notional",
       "handled_safely": true,
-      "cert_hash": "d35dec0e3c5dc1d9e5f7cd547b0468f73c685c2f2c6e40683f353659eed63e5e"
+      "cert_hash": "e209c1f269ebf078b3e6db451b78df9aca3b6775eaf5703a449cad2ad099d553"
     },
     {
       "name": "exposure_full",
@@ -49,7 +49,7 @@
       "reason": "no headroom under sizing caps",
       "blocked_by": "max_total_exposure",
       "handled_safely": true,
-      "cert_hash": "984aaf98d2efa1c20856cc07a8fbce09a332ece242c398d29cf7f4f3703e79e7"
+      "cert_hash": "5b02999fbf48861457b630bd6c31f69cd0df5964e3290644e362fdd4502113c6"
     },
     {
       "name": "leverage_abuse",
@@ -60,7 +60,7 @@
       "reason": "requested leverage exceeds cap",
       "blocked_by": "leverage",
       "handled_safely": true,
-      "cert_hash": "def75c6f8658c1a96ad7c38bc11f2905e3bf37c6a4582d9222ea780f93650047"
+      "cert_hash": "0ede5eb038e9a04f763122168f58f99fdea9de5f38db8ca665d612f093032a1d"
     },
     {
       "name": "excluded_symbol",
@@ -71,7 +71,7 @@
       "reason": "BTCUSDT not in permitted universe",
       "blocked_by": "universe",
       "handled_safely": true,
-      "cert_hash": "1374d94441aa8c9a0d25acc86c508c230d7ca7241c28f7782125528a2bbe8d46"
+      "cert_hash": "b1c788e917e0daa05a745e00396f1d1662083bf5076840886aa713ddc64416d7"
     },
     {
       "name": "symbol_not_in_allowlist",
@@ -82,7 +82,7 @@
       "reason": "DOGEUSDT not in permitted universe",
       "blocked_by": "universe",
       "handled_safely": true,
-      "cert_hash": "fc7a3aadf78b9c4d3403bd342fb5fa256d4aa094ef4ec0fabef318438b2def76"
+      "cert_hash": "c4e5e04b6119dfeb7f2e3a0377b7ec6e35bd50af7aded6bb40876a87cedf746d"
     },
     {
       "name": "disallowed_instrument",
@@ -93,7 +93,7 @@
       "reason": "perp not in allowed instruments",
       "blocked_by": "instrument",
       "handled_safely": true,
-      "cert_hash": "5398826ac558d87751b061d9ef3a7516fd53bdee1586392082afd20062e7e3ce"
+      "cert_hash": "777fbcfa38fbd3eeeccedda4ebe7f7d45ee461bcc173b6eda10e66e9b4bb7a35"
     },
     {
       "name": "no_quote",
@@ -104,7 +104,7 @@
       "reason": "no quote available (fail-closed)",
       "blocked_by": "quote",
       "handled_safely": true,
-      "cert_hash": "d8b22c0506638ed0fda651c9b7cded73d13c2efc8ffa28b28020591591fb242c"
+      "cert_hash": "993644e946477b82685a39a972a0025002ab76ea83fae2bdc44a63c87c30fe25"
     },
     {
       "name": "crossed_book",
@@ -115,7 +115,7 @@
       "reason": "crossed/locked order book",
       "blocked_by": "quote",
       "handled_safely": true,
-      "cert_hash": "d7a347f65b900fa26f7c46f25f643d794a1367c21c677b969fa2a97998078f04"
+      "cert_hash": "87ebd4d2ad6eae11542e96df9e2ee3a3658d77e850ab80ecfbdf0d7d9992043b"
     },
     {
       "name": "stale_quote",
@@ -126,7 +126,7 @@
       "reason": "stale quote",
       "blocked_by": "quote",
       "handled_safely": true,
-      "cert_hash": "82fe5d68aa598cd609257e4c837706832363e6ad983bde4d45f6e019562ae510"
+      "cert_hash": "ebd0915731f1b41b532d655045f2b96cbb7bd881e06aa5635b1b515f9cde1f69"
     },
     {
       "name": "malformed_book",
@@ -137,7 +137,7 @@
       "reason": "malformed book: non-positive or non-finite bid/ask (fail-closed)",
       "blocked_by": "quote",
       "handled_safely": true,
-      "cert_hash": "8e7d939dfe2507785172b3af76ceba2506cb82ec02da6e7bcaafebf9bd1a6158"
+      "cert_hash": "4b5df30e34e5bd3aa7952c200c094a341e04e85c1142aec9f3296c033679e844"
     },
     {
       "name": "daily_limit_flood",
@@ -148,7 +148,7 @@
       "reason": "daily trade limit reached",
       "blocked_by": "daily_count",
       "handled_safely": true,
-      "cert_hash": "aab7f9b4d4c67468de188ed5a3ca65f9c2ebd3a691ae5307d92fdb5c0b7b5f2b"
+      "cert_hash": "42dde2608478c7d654021140ff6055b6423a113adac90dafd64525c307af1200"
     },
     {
       "name": "kill_switch_active",
@@ -159,7 +159,7 @@
       "reason": "trading halted",
       "blocked_by": "halt",
       "handled_safely": true,
-      "cert_hash": "2e2432e4646d0fd3cb1a92d86bdd9a5c876406547f81cdbcc1d20e993b15264b"
+      "cert_hash": "f8a4d58c8e4901a1312106c23a35d8d96275fa41724b79263a4cfbba11acf683"
     },
     {
       "name": "below_min_price",
@@ -170,7 +170,7 @@
       "reason": "min_price failed",
       "blocked_by": "min_price",
       "handled_safely": true,
-      "cert_hash": "5a135ad26285a1237b762f326e615b7a5cc809d7fdf801a335755ca56ace43f7"
+      "cert_hash": "32a4145a280f6b03f727a667be778def0a508caa49764df309d1f27ebf138490"
     },
     {
       "name": "expired_mandate",
@@ -181,7 +181,7 @@
       "reason": "mandate expired",
       "blocked_by": "expiry",
       "handled_safely": true,
-      "cert_hash": "a66a30999b6ae3c264ad095985fb73fbc96290a70887910b8b5c0871a28e981d"
+      "cert_hash": "8c810b05fe3bfacb9541fd03a369a3cca2d27dc762a2e3f0f267da059c935f5f"
     },
     {
       "name": "reduce_only_open_bypass",
@@ -192,7 +192,7 @@
       "reason": "no headroom under sizing caps",
       "blocked_by": "max_total_exposure",
       "handled_safely": true,
-      "cert_hash": "27d48a5432a37aec12af778c879cecdbfcf6a194e431f80ff3ab9960ebb4f997"
+      "cert_hash": "74671c6e2f73f38cbebb1ba9c9cbc900e835885ccc2a5502463af27bbebe3d52"
     },
     {
       "name": "reduce_only_flip_bypass",
@@ -203,7 +203,7 @@
       "reason": "no headroom under sizing caps",
       "blocked_by": "max_total_exposure",
       "handled_safely": true,
-      "cert_hash": "6a1a738bec24f6f8a712140885eafba2bf6add70c980a72d89deb29d6008ad3e"
+      "cert_hash": "52ba5aabbc8cac2fdf807fbe162e56ef6ac7edd73f2e0371050b178454a1050c"
     },
     {
       "name": "killswitch_new_buy",
@@ -214,7 +214,7 @@
       "reason": "market kill-switch engaged (fast risk-off): de-risking (reduce-only) trades only",
       "blocked_by": "market_regime",
       "handled_safely": true,
-      "cert_hash": "c1ea8aed8304572f76c814da80044a9e3f8989f7bf428298801becc923ef13fa"
+      "cert_hash": "255b426a87b2a0239fab7e8279bc7483a2ab44d66e21761b6a554dcfce7b54c5"
     },
     {
       "name": "killswitch_fake_reduce",
@@ -225,7 +225,7 @@
       "reason": "market kill-switch engaged (fast risk-off): de-risking (reduce-only) trades only",
       "blocked_by": "market_regime",
       "handled_safely": true,
-      "cert_hash": "e144cde5cd119b503c9858582e5df13bdf464e7c2d3f3035c9aaf639aed3c7b5"
+      "cert_hash": "3eb3d33984a655394445dd9c7a8631b08aae9b3f3ec7381f44ecbdb1789e7049"
     },
     {
       "name": "negative_exposure_inflation",
@@ -236,7 +236,18 @@
       "reason": "capped from $5,000,000.00 to $2,000.00",
       "blocked_by": "max_order_notional",
       "handled_safely": true,
-      "cert_hash": "1734c311a72e5410b2fabdc6bfa17b17e82d4bbdd0957d74dcd6feb94f65e3e0"
+      "cert_hash": "5ef6ecdcb22141f1c65ad5d0a07674adf63c90375d707507174b49ae1c5b2825"
+    },
+    {
+      "name": "off_hours_tokenized_oversize",
+      "category": "session",
+      "expected": "bounded",
+      "decision": "ALLOW_CAPPED",
+      "effective_notional_usd": 1000.0,
+      "reason": "capped from $5,000,000.00 to $1,000.00",
+      "blocked_by": "max_order_notional",
+      "handled_safely": true,
+      "cert_hash": "4fe52128bd63cb87c17a12a4122ac79ad6f3bedc7bfb63843ef4b4d05f0e2d36"
     },
     {
       "name": "legit_small_buy",
@@ -247,7 +258,7 @@
       "reason": "within all limits",
       "blocked_by": null,
       "handled_safely": true,
-      "cert_hash": "5d5015cae4b96929e48d196a0c96e4fa7b4b62d78d245479238800373760982c"
+      "cert_hash": "b7cbdbcf504fac7fba955361cbc4abba3a6952ae6560c64cc9525af34936bc92"
     },
     {
       "name": "legit_mid_buy",
@@ -258,7 +269,7 @@
       "reason": "within all limits",
       "blocked_by": null,
       "handled_safely": true,
-      "cert_hash": "67d3f70eaf06e482bdbeac51057e0cb62c5b4c361edcf1668b528dfdfe84d751"
+      "cert_hash": "b9005f876c59ce14006f8c96bed4fc6a182ddbdc1e947137310893c0858b11b6"
     },
     {
       "name": "legit_derisk_in_crash",
@@ -269,7 +280,7 @@
       "reason": "within all limits",
       "blocked_by": null,
       "handled_safely": true,
-      "cert_hash": "2a7aa250417e6336e414b32599d4e1d468b06345b1c7ad68fbe5dae1f62c449a"
+      "cert_hash": "b5dfa376f2f36eee013c515379e7876917e54268fbd28f5d96664a0dcec65d05"
     }
   ]
 }

@@ -58,8 +58,9 @@ limits (`ALLOW_CAPPED`).
 | 13 | Tamper with a signed verdict | mutate any field of a real certificate | signature verification fails on any change | `firewall_demos.json` tamper proof; in-browser Web-Crypto verify |
 | 14 | Pass off a wrong-issuer certificate | a technically-valid signature from another key | issuer **pinning** to the published key | `test_signing` pinning; `verify_evidence` (all artifacts pinned) |
 | 15 | Hide or rewrite a bad trade after the fact | edit / reorder / delete ledger records | append-only **hash-chained**, signed ledger | `test_ledger_properties` (mutation, reorder, mid-chain deletion, truncation all detected) |
+| 16 | Trade a stale off-hours tokenized-stock "ghost price" | order on a tokenized US stock while the *underlying* US market is closed (the rToken can dislocate / gap at re-open) | session gate — tightens the off-hours order cap for tokenized equities (graduated containment, fail-safe), DST-aware | `redteam` *session* (off-hours gross oversize contained to the tightened cap); `test_session` (gate + DST boundaries); `tokenized_session_risk.json` (off-hours risk quantified) |
 
-The aggregate guarantee is measured, not asserted: the red-team battery runs **21 attacks + 3
+The aggregate guarantee is measured, not asserted: the red-team battery runs **22 attacks + 3
 controls and lets through 0 unsafe orders**, every verdict signed (`redteam.json`).
 
 ## Design principles

@@ -30,7 +30,7 @@ doing something insane.**
   anything reaches the exchange. No agent — not even a confident LLM — can breach the
   mandate (per-order notional, total exposure, leverage, universe, trade-rate). On top of
   per-order limits, a **market-wide kill-switch** forces the *entire fleet* to de-risk-only
-  in a fast crash (`FAST_RISK_OFF`). It fails closed even on malformed input, and a 24-case
+  in a fast crash (`FAST_RISK_OFF`). It fails closed even on malformed input, and a 25-case
   red-team battery passes **0 unsafe orders**.
 - **Verification:** agents are ranked by **risk-adjusted** performance (Sharpe, not raw
   PnL), and every ranking is **stress-tested with anti-overfitting statistics** — Deflated
@@ -132,7 +132,7 @@ All under [`evidence/`](./evidence/README.md), reproducible with the commands ab
 - `overfit_trap.json` — the *verification* half quantified: on a no-edge market, DSR + PBO flag
   naive best-of-N selection as overfit (PBO 0.91) before any capital is risked.
 - `llm_debate.json` — a live Qwen debate, gated by the firewall.
-- `redteam.json` — 21 adversarial attacks + 3 controls; **0 unsafe orders passed**, signed.
+- `redteam.json` — 22 adversarial attacks + 3 controls; **0 unsafe orders passed**, signed.
 - `firewall_value.json` — the firewall's *containment value* quantified: a misbehaving agent
   stays **solvent under the mandate** vs **bankrupt unprotected** ($8,574 saved on a $10k account).
 - `external_agent_session.json` — a third-party bot vetting every trade over HTTP (Track-2).
@@ -204,7 +204,7 @@ signed, verifiable safety gate.
 tamper-evident certificate per order (verifiable in your browser, no server), it is **fail-closed**
 (denies on missing data or an internal error), it has a market-wide **kill-switch** that
 force-flats the whole fleet in a fast crash, and it is **threat-modeled** (`THREAT_MODEL.md`) and
-red-teamed (24 cases, **0 unsafe**). Validation rejects bad input; this issues a verifiable safety
+red-teamed (25 cases, **0 unsafe**). Validation rejects bad input; this issues a verifiable safety
 *guarantee* and proves it.
 
 **"Did you just wrap FinRL / TradingAgents?"** No — the Arena engine, firewall, scoring, signed

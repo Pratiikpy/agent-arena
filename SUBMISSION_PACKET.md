@@ -96,7 +96,7 @@ let a fleet of agents be run with real capital. That is what Agent Arena is.
   losers are withheld — publish discipline as evidence. `playbook/PUBLISHED.md`.
 - **Live signed firewall verdicts** — `firewall_demos.json` (ALLOW/CAPPED/REJECT + tamper
   proof); callable live at `POST /firewall`, independently checkable at `POST /verify`.
-- **Red-team** — `redteam.json`: 21 attacks, **0 unsafe orders passed**, all signed.
+- **Red-team** — `redteam.json`: 22 attacks, **0 unsafe orders passed**, all signed.
 - **Firewall containment value** — `firewall_value.json`: a misbehaving agent stays solvent
   under the mandate vs bankrupt unprotected ($8,574 saved on a $10k account).
 - **Overfit-detection value** — `overfit_trap.json`: on a no-edge market, DSR + PBO (0.91) flag
@@ -178,7 +178,7 @@ Each tweet below is ≤280 chars — post the first as the quote-tweet, the rest
 
 > **2/** Don't trust me — **click the live verdict** on the page: it verifies the Ed25519
 > signature **in your browser**. Flip one byte → watch it break. Tamper-evident, no server, on
-> live data. 24-case red-team: **0 unsafe**. ~0.1 ms/verdict — gating every trade is ~free.
+> live data. 25-case red-team: **0 unsafe**. ~0.1 ms/verdict — gating every trade is ~free.
 
 > **3/** Agents are ranked by Deflated Sharpe / PBO — not raw PnL — so a lucky backtest gets
 > exposed, not crowned. 4 strategies already published on Bitget GetAgent. The arena runs on

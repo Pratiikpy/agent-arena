@@ -10,6 +10,7 @@ verdict is signed, so the report is verifiable.
 from __future__ import annotations
 
 from dataclasses import dataclass
+from datetime import datetime, timezone
 
 from .domain import (
     InstrumentType,
@@ -25,6 +26,9 @@ from .firewall.signing import model_canonical, sha256_hex
 
 _EPS = 1e-6
 _NOW = 1_000_000
+# A Saturday at 18:00 UTC — the underlying US equity market is closed (off-hours), so the
+# session gate must tighten the tokenized-equity cap. Fixed date == deterministic evidence.
+_OFF_HOURS = int(datetime(2026, 6, 20, 18, 0, tzinfo=timezone.utc).timestamp() * 1000)
 
 
 def _quote(mid: float = 60_000.0, ts: int = _NOW, crossed: bool = False, one_sided: bool = False) -> Quote:
@@ -42,6 +46,8 @@ class Attack:
     intent: TradeIntent
     ctx: EvalContext
     expected: str  # "reject" | "bounded" | "allow"
+    cap_override: float | None = None  # a tighter bound the verdict must respect (e.g. the
+    #                                    off-hours session cap), not just the mandate order cap
 
 
 def _base_mandate():
@@ -122,6 +128,15 @@ def build_attacks() -> list[Attack]:
         # a negative reported exposure must not inflate headroom past the per-order cap
         Attack("negative_exposure_inflation", "sizing", _intent(notional=5_000_000.0),
                _ctx(_quote(), exposure=-1e9), "bounded"),
+        # --- session: off-hours tokenized-equity trading is risk-tightened, not just mandate-capped ---
+        # a gross oversize while the underlying US market is CLOSED must be contained to the
+        # *off-hours* cap (half the order cap), proving the session gate tightens beyond the bound.
+        Attack("off_hours_tokenized_oversize", "session",
+               _intent(symbol="RAAPLUSDT", instrument=InstrumentType.TOKENIZED_EQUITY, notional=5_000_000.0),
+               _ctx(Quote(symbol="RAAPLUSDT", bid=297.0, ask=297.6, last=297.3, ts=_OFF_HOURS),
+                    mandate=default_arena_mandate(10_000, allowed_symbols=("RAAPLUSDT",)),
+                    now=_OFF_HOURS, max_age=10**15),
+               "bounded", cap_override=1_000.0),
         # --- legitimate controls: must be ALLOWED (proves the gate isn't blocking everything) ---
         Attack("legit_small_buy", "control", _intent(notional=50.0), _ctx(_quote()), "allow"),
         Attack("legit_mid_buy", "control", _intent(notional=1_500.0), _ctx(_quote()), "allow"),
@@ -141,7 +156,7 @@ def run_redteam(firewall: Firewall) -> dict:
 
     for atk in attacks:
         verdict = firewall.evaluate(atk.intent, atk.ctx)
-        cap = atk.ctx.mandate.hard_caps.max_order_notional_usd
+        cap = atk.cap_override if atk.cap_override is not None else atk.ctx.mandate.hard_caps.max_order_notional_usd
         eff = verdict.effective_notional_usd
 
         if atk.expected == "reject":
