@@ -221,6 +221,7 @@ byte"** turns the same signature **✗ invalid** — trustless tamper-evidence o
 click. Tournaments run on real Bitget data; four Playbooks are published on Bitget's own platform.
 
 **"How do I trust your numbers?"** You don't have to. `scripts/verify_evidence.py` re-checks every
-signed ledger + certificate (issuer-pinned); `scripts/check_docs.py` fails CI if any cited number
+signed ledger + certificate (issuer-pinned); `scripts/check_docs.py` fails CI if a headline number
+(test count, red-team, throughput, firewall/kill-switch values, overfit PBO, signed-record count)
 drifts from its source; and you can verify any certificate **in your own browser** (Web Crypto).
 Every claim above traces to a signed artifact in `evidence/`.

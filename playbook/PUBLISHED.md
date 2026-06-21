@@ -6,6 +6,13 @@ reproducible backtests using the exact toolkit the hackathon provides. **Four ar
 published** (all `backtest_support: full`, real equity curves) — and three more were
 backtested and deliberately *withheld* (see below):
 
+> **Verifying these.** The publication + metrics live on Bitget's GetAgent platform (the source
+> of truth — metrics are as returned by the GetAgent sandbox); confirm them by searching the
+> strategy IDs below on Bitget → Playbook → Explore. The strategy *packages* (manifest, backtest
+> config, `src/`) are in this repo and re-validate with the GetAgent validator; the raw
+> control-plane API payloads are not committed here, so this one claim is on-platform-verifiable
+> rather than repo-reproducible.
+
 | Playbook | strategy_id | Sharpe | Profit factor | Budget return |
 |---|---|---|---|---|
 | Adaptive Regime (Conflict-Gated, BTC) | `93af5b33-…-b653c68f6558` | 0.72 | 1.74 | +13.1% |

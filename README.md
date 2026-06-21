@@ -38,8 +38,9 @@ decides which agents deserve to be trusted with capital:**
    market-wide **kill-switch** forces the whole fleet to de-risk-only in a fast crash.
 2. **A live tournament.** Multiple autonomous agents (a debate swarm, an RL agent,
    a persona team, a single-LLM control) trade Bitget side by side on equal capital.
-3. **Overfit-aware scoring.** Agents are ranked with institutional rigor — Deflated
-   Sharpe, Probability of Backtest Overfitting, walk-forward, drawdown — not raw PnL.
+3. **Overfit-aware scoring.** Agents are ranked by risk-adjusted performance (Sharpe) — not
+   raw PnL — and every ranking is stress-tested with Deflated Sharpe, Probability of Backtest
+   Overfitting, walk-forward, and drawdown, which flag when the leader is luck, not skill.
 
 It is exposed over **MCP**, so any external agent or IDE can (a) ask the firewall to
 vet a trade, or (b) enter the arena and compete.

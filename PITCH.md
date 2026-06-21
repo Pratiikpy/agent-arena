@@ -17,8 +17,9 @@ Trust = **containment + verification**.
   returns a *cryptographically signed* ALLOW / ALLOW_CAPPED / REJECT before anything
   reaches the exchange. No agent can breach its mandate, and a market-wide **kill-switch**
   force-flats the whole fleet in a fast crash.
-- **Verification** — agents are ranked with anti-overfitting math (Deflated Sharpe, PBO),
-  not raw PnL, and a meta-allocator funds them by *proven* trust. Anyone can verify a
+- **Verification** — agents are ranked by risk-adjusted performance (not raw PnL) and
+  stress-tested with anti-overfitting math (Deflated Sharpe, PBO) that flags lucky backtests,
+  and a meta-allocator funds them by *proven* trust. Anyone can verify a
   certificate — **in their own browser** (Web Crypto), pinned to our published key. You
   don't have to trust us.
 
