@@ -1,8 +1,14 @@
 # Agent Arena — Bitget AI Hackathon S1 Submission Packet
 
-Everything needed to submit, in one place. Paste the relevant sections into the
-[submission form](https://forms.gle/CEGB6fRtuobD3bCj8). Fields marked **[YOU]** are the
-only ones I can't fill (credentials / hosting / posting).
+Everything needed to submit, in one place. Fields marked **[YOU]** are the only ones I can't
+fill (credentials / hosting / posting).
+
+> ⚠️ **DQ-CRITICAL — verify the form URL first.** The official Base Camp doc lists **two
+> different** submission forms: `forms.gle/CEGB6fRtuobD3bCj8` (Requirements section) and
+> `forms.gle/mGrppbHw6gz5jmot8` (Resources table). They differ. **Confirm which is live before
+> submitting** — submitting to the wrong/closed form means *not submitted = disqualified*. Also
+> baseline-or-DQ: your **UID must match registration**, and **all links public / no login**
+> (GitHub ✓, deploy ✓ no-login → a demo video is *optional*, not required).
 
 ---
 
@@ -133,7 +139,9 @@ fallbacks). Honest self-assessment is an explicit scoring criterion.
    `vercel --prod` from `.research/bitarena` (already linked to the `bitarena` project).*
 3. **[YOU]** Record the ≤3-min demo video (`DEMO.md`) and paste the link.
 4. **[YOU]** Post the #BitgetHackathon quote-tweet; paste the link.
-5. **[YOU]** Submit with your registration UID, primary track = Trading Infra.
+5. **[YOU]** Submit with your registration UID, primary track = Trading Infra. **First verify
+   which of the two form URLs is live** (see the DQ-CRITICAL note at the top) — wrong form = not
+   submitted = disqualified.
 6. *(Optional, highest-leverage)* move from "paper" to "live trading" with one real
    dust-sized Bitget order — **the tooling is ready**: add trade-permission keys to `.env`
    (a dedicated sub-account), then `uv run python scripts/place_live_order.py --confirm`.
