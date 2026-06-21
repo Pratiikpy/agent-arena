@@ -32,9 +32,10 @@ doing something insane.**
   per-order limits, a **market-wide kill-switch** forces the *entire fleet* to de-risk-only
   in a fast crash (`FAST_RISK_OFF`). It fails closed even on malformed input, and a 24-case
   red-team battery passes **0 unsafe orders**.
-- **Verification:** agents are ranked not by raw PnL but with **anti-overfitting
-  statistics** — Deflated Sharpe, PSR, and the Probability of Backtest Overfitting
-  (CSCV) — so a lucky winner is exposed rather than crowned. Every certificate is
+- **Verification:** agents are ranked by **risk-adjusted** performance (Sharpe, not raw
+  PnL), and every ranking is **stress-tested with anti-overfitting statistics** — Deflated
+  Sharpe, PSR, and the Probability of Backtest Overfitting (CSCV) — so a lucky winner is
+  **flagged** rather than crowned. Every certificate is
   **independently verifiable** — the Verify tab checks the Ed25519 signature **in your
   browser** (Web Crypto) and pins the published issuer key, plus an offline CLI and a
   one-command whole-evidence verifier — don't trust us, check it.

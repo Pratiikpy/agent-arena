@@ -38,10 +38,13 @@ Bitget's own GetAgent platform.
   0.26% drawdown** account-basis, ≈+39.7% on the deployed $1k budget; both bases shown so the
   number can't mislead) across the set (ETH breakout 1.42, adaptive regime BTC 1.74, adaptive
   regime ETH Sharpe 2.15 / PF 3.34) — plus three more honestly *withheld* because they underperformed.
-- **A real, structural money edge, honestly validated** — a delta-neutral funding carry on
-  real Bitget funding history (walk-forward + Deflated Sharpe): **~+3.1% annualized at low risk** —
-  a small, steady, market-neutral yield, not an overfit curve. On flat price data no agent beats
-  buy-hold, and we report that — the returns are structural, never cherry-picked.
+- **A real, structural money edge, honestly validated** — funding carry on real Bitget funding
+  history (walk-forward + Deflated Sharpe). The delta-neutral *carry study* returns **~+3.1%
+  annualized** at low risk on BTC (adaptive — skipping negative-funding intervals; the high Sharpe
+  reflects funding's low variance, not big returns); the live arena's funding-carry agent is
+  single-instrument, so it harvests that carry **while bearing price risk**, and ranks top-3 by
+  Sharpe across BTC/ETH/SOL. On flat price data no agent beats buy-hold, and we report that — the
+  returns are structural, never cherry-picked.
 - **Independently verifiable, even in your browser** — the Verify tab checks the Ed25519
   signature client-side (Web Crypto) and pins the published issuer; plus a signed
   hash-chained ledger, an offline CLI, and a one-command whole-evidence verifier.

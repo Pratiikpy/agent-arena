@@ -72,6 +72,16 @@ def main() -> int:
     fv = json.loads((ROOT / "evidence/firewall_value.json").read_text(encoding="utf-8"))
     ks = json.loads((ROOT / "evidence/regime_killswitch.json").read_text(encoding="utf-8"))
     ot = json.loads((ROOT / "evidence/overfit_trap.json").read_text(encoding="utf-8"))
+    # Money-maker figures: the returns/PF the docs lead with must trace to the committed evidence,
+    # so a regenerated backtest or a typo can't drift the headline profit claims. Playbook numbers
+    # are fixed on-platform backtests; the funding yield is derived from the committed carry study.
+    pb = json.loads((ROOT / "evidence/playbook_backtests.json").read_text(encoding="utf-8"))
+    fc = json.loads((ROOT / "evidence/funding_carry.json").read_text(encoding="utf-8"))
+    top_pb = next(p for p in pb["published"] if p["name"] == "momentum-breakout-btc")
+    pfs = [p["profit_factor"] for p in pb["published"]]
+    fc_btc_adaptive = max(
+        fc["symbols"]["BTCUSDT"]["adaptive_sweep"], key=lambda x: x["sharpe_annualized"]
+    )
     # signed-ledger totals, computed from the evidence the verifier checks (matches
     # verify_evidence.py's "N files, M signed records") — guards the "verify in 60 seconds" count.
     ledger_files = sorted((ROOT / "evidence").glob("*/ledgers/*.jsonl"))
@@ -87,6 +97,14 @@ def main() -> int:
         (f"PBO {ot['cross_agent_pbo']:.2f}", "overfit-trap PBO"),
         (f"{ledger_records:,} ", "signed-record count"),  # trailing space: matches "8,414 records"/"8,414 signed records"
         (f"{len(ledger_files)} ledgers", "ledger file count"),
+        # money-maker figures (rank-7 guard): every headline return the docs cite must match evidence
+        (f"{top_pb['profit_factor']:.2f}", "top-Playbook profit factor"),            # 2.33
+        (f"{top_pb['budget_return_pct']:.1f}%", "top-Playbook budget return"),        # 39.7%
+        (f"{top_pb['budget_return_pct'] / 100:.2f}%", "top-Playbook account return"), # 0.40%
+        (f"{top_pb['max_drawdown_pct']:.2f}%", "top-Playbook drawdown"),              # 0.26%
+        (f"{min(pfs):.2f}", "lowest published profit factor"),                        # 1.42
+        (f"{max(pfs):.2f}", "highest published profit factor"),                       # 3.34
+        (f"{fc_btc_adaptive['annualized_return'] * 100:.1f}%", "funding-carry yield"),# 3.1%
     ]
     for token, label in present:
         if token not in combined:
