@@ -25,6 +25,10 @@ class HardCaps(BaseModel):
     max_leverage: float
     allowed_instruments: tuple[InstrumentType, ...]
     max_trades_per_day: int
+    # Off-hours tokenized-equity orders are capped to this fraction of the per-order cap, because
+    # the underlying US market is closed and the rToken price can dislocate / gap at re-open
+    # (quantified in evidence/tokenized_session_risk.json; enforced by the firewall session gate).
+    off_hours_notional_factor: float = 0.5
 
 
 class UniverseConstraint(BaseModel):

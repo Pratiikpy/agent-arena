@@ -24,7 +24,8 @@ from pydantic import BaseModel, ConfigDict
 
 from ..domain.intent import TradeIntent
 from ..domain.mandate import Mandate
-from ..domain.market import Quote
+from ..domain.market import InstrumentType, Quote
+from ..domain.session import us_equity_session
 from ..domain.verdict import Certificate, Decision, GateResult, Verdict
 from . import gates
 from .regime import MarketRegime
@@ -145,6 +146,28 @@ class Firewall:
         results: list[GateResult] = []
 
         order_cap = caps.max_order_notional_usd
+        # Session gate: when an agent trades a tokenized US stock while the underlying market is
+        # CLOSED, the rToken can dislocate from the (frozen) underlying and gap at re-open, so the
+        # per-order cap is tightened — graduated containment (size down off-hours), not a reject.
+        if (
+            intent.instrument is InstrumentType.TOKENIZED_EQUITY
+            and ctx.now_ms is not None
+            and us_equity_session(ctx.now_ms) == "closed"
+        ):
+            tightened = order_cap * caps.off_hours_notional_factor
+            results.append(
+                GateResult(
+                    gate="session",
+                    passed=True,  # informational: tightens the cap, never opens headroom
+                    limit=tightened,
+                    attempted=requested,
+                    detail=(
+                        f"underlying US market closed — off-hours tokenized-equity cap "
+                        f"x{caps.off_hours_notional_factor:g} (${order_cap:,.0f} -> ${tightened:,.0f})"
+                    ),
+                )
+            )
+            order_cap = tightened
         results.append(
             GateResult(
                 gate="max_order_notional",
