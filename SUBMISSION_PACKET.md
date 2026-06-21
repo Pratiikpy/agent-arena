@@ -80,7 +80,7 @@ let a fleet of agents be run with real capital. That is what Agent Arena is.
 | Requirement | What we submit |
 |---|---|
 | **UID matches registration** | **[YOU]** your Bitget UID |
-| **Public GitHub + complete README** | ✅ **Live:** https://github.com/Pratiikpy/agent-arena (public, CI green, v0.1.0). README has install/run/integrate/examples. |
+| **Public GitHub + complete README** | ✅ **Live:** https://github.com/narutopyy/agent-arena (public, CI green, v0.1.0). README has install/run/integrate/examples. |
 | **Thesis clearly stated** | The four-part description above (also in `SUBMISSION.md`). |
 | **Verifiable usage record** (≥1) | Multiple — see below. |
 | **Deployment link** (optional) | ✅ **Live:** https://bitarena.vercel.app — UI + signed firewall + `/verify`, callable now. |
@@ -141,7 +141,7 @@ fallbacks). Honest self-assessment is an explicit scoring criterion.
 > Pre-push safety: audited — **no API keys in any git-tracked file** (Playbook and Qwen
 > keys never committed; `.env` is gitignored and untracked). Safe to make the repo public.
 
-1. ✅ **DONE — pushed to https://github.com/Pratiikpy/agent-arena** (public,
+1. ✅ **DONE — pushed to https://github.com/narutopyy/agent-arena** (public,
    CI green, **v0.1.0** released, 10 topics set). Secrets audited: `.env`/`.keys`/`*.pem`
    excluded, no Playbook/Qwen keys in any tracked file. Push updates with
    `git add -A && git commit -m "..." && git push` from `.research/bitarena`.
@@ -191,6 +191,6 @@ Each tweet below is ≤280 chars — post the first as the quote-tweet, the rest
 > exposed, not crowned. 4 strategies already published on Bitget GetAgent. The arena runs on
 > real Bitget data.
 
-> **4/** Open source (MIT, 269 tests, CI-green): https://github.com/Pratiikpy/agent-arena —
+> **4/** Open source (MIT, 269 tests, CI-green): https://github.com/narutopyy/agent-arena —
 > deploy it, integrate over MCP/HTTP in minutes, or verify any certificate offline. The trust
 > layer for agentic trading. #BitgetHackathon @Bitget_AI

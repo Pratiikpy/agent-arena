@@ -4,7 +4,7 @@
 > Built on attributed open-source foundations (see [`NOTICE`](./NOTICE)); the Arena
 > engine, firewall, scoring, signed ledger, live mode, and Bitget integration are original.
 
-**Live:** https://bitarena.vercel.app (signed firewall + `/verify` + UI) · **Code:** https://github.com/Pratiikpy/agent-arena
+**Live:** https://bitarena.vercel.app (signed firewall + `/verify` + UI) · **Code:** https://github.com/narutopyy/agent-arena
 
 ## 1. The problem
 

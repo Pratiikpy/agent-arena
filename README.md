@@ -1,6 +1,6 @@
 # Agent Arena (bitarena)
 
-[![CI](https://github.com/Pratiikpy/agent-arena/actions/workflows/ci.yml/badge.svg)](https://github.com/Pratiikpy/agent-arena/actions/workflows/ci.yml)
+[![CI](https://github.com/narutopyy/agent-arena/actions/workflows/ci.yml/badge.svg)](https://github.com/narutopyy/agent-arena/actions/workflows/ci.yml)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
 ![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)
 ![tests: passing](https://img.shields.io/badge/tests-passing-brightgreen.svg)

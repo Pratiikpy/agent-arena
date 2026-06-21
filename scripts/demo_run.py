@@ -93,7 +93,7 @@ def main() -> int:
         print(f"    shipped         : {pub or 4} strategies published on Bitget's GetAgent platform")
 
     print("\n" + "-" * 72)
-    print("  Live: https://bitarena.vercel.app   ·   Code: github.com/Pratiikpy/agent-arena")
+    print("  Live: https://bitarena.vercel.app   ·   Code: github.com/narutopyy/agent-arena")
     print("  Reproduce everything: make verify   ·   verify the evidence: make verify-evidence")
     print("-" * 72 + "\n")
     return 0

@@ -3,7 +3,7 @@
 > A live, signed safety firewall and proving ground that decides which AI trading
 > agents deserve capital — and stops any of them from blowing up. Built on Bitget.
 
-**▶ Live:** [bitarena.vercel.app](https://bitarena.vercel.app) · **Code:** [github.com/Pratiikpy/agent-arena](https://github.com/Pratiikpy/agent-arena)
+**▶ Live:** [bitarena.vercel.app](https://bitarena.vercel.app) · **Code:** [github.com/narutopyy/agent-arena](https://github.com/narutopyy/agent-arena)
 
 ## The problem
 The first generation of autonomous trading agents is here. Nobody can hand one real
