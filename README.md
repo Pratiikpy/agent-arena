@@ -54,6 +54,20 @@ vet a trade, or (b) enter the arena and compete.
 - **Trading Infra** — the firewall, benchmark, signed ledger, and MCP server are reusable infrastructure any developer can integrate.
 - **US Stock AI** — the arena + firewall run across six of Bitget's tokenized US stocks (AAPL, TSLA, NVDA, MSFT, GOOGL, META).
 
+## The Lab: seven innovations on the trust layer
+
+Each is signed or sandboxed, live on the demo's **Lab** tab and over HTTP:
+
+- **Named personas:** an identity and philosophy per agent (`bitarena/agents/persona.py`).
+- **Reflection memory:** agents grade their own calls and learn from recent hits and misses (`bitarena/agents/reflection.py`).
+- **Signed debate transcript:** the bull, bear, and judge debate, Ed25519-signed and tamper-evident (`bitarena/agents/debate.py`).
+- **Signed trade memo:** a named-section memo bound to the verdict's certificate hash (`bitarena/agents/memo.py`).
+- **Natural language to an agent:** English to a `decide(obs)` function, AST-allowlisted, sandboxed, and backtest-gated before it can compete (`bitarena/strategy/`).
+- **Multi-brain model arena:** decision brains ranked on identical candle-replay data (`bitarena/arena/model_arena.py`).
+- **Real analyst briefs:** real Bitget technicals and funding feed the agents in place of the price fallback (`bitarena/perception/briefs.py`).
+
+Served at `/personas`, `/brains`, `/strategy`, `/reflection`, `/memo`, `/debate`.
+
 ## Architecture
 
 ```
@@ -61,15 +75,16 @@ bitarena/
   domain/        core value objects: TradeIntent, Verdict + signed cert, Mandate, market types
   firewall/      Ed25519 signed certs · pure risk gates · fail-closed evaluate()
   connectors/    ExchangeConnector protocol · PaperExchange · Bitget v2 REST client
-  perception/    technical features · Bitget Agent Hub Skills (macro/sentiment/news/onchain/technical)
-  agents/        swarm · regime (Playbook mirror) · persona team · Q-learning RL · momentum · buy-hold · funding-carry · Qwen LLM debate
-  arena/         tournament engine · per-agent portfolio/PnL · leaderboard · TrustAllocator · LiveArena (resumable live mode)
+  perception/    technical features · Agent Hub Skills + real Bitget briefs (macro/sentiment/news/onchain/technical)
+  agents/        swarm · regime · persona team · RL · momentum · buy-hold · funding-carry · Qwen debate · NL-strategy · personas · reflection · signed debate · memo
+  arena/         tournament engine · portfolio/PnL · leaderboard · TrustAllocator · LiveArena · multi-brain model arena
   scoring/       Sharpe/Sortino/drawdown · Deflated Sharpe / PSR / PBO
+  strategy/      natural-language strategy creation: AST-allowlisted sandbox + backtest gate
   ledger/        append-only Ed25519-signed trade log (Bitget-required fields, tamper-evident)
-  mcp/           MCP server: vet_trade(), get_leaderboard(), list_agents()
-  api/           FastAPI: /firewall /verify /pubkey /leaderboard /live /ledger /debate (+ serves the UI)
+  mcp/           MCP server: vet_trade · get_leaderboard · list_agents · get_allocator · issuer_key · verify_certificate
+  api/           FastAPI: /firewall /verify /pubkey /leaderboard /live /ledger /debate /personas /brains /strategy /reflection /memo (+ serves the UI)
   research/      funding-carry edge study (walk-forward + Deflated Sharpe)
-web/             production single-page UI: firewall · arena · ledger · debate · verify
+web/             production single-page UI: firewall · arena · allocator · ledger · debate · lab · verify
 playbook/        four published Bitget GetAgent Playbooks — see playbook/PUBLISHED.md
 ```
 
