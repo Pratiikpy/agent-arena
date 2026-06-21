@@ -1,10 +1,13 @@
 """TrustAllocator — a meta-agent that allocates risk budget across competing agents.
 
-The apex of the Arena thesis: don't just *rank* agents, *fund* them. Each agent runs in
-the arena, but the capital/risk budget it may deploy is set by its own rolling, verified
-performance (return penalized by drawdown). Trusted agents get a larger mandate; agents
-whose performance decays are starved toward zero. The firewall still gates every order —
-so even a freshly-promoted agent cannot breach its (now larger) mandate.
+The apex of the Arena thesis: don't just *rank* agents, *fund* them — and fund by *verified*
+trust, not lucky streaks. Each agent's capital/risk budget is set by its rolling performance
+(return penalized by drawdown), then **deflated by overfit-aware skill confidence** (a Deflated
+Sharpe discount against the fleet): a positive run that can't be distinguished from the luckiest
+draw is discounted, so capital flows to skill. Trusted agents get a larger mandate; likely-luck and
+decaying agents are starved toward zero. This is the verification half (DSR/PBO) applied to capital,
+not just to the leaderboard. The firewall still gates every order — so even a freshly-promoted agent
+cannot breach its (now larger) mandate.
 
 This reallocates a *risk budget* (the per-agent firewall mandate), not physical cash, so
 there are no messy position transfers; the "fund" equity is the sum of the agents' slices.
@@ -25,7 +28,8 @@ from ..domain.mandate import default_arena_mandate
 from ..domain.market import InstrumentType
 from ..domain.verdict import Decision
 from ..firewall.firewall import EvalContext, Firewall
-from ..scoring.metrics import max_drawdown, summarize
+from ..scoring.metrics import max_drawdown, summarize, to_returns
+from ..scoring.overfit import deflated_sharpe_ratio, sharpe_moments
 from .portfolio import Portfolio
 
 
@@ -130,14 +134,36 @@ class TrustAllocator:
         capital = max(self.pool_usd * weight, 1.0)
         return default_arena_mandate(capital, allowed_symbols=(self.symbol,), max_leverage=self.max_leverage)
 
+    def _fleet_dsr(self) -> list[float]:
+        """Per-agent Deflated Sharpe over the rolling window, deflated against the *fleet* as the
+        trial set: how confident we are each agent's recent Sharpe is skill, not the luckiest draw
+        across the competitors. NaN (degenerate window) → 1.0 (no discount, fail-safe)."""
+        rets = [to_returns(self.portfolios[aid].equity_curve[-self.lookback:]) for aid in self.ids]
+        moments = [sharpe_moments(r) for r in rets]
+        srs = [m["sr"] for m in moments]
+        sr_var = float(np.var(srs, ddof=1)) if len(srs) > 1 else 0.0
+        n = len(self.ids)
+        out: list[float] = []
+        for m in moments:
+            d = deflated_sharpe_ratio(m["sr"], m["n"], n, sr_var, skew=m["skew"], kurt=m["kurt"])
+            out.append(1.0 if d != d else d)  # NaN → no discount
+        return out
+
     def _rebalance(self, tick: int) -> None:
         scores = [rolling_score(self.portfolios[aid].equity_curve, self.lookback) for aid in self.ids]
-        w = trust_weights(scores, temperature=self.temperature, min_weight=self.min_weight, starve_below=self.starve_below)
+        # Overfit-adjusted trust (the verification half, applied to capital): deflate each agent's
+        # recent Sharpe against the fleet (DSR) and discount a positive rolling score that isn't
+        # distinguishable from luck — so the allocator funds skill-confidence, not lucky streaks.
+        # Losers (score <= 0) are untouched; they are already starved by the score itself.
+        dsrs = self._fleet_dsr()
+        adjusted = [s * dsrs[i] if s > 0 else s for i, s in enumerate(scores)]
+        w = trust_weights(adjusted, temperature=self.temperature, min_weight=self.min_weight, starve_below=self.starve_below)
         self.weights = {aid: float(w[i]) for i, aid in enumerate(self.ids)}
         self.weights_history.append({
             "tick": tick,
             "weights": {aid: round(self.weights[aid], 4) for aid in self.ids},
             "scores": {aid: round(scores[i], 4) for i, aid in enumerate(self.ids)},
+            "dsr": {aid: round(dsrs[i], 4) for i, aid in enumerate(self.ids)},
         })
 
     def _step(self) -> None:

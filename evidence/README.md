@@ -33,7 +33,7 @@ uv run python scripts/demo_firewall.py --symbol BTCUSDT --side buy --notional 99
 | `firewall_bench.json` | Firewall latency: a full signed verdict (gates + Ed25519) is **~0.1 ms** (~9,700/sec single core) — gating every trade is effectively free |
 | `external_agent_session.json` | A third-party bot vetting every trade through the firewall over HTTP |
 | `llm_debate.json` | One live Qwen analyst debate, gated by the firewall |
-| `allocator.json` | TrustAllocator vs equal-weight: capital flows to verified performers, decayers starved |
+| `allocator.json` | TrustAllocator vs equal-weight: capital flows to verified performers (**DSR-adjusted** — positive runs that aren't distinguishable from luck are discounted), decayers starved; `weights_history` carries per-agent DSR |
 | `funding_carry.json` | Funding-carry edge study on **real Bitget funding history** (passive + adaptive sweep, walk-forward, Deflated Sharpe) |
 | `playbook_backtests.json` | The Playbook factory's **on-platform GetAgent backtests** — a systematic 2×3 study (4 published, 3 withheld) with the publish/withhold decision per strategy |
 | `walk_forward.json` | Agents across disjoint real-Bitget folds: per-fold return + cross-window stability (consistency, % positive folds) |
