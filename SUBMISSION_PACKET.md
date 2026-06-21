@@ -104,6 +104,11 @@ let a fleet of agents be run with real capital. That is what Agent Arena is.
 - **Tournaments on real Bitget data (1h)** — `bitget_btc_perp/`, `bitget_eth_perp/`,
   `bitget_sol_perp/`, `bitget_tokenized_aapl/` (Track 3): leaderboards + signed
   hash-chained ledgers + trade CSVs (timestamp/pair/side/price/qty/balance Δ).
+- **Track-3 breadth *and* depth** — `tokenized_stock_sweep.json`: the arena + firewall across
+  **six** tokenized US stocks (0 unsafe); `tokenized_session_risk.json` + a **session-aware
+  firewall gate**: ~76% of tokenized-stock 1h candles fall off-hours (~81% wall-clock) with
+  1.1–2.2% re-open gaps, so the gate tightens the off-hours order cap (red-teamed, threat-modeled,
+  property-tested). Depth no breadth-only stock entry has.
 - **External integration** — a `FirewallClient` SDK (`bitarena/client.py`) +
   `scripts/integrate_example.py`: a third-party bot vets every trade and **offline-verifies**
   each signed verdict in a few lines, runnable against the live deploy; plus
@@ -111,7 +116,9 @@ let a fleet of agents be run with real capital. That is what Agent Arena is.
 - **Funding-carry edge study** — `funding_carry.json`: real Bitget funding history,
   walk-forward + Deflated Sharpe.
 - **Live LLM debate** — `llm_debate.json`: a real Qwen analyst debate, firewall-gated.
-- **Capital allocator** — `allocator.json`: trust-weighted vs equal-weight.
+- **Capital allocator** — `allocator.json`: trust-weighted vs equal-weight, **DSR-adjusted** so
+  capital flows to skill-confidence and starves likely-luck (+$1,109 vs equal-weight). The
+  verification layer applied to money, visible live in the **Allocator** tab.
 
 ## Security rigor (Track 2 depth)
 
