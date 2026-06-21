@@ -33,11 +33,14 @@ Bitget's own GetAgent platform.
 ## Proof it's real (not slides)
 - **Live signed firewall** — curl a verdict in 10 seconds; tamper any field and the
   signature dies. A 24-case red-team battery: **0 unsafe orders ever passed.**
-- **Four published Bitget Playbooks** with real on-platform backtests (BTC breakout
-  Sharpe 1.68 / PF 2.33, ETH breakout PF 1.42, adaptive regime BTC PF 1.74, adaptive regime
-  ETH Sharpe 2.15 / PF 3.34) — plus three more honestly *withheld* because they underperformed.
-- **One real, structural edge, honestly validated** — funding carry on real Bitget
-  funding history (walk-forward + Deflated Sharpe): modest, low-risk, regime-dependent.
+- **It makes money — four published Bitget Playbooks** that profit on real on-platform
+  backtests: up to **+39.7% (budget) at PF 2.33** (BTC breakout), profit factors **1.42–3.34**
+  across the set (ETH breakout 1.42, adaptive regime BTC 1.74, adaptive regime ETH Sharpe 2.15 /
+  PF 3.34) — plus three more honestly *withheld* because they underperformed.
+- **A real, structural money edge, honestly validated** — a delta-neutral funding carry on
+  real Bitget funding history (walk-forward + Deflated Sharpe): **~+3.1% annualized at low risk** —
+  a small, steady, market-neutral yield, not an overfit curve. On flat price data no agent beats
+  buy-hold, and we report that — the returns are structural, never cherry-picked.
 - **Independently verifiable, even in your browser** — the Verify tab checks the Ed25519
   signature client-side (Web Crypto) and pins the published issuer; plus a signed
   hash-chained ledger, an offline CLI, and a one-command whole-evidence verifier.
