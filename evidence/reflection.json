@@ -1,0 +1,153 @@
+{
+  "agent_id": "baseline-momentum",
+  "name": "The Trend Rider",
+  "lens": "momentum",
+  "decisions": [
+    {
+      "ts": 20,
+      "asset": "BTC",
+      "action": "short",
+      "thesis": "5/20 MA down cross",
+      "pnl_bps": 683.1849585465388,
+      "alpha_bps": 1366.3699170930777,
+      "reflection": "short BTC: +683 bps (alpha +1366). Call was right; the momentum read held."
+    },
+    {
+      "ts": 26,
+      "asset": "BTC",
+      "action": "short",
+      "thesis": "5/20 MA down cross",
+      "pnl_bps": 623.7562146183584,
+      "alpha_bps": 1247.5124292367168,
+      "reflection": "short BTC: +624 bps (alpha +1248). Call was right; the momentum read held."
+    },
+    {
+      "ts": 32,
+      "asset": "BTC",
+      "action": "short",
+      "thesis": "5/20 MA down cross",
+      "pnl_bps": 9.436657007525495,
+      "alpha_bps": 18.87331401505099,
+      "reflection": "short BTC: +9 bps (alpha +19). Call was right; the momentum read held."
+    },
+    {
+      "ts": 38,
+      "asset": "BTC",
+      "action": "short",
+      "thesis": "5/20 MA down cross",
+      "pnl_bps": -103.01737132403899,
+      "alpha_bps": -206.03474264807798,
+      "reflection": "short BTC: -103 bps (alpha -206). Call was wrong; the momentum read missed."
+    },
+    {
+      "ts": 44,
+      "asset": "BTC",
+      "action": "short",
+      "thesis": "5/20 MA down cross",
+      "pnl_bps": -365.0653526141157,
+      "alpha_bps": -730.1307052282314,
+      "reflection": "short BTC: -365 bps (alpha -730). Call was wrong; the momentum read missed."
+    },
+    {
+      "ts": 50,
+      "asset": "BTC",
+      "action": "flat",
+      "thesis": "5/20 MA flat cross",
+      "pnl_bps": 0.0,
+      "alpha_bps": -23.934142946400172,
+      "reflection": "flat BTC: +0 bps (alpha -24). Call was right; the momentum read held."
+    },
+    {
+      "ts": 56,
+      "asset": "BTC",
+      "action": "long",
+      "thesis": "5/20 MA up cross",
+      "pnl_bps": 312.2162891301916,
+      "alpha_bps": 0.0,
+      "reflection": "long BTC: +312 bps (alpha +0). Call was right; the momentum read held."
+    },
+    {
+      "ts": 62,
+      "asset": "BTC",
+      "action": "long",
+      "thesis": "5/20 MA up cross",
+      "pnl_bps": -198.45121189333125,
+      "alpha_bps": 0.0,
+      "reflection": "long BTC: -198 bps (alpha +0). Call was wrong; the momentum read missed."
+    },
+    {
+      "ts": 68,
+      "asset": "BTC",
+      "action": "long",
+      "thesis": "5/20 MA up cross",
+      "pnl_bps": -237.84590843883623,
+      "alpha_bps": 0.0,
+      "reflection": "long BTC: -238 bps (alpha +0). Call was wrong; the momentum read missed."
+    },
+    {
+      "ts": 74,
+      "asset": "BTC",
+      "action": "short",
+      "thesis": "5/20 MA down cross",
+      "pnl_bps": -218.12971790134972,
+      "alpha_bps": -436.25943580269944,
+      "reflection": "short BTC: -218 bps (alpha -436). Call was wrong; the momentum read missed."
+    },
+    {
+      "ts": 80,
+      "asset": "BTC",
+      "action": "short",
+      "thesis": "5/20 MA down cross",
+      "pnl_bps": 228.30050888621224,
+      "alpha_bps": 456.6010177724245,
+      "reflection": "short BTC: +228 bps (alpha +457). Call was right; the momentum read held."
+    },
+    {
+      "ts": 86,
+      "asset": "BTC",
+      "action": "long",
+      "thesis": "5/20 MA up cross",
+      "pnl_bps": 391.46869052292254,
+      "alpha_bps": 0.0,
+      "reflection": "long BTC: +391 bps (alpha +0). Call was right; the momentum read held."
+    },
+    {
+      "ts": 92,
+      "asset": "BTC",
+      "action": "long",
+      "thesis": "5/20 MA up cross",
+      "pnl_bps": -151.30528896667107,
+      "alpha_bps": 0.0,
+      "reflection": "long BTC: -151 bps (alpha +0). Call was wrong; the momentum read missed."
+    },
+    {
+      "ts": 98,
+      "asset": "BTC",
+      "action": "long",
+      "thesis": "5/20 MA up cross",
+      "pnl_bps": -280.51970738654285,
+      "alpha_bps": 0.0,
+      "reflection": "long BTC: -281 bps (alpha +0). Call was wrong; the momentum read missed."
+    },
+    {
+      "ts": 104,
+      "asset": "BTC",
+      "action": "short",
+      "thesis": "5/20 MA down cross",
+      "pnl_bps": -127.72889521909914,
+      "alpha_bps": -255.4577904381983,
+      "reflection": "short BTC: -128 bps (alpha -255). Call was wrong; the momentum read missed."
+    },
+    {
+      "ts": 110,
+      "asset": "BTC",
+      "action": "short",
+      "thesis": "5/20 MA down cross",
+      "pnl_bps": 220.00542574746595,
+      "alpha_bps": 440.0108514949319,
+      "reflection": "short BTC: +220 bps (alpha +440). Call was right; the momentum read held."
+    }
+  ],
+  "resolved": 16,
+  "hit_rate": 0.688
+}
