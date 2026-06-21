@@ -12,6 +12,7 @@ import math
 
 import numpy as np
 
+from ..agents.persona import persona_for
 from ..scoring.metrics import summarize, to_returns
 from ..scoring.overfit import (
     deflated_sharpe_ratio,
@@ -44,9 +45,13 @@ def build_leaderboard(portfolios: dict[str, Portfolio], periods_per_year: float 
         moments = sharpe_moments(returns)
         moments_by_id[agent_id] = moments
         psr = probabilistic_sharpe_ratio(moments["sr"], moments["n"], skew=moments["skew"], kurt=moments["kurt"])
+        p = persona_for(agent_id)
         rows.append(
             {
                 "agent_id": agent_id,
+                "name": p.name,
+                "philosophy": p.philosophy,
+                "lens": p.lens,
                 "final_equity": round(pf.equity_curve[-1], 2),
                 "trades": pf.trades,
                 "fees_usd": round(pf.fees_paid, 2),
