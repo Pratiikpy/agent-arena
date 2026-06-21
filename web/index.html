@@ -31,7 +31,9 @@
   [data-rise]{animation:fadeUp .5s cubic-bezier(.2,.8,.2,1) both;}
   [data-rise-2]{animation:fadeUp .5s cubic-bezier(.2,.8,.2,1) .06s both;}
   [data-rise-3]{animation:fadeUp .5s cubic-bezier(.2,.8,.2,1) .12s both;}
-  @media (prefers-reduced-motion: reduce){[data-stamp],[data-rise],[data-rise-2],[data-rise-3]{animation:none!important;}}
+  @keyframes sparkDraw{from{stroke-dashoffset:320;}to{stroke-dashoffset:0;}}
+  .spark-line{stroke-dasharray:320;animation:sparkDraw 1s ease-out forwards;}
+  @media (prefers-reduced-motion: reduce){[data-stamp],[data-rise],[data-rise-2],[data-rise-3]{animation:none!important;}.spark-line{animation:none!important;}}
   #app{min-height:100vh;background:#fff;color:#0a0a0a;font-family:'Outfit',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;-webkit-font-smoothing:antialiased;}
   .mono{font-family:'JetBrains Mono',monospace;}
   /* mobile: the inline-styled nav is a nowrap flex row of 6 tabs — let it wrap so phones
@@ -176,17 +178,17 @@ function fromApi(d, requested){
 
 // ---------- mock leaderboard / ledger / debate (offline fallback) ----------
 function mockLeaderboard(){ return { symbol:"BTCUSDT", instrument:"perp", source:"bitget:1h:1000bars", ticks:1000,
-  starting_cash:10000, issuer:"98683e5cbe6313a0", ledger_verified:true,
-  overfitting:{pbo:0.1786},
-  firewall:{totals:{intents:602, allow:179, allow_capped:423, reject:0}},
+  starting_cash:10000.0, issuer:"98683e5cbe6313a0", ledger_verified:true,
+  overfitting:{pbo:0.1825},
+  firewall:{totals:{intents:603, allow:176, allow_capped:427, reject:0}},
   leaderboard:[
-    {agent_id:"funding-carry",final_equity:10653.35,total_return:0.065335,sharpe:0.066135,max_drawdown:-0.024941,win_rate:0.49,trades:93,fees_usd:90.63,psr:0.69,dsr:0.3989,skill_significant:false},
-    {agent_id:"baseline-momentum",final_equity:11075.59,total_return:0.107559,sharpe:0.04934,max_drawdown:-0.03405,win_rate:0.469,trades:115,fees_usd:123.44,psr:0.74,dsr:0.2212,skill_significant:false},
-    {agent_id:"regime",final_equity:10539.61,total_return:0.053961,sharpe:0.029049,max_drawdown:-0.03198,win_rate:0.449,trades:138,fees_usd:146.88,psr:0.63,dsr:0.0795,skill_significant:false},
-    {agent_id:"persona-team",final_equity:9990.51,total_return:-0.000949,sharpe:-0.013008,max_drawdown:-0.003385,win_rate:0.441,trades:20,fees_usd:2.89,psr:0.39,dsr:0.0025,skill_significant:false},
-    {agent_id:"swarm",final_equity:9950.46,total_return:-0.004954,sharpe:-0.02579,max_drawdown:-0.009346,win_rate:0.228,trades:16,fees_usd:7.22,psr:0.34,dsr:0.0006,skill_significant:false},
-    {agent_id:"benchmark-buyhold",final_equity:8710.90,total_return:-0.12891,sharpe:-0.049784,max_drawdown:-0.173308,win_rate:0.479,trades:4,fees_usd:3.87,psr:0.18,dsr:0.0001,skill_significant:false},
-    {agent_id:"rl-qlearn",final_equity:9701.56,total_return:-0.029844,sharpe:-0.077043,max_drawdown:-0.031791,win_rate:0.453,trades:216,fees_usd:254.03,psr:0.12,dsr:0.0,skill_significant:false},
+    {agent_id:"funding-carry",final_equity:10653.35,total_return:0.065335,sharpe:0.066135,max_drawdown:-0.024941,win_rate:0.491,trades:93,fees_usd:90.63,dsr:0.2911,skill_significant:false,equity_sparkline:[10000.0,9936.29,9894.8,9776.37,9861.65,9920.74,9952.5,9920.15,9911.19,9912.86,9990.42,9992.64,9992.65,9995.13,10051.76,10051.75,10051.75,10274.08,10518.37,10724.84,10724.85,10724.84,10724.83,10724.84,10724.83,10724.83,10724.83,10674.41,10653.34,10653.35,10653.35,10653.35]},
+    {agent_id:"baseline-momentum",final_equity:11072.68,total_return:0.107268,sharpe:0.049216,max_drawdown:-0.03405,win_rate:0.469,trades:115,fees_usd:123.44,dsr:0.1493,skill_significant:false,equity_sparkline:[10000.0,9998.2,9893.15,9873.53,9769.28,9829.11,9905.67,9874.48,9866.77,9799.96,9788.69,9766.85,9754.7,9856.51,9898.11,9875.87,9838.31,10023.58,10332.23,10534.13,10670.29,10574.6,10738.15,10781.22,10798.49,10808.2,10878.38,10826.75,10812.75,10965.29,11026.18,11072.68]},
+    {agent_id:"regime",final_equity:10552.77,total_return:0.055277,sharpe:0.029721,max_drawdown:-0.031969,win_rate:0.429,trades:136,fees_usd:144.6,dsr:0.0491,skill_significant:false,equity_sparkline:[10000.0,10000.0,10000.0,9988.39,9987.85,9973.56,9973.57,9973.57,9964.03,9970.32,9822.67,9818.73,9810.7,9810.71,9761.87,9757.69,9757.9,9901.92,10271.46,10531.93,10726.35,10644.06,10599.29,10550.25,10550.24,10550.24,10550.23,10697.69,10649.03,10635.16,10560.14,10552.77]},
+    {agent_id:"persona-team",final_equity:9990.57,total_return:-0.000943,sharpe:-0.012923,max_drawdown:-0.003385,win_rate:0.442,trades:20,fees_usd:2.89,dsr:0.001,skill_significant:false,equity_sparkline:[10000.0,10000.0,10000.0,10000.0,9998.76,10002.0,10002.0,10002.0,10002.0,10002.0,10002.0,10002.0,10002.0,10002.01,10000.78,10000.78,10000.78,10006.13,10014.65,10014.61,9999.75,10000.46,10003.55,10000.6,9995.61,9995.78,9995.7,9993.65,9992.85,9990.97,9992.2,9990.57]},
+    {agent_id:"swarm",final_equity:9950.46,total_return:-0.004954,sharpe:-0.02579,max_drawdown:-0.009346,win_rate:0.229,trades:16,fees_usd:7.22,dsr:0.0002,skill_significant:false,equity_sparkline:[10000.0,10000.0,10000.0,10000.0,10000.0,10000.0,10000.0,10000.0,10000.0,10000.0,10000.0,10000.0,10000.0,10000.0,10000.0,10000.0,10000.0,10000.0,10019.95,9993.32,9953.42,9953.42,9953.41,9953.42,9953.41,9953.41,9953.41,9950.45,9950.46,9950.46,9950.46,9950.46]},
+    {agent_id:"benchmark-buyhold",final_equity:8698.36,total_return:-0.130164,sharpe:-0.050333,max_drawdown:-0.173251,win_rate:0.478,trades:4,fees_usd:3.87,dsr:0.0,skill_significant:false,equity_sparkline:[10000.0,10024.2,9964.62,9983.28,9824.69,9753.28,9621.26,9646.99,9728.69,9656.01,9650.44,9703.82,9582.2,9463.88,9409.78,9438.18,9420.12,9113.83,8800.14,8580.51,8424.56,8467.3,8620.48,8485.39,8633.16,8642.29,8708.24,8873.56,8830.61,8680.85,8627.19,8698.36]},
+    {agent_id:"rl-qlearn",final_equity:9515.57,total_return:-0.048443,sharpe:-0.100731,max_drawdown:-0.052927,win_rate:0.44,trades:219,fees_usd:256.59,dsr:0.0,skill_significant:false,equity_sparkline:[10000.0,9958.41,9890.65,9890.66,10030.82,9987.43,9955.08,9919.69,9841.39,9785.77,9748.38,9750.01,9736.9,9737.14,9730.88,9716.6,9712.45,9679.18,9665.81,9636.51,9634.7,9613.8,9613.55,9601.33,9595.09,9560.31,9550.87,9545.66,9549.69,9543.41,9529.96,9515.57]},
   ]}; }
 function genLedger(agent){
   const base = {swarm:7,"persona-team":13,"rl-qlearn":23}[agent]||7;
@@ -413,6 +415,18 @@ function firewall(){
     <div style="min-height:540px;">'+right+'</div>\
   </div></div>';
 }
+function spark(curve, up){
+  if(!Array.isArray(curve)||curve.length<2) return '';
+  const w=96,h=24,n=curve.length;
+  const mn=Math.min.apply(null,curve), mx=Math.max.apply(null,curve), rng=(mx-mn)||1;
+  const y=v=>(h-((v-mn)/rng)*(h-3)-1.5).toFixed(1);
+  const pts=curve.map((v,i)=>((i/(n-1))*w).toFixed(1)+','+y(v)).join(' ');
+  const col=up?'#0b7a4b':'#c23b30', base=y(curve[0]);
+  return '<svg width="'+w+'" height="'+h+'" viewBox="0 0 '+w+' '+h+'" style="display:block;margin-top:5px;overflow:visible;" aria-hidden="true">'
+    +'<line x1="0" y1="'+base+'" x2="'+w+'" y2="'+base+'" stroke="rgba(0,0,0,.10)" stroke-width="1" stroke-dasharray="2 2"/>'
+    +'<polyline class="spark-line" points="'+pts+'" fill="none" stroke="'+col+'" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>'
+    +'<circle cx="'+w+'" cy="'+y(curve[n-1])+'" r="2" fill="'+col+'"/></svg>';
+}
 function arena(){
   const d=state.lb||mockLeaderboard(); const fw=d.firewall&&d.firewall.totals||{intents:0,allow:0,allow_capped:0,reject:0};
   const tot=fw.intents||1; const pbo=(d.overfitting&&d.overfitting.pbo!=null)?Number(d.overfitting.pbo).toFixed(2):"—";
@@ -426,7 +440,7 @@ function arena(){
     const ret=r.total_return||0; const lead=i===0;
     return '<div style="display:grid;grid-template-columns:46px 1.6fr 1fr 0.9fr 0.9fr 1fr 0.9fr 0.7fr 0.9fr 0.8fr;gap:8px;align-items:center;padding:15px 22px;border-bottom:1px solid rgba(0,0,0,.06);'+(lead?"background:#fdfaf2;":"background:#fff;")+'">\
       <span class="mono" style="font-size:13px;color:'+(lead?"#946200":"#9aa0aa")+';font-weight:600;">'+(i+1)+'</span>\
-      <span style="display:flex;align-items:center;gap:9px;"><span class="mono" style="font-size:13.5px;color:#1d1d1f;">'+esc(r.agent_id)+'</span>'+(lead?'<span style="font-size:9.5px;font-weight:700;letter-spacing:.1em;color:#946200;background:#fdf6e9;border:1px solid #f0d699;border-radius:5px;padding:2px 6px;">LEAD</span>':'')+'</span>\
+      <span style="display:flex;flex-direction:column;gap:1px;min-width:0;"><span style="display:flex;align-items:center;gap:9px;"><span class="mono" style="font-size:13.5px;color:#1d1d1f;">'+esc(r.agent_id)+'</span>'+(lead?'<span style="font-size:9.5px;font-weight:700;letter-spacing:.1em;color:#946200;background:#fdf6e9;border:1px solid #f0d699;border-radius:5px;padding:2px 6px;">LEAD</span>':'')+'</span>'+spark(r.equity_sparkline,(r.total_return||0)>=0)+'</span>\
       <span class="mono" style="font-size:13px;color:#1d1d1f;text-align:right;">'+fmt(r.final_equity)+'</span>\
       <span class="mono" style="font-size:13px;color:'+(ret>=0?"#0b7a4b":"#c23b30")+';text-align:right;">'+(ret>=0?"+":"")+(ret*100).toFixed(2)+'%</span>\
       <span class="mono" style="font-size:13px;color:#6b7280;text-align:right;">'+Number(r.sharpe||0).toFixed(3)+'</span>\

@@ -24,6 +24,17 @@ from .portfolio import Portfolio
 _NEG_INF = float("-inf")
 
 
+def _sparkline(curve: list[float], points: int = 32) -> list[float]:
+    """Evenly-downsampled equity curve for an inline UI sparkline — the agent's *real* path,
+    not a synthesized shape. Returns the curve as-is when it is already short enough."""
+    if not curve:
+        return []
+    if len(curve) <= points:
+        return [round(float(x), 2) for x in curve]
+    step = (len(curve) - 1) / (points - 1)
+    return [round(float(curve[round(i * step)]), 2) for i in range(points)]
+
+
 def build_leaderboard(portfolios: dict[str, Portfolio], periods_per_year: float | None = None) -> list[dict]:
     rows: list[dict] = []
     moments_by_id: dict[str, dict] = {}
@@ -40,6 +51,7 @@ def build_leaderboard(portfolios: dict[str, Portfolio], periods_per_year: float 
                 "trades": pf.trades,
                 "fees_usd": round(pf.fees_paid, 2),
                 "psr": None if math.isnan(psr) else round(psr, 4),
+                "equity_sparkline": _sparkline(pf.equity_curve),
                 **metrics,
             }
         )
