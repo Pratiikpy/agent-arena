@@ -88,7 +88,9 @@ uv run uvicorn bitarena.api.app:app --port 8000           # UI + API at /
 
 One project, three tracks (eligible for all-tracks judging):
 
-- **Trading Agent** — seven autonomous perceive→decide→execute competitors.
+- **Trading Agent** — a fleet of autonomous perceive→decide→execute agents: the conflict-gated
+  swarm (the thesis), a structural-edge funding-carry agent, classic baselines (momentum, regime,
+  buy-hold), a Q-learning RL agent, and an optional Qwen LLM debate variant.
 - **Trading Infra** — the firewall, signed ledger, overfit benchmark, independent
   verifier, and MCP server are reusable infrastructure any developer can integrate.
 - **US Stock AI** — tournaments run across **six** Bitget tokenized US stocks (AAPL, TSLA,

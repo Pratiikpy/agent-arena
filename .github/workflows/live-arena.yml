@@ -1,0 +1,64 @@
+# Continuous live arena — advances the signed /live tournament on a schedule so it genuinely
+# grows over the judging window instead of serving a frozen snapshot.
+#
+# INERT until the operator opts in (it no-ops cleanly with no secret, so it never red-fails):
+#   1. Add repo secret  ARENA_SIGNING_KEY_B64  (the same key the deploy uses) — signs each step.
+#   2. Connect Vercel git auto-deploy for this repo so a committed evidence/live/ redeploys
+#      automatically (Project → Settings → Git). Without it, the snapshot advances in the repo
+#      but the live deploy only picks it up on the next deploy.
+# The serverless deploy is stateless, so the *schedule* — not the deploy — is what makes /live live.
+name: live-arena
+
+on:
+  schedule:
+    - cron: "17 */6 * * *"   # every 6h (off-minute); raise to hourly for 1h candles if desired
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+concurrency:
+  group: live-arena
+  cancel-in-progress: false
+
+jobs:
+  advance:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Guard on the signing key (skip cleanly if not configured)
+        id: guard
+        env:
+          ARENA_SIGNING_KEY_B64: ${{ secrets.ARENA_SIGNING_KEY_B64 }}
+        run: |
+          if [ -z "$ARENA_SIGNING_KEY_B64" ]; then
+            echo "ARENA_SIGNING_KEY_B64 not set — skipping. Add it (and connect Vercel git deploy) to make /live advance during judging."
+            echo "enabled=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "enabled=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Install uv
+        if: steps.guard.outputs.enabled == 'true'
+        uses: astral-sh/setup-uv@v5
+      - name: Set up Python + venv
+        if: steps.guard.outputs.enabled == 'true'
+        run: uv venv --python 3.11
+      - name: Install (api extra)
+        if: steps.guard.outputs.enabled == 'true'
+        run: uv pip install -e ".[api]"
+      - name: Advance + publish the live arena snapshot
+        if: steps.guard.outputs.enabled == 'true'
+        env:
+          ARENA_SIGNING_KEY_B64: ${{ secrets.ARENA_SIGNING_KEY_B64 }}
+        run: |
+          uv run python scripts/live_step.py --symbol BTCUSDT --instrument perp --state evidence/live
+          git config user.name "arena-live-bot"
+          git config user.email "arena-live-bot@users.noreply.github.com"
+          git add evidence/live
+          if git diff --cached --quiet; then
+            echo "no new candles since last run — nothing to commit"
+          else
+            git commit -m "chore(live): advance /live arena snapshot [skip ci]"
+            git pull --rebase --autostash origin main || true
+            git push
+          fi
