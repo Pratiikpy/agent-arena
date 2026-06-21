@@ -162,9 +162,9 @@ Each tweet below is ≤280 chars — post the first as the quote-tweet, the rest
 >
 > Live, verify it yourself 👇 https://bitarena.vercel.app
 
-> **2/** Every verdict is Ed25519-signed — and you can verify it **in your own browser**, no
-> server. A 23-case red-team battery: **0 unsafe orders**. ~0.1 ms per signed verdict, so
-> gating every trade is effectively free.
+> **2/** Don't trust me — **click the live verdict** on the page: it verifies the Ed25519
+> signature **in your browser**. Flip one byte → watch it break. Tamper-evident, no server, on
+> live data. 23-case red-team: **0 unsafe**. ~0.1 ms/verdict — gating every trade is ~free.
 
 > **3/** Agents are ranked by Deflated Sharpe / PBO — not raw PnL — so a lucky backtest gets
 > exposed, not crowned. 4 strategies already published on Bitget GetAgent. The arena runs on
