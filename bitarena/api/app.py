@@ -279,6 +279,42 @@ def create_app(
                 return json.loads(path.read_text(encoding="utf-8"))
         return JSONResponse({"detail": "no allocator run yet"}, status_code=404)
 
+    def _serve_artifact(name: str):
+        for path in (evidence / name, evidence.parent / name, Path("evidence") / name):
+            if path.exists():
+                return json.loads(path.read_text(encoding="utf-8"))
+        return JSONResponse({"detail": f"{name} not generated yet"}, status_code=404)
+
+    @app.get("/reflection")
+    def reflection():
+        """A per-agent reflection memory: decisions graded against realized outcomes, with lessons."""
+        return _serve_artifact("reflection.json")
+
+    @app.get("/memo")
+    def memo():
+        """A signed trade memo: a named-section explanation of one firewall decision."""
+        return _serve_artifact("trade_memo.json")
+
+    @app.get("/strategy")
+    def strategy():
+        """A natural-language brief turned into a sandboxed, backtest-gated arena agent."""
+        return _serve_artifact("nl_strategy.json")
+
+    @app.get("/brains")
+    def brains():
+        """The multi-brain model arena: brains ranked on identical candle-replay data."""
+        return _serve_artifact("model_arena.json")
+
+    @app.get("/personas")
+    def personas():
+        """The arena roster's identities: a name, philosophy, and lens per agent."""
+        from ..agents.persona import PERSONAS
+
+        return {"personas": [
+            {"agent_id": p.agent_id, "name": p.name, "philosophy": p.philosophy, "lens": p.lens}
+            for p in PERSONAS.values()
+        ]}
+
     @app.get("/ledger")
     def ledger(agent: str = "swarm", limit: int = Query(50, ge=1, le=1000)):
         if not _AGENT_ID_RE.fullmatch(agent):  # block path traversal (CWE-22) + junk
