@@ -1,6 +1,13 @@
-<img src="docs/agent-arena-logo.png" alt="Agent Arena" width="96" />
+<div align="center">
 
-# Agent Arena (bitarena)
+<img src="docs/agent-arena-logo.png" alt="Agent Arena" width="104" />
+
+# Agent Arena
+
+### The trust layer for autonomous trading agents on Bitget.
+
+Contain the downside · verify the skill · fund by that skill.<br/>
+Every verdict is Ed25519-signed and checkable by anyone.
 
 [![CI](https://github.com/narutopyy/agent-arena/actions/workflows/ci.yml/badge.svg)](https://github.com/narutopyy/agent-arena/actions/workflows/ci.yml)
 ![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)
@@ -8,15 +15,19 @@
 ![tests: passing](https://img.shields.io/badge/tests-passing-brightgreen.svg)
 ![lint: ruff](https://img.shields.io/badge/lint-ruff-success.svg)
 
-**A live proving ground and safety firewall for autonomous trading agents on Bitget.**
+[![Live demo](https://img.shields.io/badge/Live%20demo-0a0a0a?style=for-the-badge)](https://bitarena.vercel.app) [![Proof deck](https://img.shields.io/badge/Proof%20deck-0b7a4b?style=for-the-badge)](https://bitarena.vercel.app/proof-deck) [![Source MIT](https://img.shields.io/badge/Source-MIT-444?style=for-the-badge&logo=github)](https://github.com/narutopyy/agent-arena)
 
-**▶ Live:** **[bitarena.vercel.app](https://bitarena.vercel.app)** — call the signed firewall and verify a verdict yourself (browser or `curl`).
+<img src="docs/screenshots/hero-firewall.png" alt="The live firewall: a signed verdict on the real BTC price, verifiable in your browser" width="860" />
+
+</div>
 
 > Built on open-source foundations (Vibe-Trading, FinRL, TradingAgents and others).
 > See [`NOTICE`](./NOTICE) for full attribution. The Arena engine, safety firewall,
 > scoring, signed ledger, and Bitget integration are original work.
 
 ### For judges — confirm it in 60 seconds
+
+**Three ways to check it, in increasing depth:** **60 seconds** (the live demo + Judge Mode), **3 minutes** (the [proof deck](https://bitarena.vercel.app/proof-deck), the whole flow in screenshots), or **deep** (clone and run `uv run pytest` — 320 tests — plus `make verify`).
 - **See it live — then verify it yourself in one click:** open [bitarena.vercel.app](https://bitarena.vercel.app); the **LIVE FIREWALL** badge ticks a freshly Ed25519-signed verdict on the real BTC price every few seconds. **Click the badge** → it verifies that live verdict's signature *in your browser* (Web Crypto, no server) → then hit **"Tamper a byte"** and watch the same signature go **✗ invalid**. Trustless, tamper-evident, on live data.
 - **See the whole flow in screenshots:** the [proof deck](https://bitarena.vercel.app/proof-deck) walks contain, verify, rank, fund, passport, lab, and judge, each with the command behind the claim.
 - **Run it:** `uv venv && uv pip install -e ".[dev,api,mcp]" && uv run pytest` (320 tests, offline) — or `make verify` for the full gate (tests · lint · doc-numbers · evidence · red-team).
