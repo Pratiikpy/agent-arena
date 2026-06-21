@@ -285,6 +285,25 @@ def create_app(
                 return json.loads(path.read_text(encoding="utf-8"))
         return JSONResponse({"detail": f"{name} not generated yet"}, status_code=404)
 
+    def _load_json(name: str):
+        for path in (evidence / name, evidence.parent / name, Path("evidence") / name):
+            if path.exists():
+                try:
+                    return json.loads(path.read_text(encoding="utf-8"))
+                except (ValueError, OSError):
+                    return None
+        return None
+
+    @app.get("/passports")
+    def passports():
+        """Agent Passports: the deserve-capital profile per agent (Trust Score, limits, allocation)."""
+        from ..arena.passport import build_all_passports
+
+        lb = _load_json("leaderboard.json")
+        rows = lb.get("leaderboard", lb) if isinstance(lb, dict) else lb
+        alloc = _load_json("allocator.json")
+        return {"passports": build_all_passports(rows if isinstance(rows, list) else None, alloc)}
+
     @app.get("/reflection")
     def reflection():
         """A per-agent reflection memory: decisions graded against realized outcomes, with lessons."""

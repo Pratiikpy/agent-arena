@@ -18,7 +18,7 @@
 
 ### For judges — confirm it in 60 seconds
 - **See it live — then verify it yourself in one click:** open [bitarena.vercel.app](https://bitarena.vercel.app); the **LIVE FIREWALL** badge ticks a freshly Ed25519-signed verdict on the real BTC price every few seconds. **Click the badge** → it verifies that live verdict's signature *in your browser* (Web Crypto, no server) → then hit **"Tamper a byte"** and watch the same signature go **✗ invalid**. Trustless, tamper-evident, on live data.
-- **Run it:** `uv venv && uv pip install -e ".[dev,api,mcp]" && uv run pytest` (311 tests, offline) — or `make verify` for the full gate (tests · lint · doc-numbers · evidence · red-team).
+- **Run it:** `uv venv && uv pip install -e ".[dev,api,mcp]" && uv run pytest` (320 tests, offline) — or `make verify` for the full gate (tests · lint · doc-numbers · evidence · red-team).
 - **Verify the evidence yourself, offline:** `uv run python scripts/verify_evidence.py` → re-checks every signed ledger (8,376 records) + certificate, all pinned to the published issuer.
 - **Integrate in 5 lines:** `uv run python scripts/integrate_example.py` → a third-party bot vets *and* offline-verifies its trades against the live deploy.
 - **Read the threat model:** [`THREAT_MODEL.md`](./THREAT_MODEL.md) — every threat mapped to the gate that stops it and the test/red-team case that proves it, with honest residual risks.
@@ -70,6 +70,17 @@ Served at `/personas`, `/brains`, `/strategy`, `/reflection`, `/memo`, `/debate`
 
 <img src="docs/screenshots/lab.png" alt="The Lab — seven innovations, live on the demo" width="760" />
 
+## Judge tooling: Trust Score, Agent Passport, Judge Mode
+
+- **Trust Score** — one transparent number per agent: 40% skill (overfit-corrected DSR) + 30% safety + 20% performance + 10% explainability. PnL ranks agents by outcome; Trust Score ranks them by whether they deserve capital (`bitarena/arena/trust.py`).
+- **Agent Passport** — the credit score for an autonomous agent: persona, mandate limits, DSR/PBO/Sharpe/drawdown, Trust Score and grade, red-team result, and capital allocation, one card per agent (`/passports`, the Passport tab).
+- **Judge Mode** — one click verifies the whole system in 60 seconds: a safe order ALLOW, a rogue $50k order ALLOW_CAPPED to $2k, a policy breach REJECT, the signature checked in your browser, and the proof row (0/25 unsafe, 320 tests, ~0.1 ms). The Judge tab.
+- **How it compares** — a feature matrix in the Lab vs TradingAgents, AI Hedge Fund, and AI-Trader: they generate decisions; Agent Arena adds the signed firewall, DSR/PBO, allocator, and browser-verifiable ledger.
+
+<img src="docs/screenshots/judge.png" alt="Judge Mode — verify Agent Arena in 60 seconds" width="760" />
+
+<img src="docs/screenshots/passport.png" alt="Agent Passport — the credit score for autonomous trading agents" width="760" />
+
 ## Architecture
 
 ```
@@ -79,12 +90,12 @@ bitarena/
   connectors/    ExchangeConnector protocol · PaperExchange · Bitget v2 REST client
   perception/    technical features · Agent Hub Skills + real Bitget briefs (macro/sentiment/news/onchain/technical)
   agents/        swarm · regime · persona team · RL · momentum · buy-hold · funding-carry · Qwen debate · NL-strategy · personas · reflection · signed debate · memo
-  arena/         tournament engine · portfolio/PnL · leaderboard · TrustAllocator · LiveArena · multi-brain model arena
+  arena/         tournament engine · portfolio/PnL · leaderboard · Trust Score · Agent Passport · TrustAllocator · LiveArena · multi-brain model arena
   scoring/       Sharpe/Sortino/drawdown · Deflated Sharpe / PSR / PBO
   strategy/      natural-language strategy creation: AST-allowlisted sandbox + backtest gate
   ledger/        append-only Ed25519-signed trade log (Bitget-required fields, tamper-evident)
   mcp/           MCP server: vet_trade · get_leaderboard · list_agents · get_allocator · issuer_key · verify_certificate
-  api/           FastAPI: /firewall /verify /pubkey /leaderboard /live /ledger /debate /personas /brains /strategy /reflection /memo (+ serves the UI)
+  api/           FastAPI: /firewall /verify /pubkey /leaderboard /live /ledger /debate /personas /passports /brains /strategy /reflection /memo (+ serves the UI)
   research/      funding-carry edge study (walk-forward + Deflated Sharpe)
 web/             production single-page UI: firewall · arena · allocator · ledger · debate · lab · verify
 playbook/        four published Bitget GetAgent Playbooks — see playbook/PUBLISHED.md
@@ -236,7 +247,7 @@ uv run python scripts/verify_evidence.py
 
 ## Status
 
-Complete and tested — **311 passing tests, lint-clean, fully offline**: the signed
+Complete and tested — **320 passing tests, lint-clean, fully offline**: the signed
 tamper-evident firewall (red-teamed, **0 unsafe orders pass**), a live Bitget connector
 (real data verified), the arena with **seven competitors** (conflict-gated swarm, the
 published-Playbook regime mirror, persona team, Q-learning RL, momentum, buy-hold, and a

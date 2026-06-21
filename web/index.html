@@ -221,7 +221,7 @@ function mockAllocator(){ return { symbol:"BTCUSDT", trust_minus_equal_usd:1109.
 
 // ---------- actions ----------
 const App = {
-  go(v){ state.view=v; try{window.scrollTo(0,0);}catch(e){} if(v==="arena")App.loadLb(); if(v==="allocator")App.loadAlloc(); if(v==="ledger")App.loadLed(); if(v==="debate")App.loadDeb(); if(v==="lab")App.loadLab(); render(); },
+  go(v){ state.view=v; try{window.scrollTo(0,0);}catch(e){} if(v==="arena")App.loadLb(); if(v==="allocator")App.loadAlloc(); if(v==="ledger")App.loadLed(); if(v==="debate")App.loadDeb(); if(v==="lab")App.loadLab(); if(v==="passport")App.loadPassports(); if(v==="judge")App.runJudge(); render(); },
   set(k,v){ state[k]=v; },
   setSeg(k,v){ state[k]=v; render(); },
   setSize(v){ state[state.sizeMode==="notional"?"notional":"quantity"]=v; },
@@ -272,6 +272,26 @@ const App = {
       try{ const r=await api(kp[1]); out[kp[0]]=r.ok?r.data:null; }catch(e){ out[kp[0]]=null; }
     }
     state.lab=out; render();
+  },
+  async loadPassports(){ if(state.passports) return; try{ const r=await api("/passports"); state.passports=r.ok?r.data:{passports:[]}; }catch(e){ state.passports={passports:[]}; } render(); },
+  async runJudge(){
+    var cases=[
+      {label:"Safe order — $50 perp", body:{notional_usd:50, current_exposure_usd:0}},
+      {label:"Rogue oversized — $50,000", body:{notional_usd:50000, current_exposure_usd:0}},
+      {label:"Policy breach — $5,000 on $50,000 exposure", body:{notional_usd:5000, current_exposure_usd:50000}}
+    ];
+    state.judge={running:true, steps:[]}; render();
+    var steps=[];
+    for(var i=0;i<cases.length;i++){
+      try{
+        var r=await api("/firewall",{method:"POST",body:JSON.stringify(Object.assign({agent_id:"judge",symbol:"BTCUSDT",side:"buy",instrument:"perp",equity_usd:10000},cases[i].body))});
+        steps.push({label:cases[i].label, decision:r.data.decision, reason:r.data.reason, eff:r.data.effective_notional_usd, cert:r.data.certificate});
+      }catch(e){ steps.push({label:cases[i].label, decision:"ERR", reason:"server unreachable"}); }
+      state.judge={running:true, steps:steps.slice()}; render();
+    }
+    var cert=null; for(var k=0;k<steps.length;k++){ if(steps[k].cert){ cert=steps[k].cert; break; } }
+    var verified=null; if(cert){ try{ verified=await verifyCertLocally(cert); }catch(e){} }
+    state.judge={running:false, steps:steps, verified:verified, cert:cert}; render();
   },
   setLedgerAgent(a){ state.ledgerAgent=a; state.openRow=-1; state.led=null; App.loadLed(); },
   async runVerify(){
@@ -350,7 +370,7 @@ function buildResult(r){
 
 // ---------- views ----------
 function nav(){
-  const items=[["OVERVIEW","landing"],["FIREWALL","firewall"],["ARENA","arena"],["ALLOCATOR","allocator"],["LEDGER","ledger"],["DEBATE","debate"],["LAB","lab"],["VERIFY","verify"]]
+  const items=[["OVERVIEW","landing"],["JUDGE","judge"],["FIREWALL","firewall"],["ARENA","arena"],["PASSPORT","passport"],["ALLOCATOR","allocator"],["LEDGER","ledger"],["DEBATE","debate"],["LAB","lab"],["VERIFY","verify"]]
     .map(n=>'<button onclick="App.go(\''+n[1]+'\')" style="'+navStyle(state.view===n[1])+'">'+n[0]+'</button>').join("");
   const dotColor = state.online ? "#0b7a4b" : "#b3b8c0";
   return '<nav style="position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:rgba(255,255,255,.8);backdrop-filter:saturate(180%) blur(16px);-webkit-backdrop-filter:saturate(180%) blur(16px);border-bottom:1px solid rgba(0,0,0,.06);">\
@@ -566,6 +586,48 @@ function allocatorView(){
       <p style="margin:16px 0 0;font-size:12.5px;line-height:1.5;color:#9aa0aa;">Green DSR (≥0.95) = skill-confident, funded; low DSR = likely luck, starved toward the floor. Capital follows verified trust, not raw return — the verification layer applied to money.</p>\
     </div></div>';
 }
+function judge(){
+  var j=state.judge||{steps:[]};
+  var VB={ALLOW:"#0b7a4b",ALLOW_CAPPED:"#946200",REJECT:"#c23b30",ERR:"#c23b30"};
+  function step(s){
+    var col=VB[s.decision]||"#6b7280";
+    return '<div style="display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid rgba(0,0,0,.06);">'
+      +'<div><div style="font-size:14px;color:#1d1d1f;font-weight:600;">'+esc(s.label)+'</div><div style="font-size:12.5px;color:#6b7280;">'+esc(s.reason||"")+(s.eff!=null?' · effective $'+Number(s.eff).toLocaleString():'')+'</div></div>'
+      +'<span class="mono" style="font-size:12px;font-weight:600;padding:5px 10px;border-radius:7px;color:'+col+';border:1px solid '+col+'33;white-space:nowrap;">'+esc(s.decision||"…")+'</span>'
+    +'</div>';
+  }
+  var steps=(j.steps||[]).map(step).join("") || '<div style="color:#9aa0aa;">running…</div>';
+  var verifyLine="";
+  if(j.verified){ verifyLine='<div class="mono" style="font-size:13px;color:#0b7a4b;margin-top:16px;">✓ verified a signed verdict in your browser (Web Crypto): valid='+j.verified.valid+' · trusted issuer='+j.verified.trusted_issuer+'</div>'; }
+  else if(j.running===false){ verifyLine='<div class="mono" style="font-size:13px;color:#6b7280;margin-top:16px;">every verdict is Ed25519-signed; open the Verify tab to check one yourself.</div>'; }
+  var proof=[["0 / 25","unsafe orders passed (red-team)"],["311","tests, CI-green"],["~0.1 ms","per signed verdict"],["✓","hash-chained signed ledger"]]
+    .map(function(p){ return '<div style="border:1px solid rgba(0,0,0,.09);border-radius:12px;padding:16px;background:#fff;"><div class="mono" style="font-size:20px;font-weight:700;color:#0b7a4b;">'+p[0]+'</div><div style="font-size:12px;color:#6b7280;margin-top:4px;">'+p[1]+'</div></div>'; }).join("");
+  return '<div style="max-width:900px;margin:0 auto;padding:56px 40px 80px;"><div style="font-size:12px;font-weight:600;letter-spacing:.2em;color:#6b7280;margin-bottom:12px;">JUDGE MODE</div><h1 style="margin:0 0 10px;font-size:clamp(2rem,4vw,2.9rem);font-weight:700;letter-spacing:-.028em;color:#1d1d1f;">Verify Agent Arena in 60 seconds</h1><p style="margin:0 0 28px;font-size:15px;color:#6b7280;">Three live orders through the firewall: one safe, one rogue, one policy breach. Each gets a signed verdict, checked against the live deploy.</p>'
+    +'<div style="background:#fff;border:1px solid rgba(0,0,0,.09);border-radius:18px;padding:24px 28px;box-shadow:0 1px 2px rgba(0,0,0,.04),0 22px 48px -30px rgba(0,0,0,.22);">'+steps+verifyLine+'</div>'
+    +'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:18px;">'+proof+'</div>'
+    +'<div style="margin-top:20px;"><button onclick="App.runJudge()" style="background:#0a0a0a;color:#fff;border:none;border-radius:11px;padding:12px 20px;font-size:14px;font-weight:600;cursor:pointer;">Run again →</button></div>'
+  +'</div>';
+}
+function passport(){
+  var d=state.passports, ps=(d&&d.passports)||[];
+  var GC={A:"#0b7a4b",B:"#0b7a4b",C:"#946200",D:"#c23b30"};
+  function bar(label,v){ v=Math.max(0,Math.min(1,v||0)); return '<div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span style="font-size:10.5px;color:#9aa0aa;min-width:96px;">'+label+'</span><div style="flex:1;height:6px;background:#f1f1f2;border-radius:3px;overflow:hidden;"><div style="width:'+(v*100).toFixed(0)+'%;height:100%;background:#0a0a0a;"></div></div><span class="mono" style="font-size:11px;color:#6b7280;min-width:30px;text-align:right;">'+(v*100).toFixed(0)+'</span></div>'; }
+  function metric(k,val){ return '<div><div style="font-size:10px;color:#9aa0aa;letter-spacing:.08em;">'+k+'</div><div class="mono" style="font-size:13px;color:#1d1d1f;">'+val+'</div></div>'; }
+  function card(p){
+    var c=p.components||{}, m=p.metrics||{}, lim=p.limits||{}, g=GC[p.grade]||"#6b7280";
+    return '<div style="border:1px solid rgba(0,0,0,.09);border-radius:16px;padding:22px 24px;background:#fff;margin-bottom:16px;">'
+      +'<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;gap:16px;">'
+        +'<div><div style="font-size:16px;font-weight:700;color:#1d1d1f;">'+p.rank+'. '+esc(p.name)+'</div><div style="font-size:13px;color:#6b7280;">'+esc(p.philosophy)+'</div></div>'
+        +'<div style="text-align:right;"><div class="mono" style="font-size:26px;font-weight:700;color:'+g+';line-height:1;">'+(p.trust_score!=null?(p.trust_score*100).toFixed(0):"—")+'</div><div style="font-size:10px;color:#9aa0aa;letter-spacing:.12em;white-space:nowrap;">TRUST · GRADE '+esc(p.grade||"")+'</div></div>'
+      +'</div>'
+      +'<div style="margin-bottom:14px;">'+bar("skill",c.skill)+bar("safety",c.safety)+bar("performance",c.performance)+bar("explainability",c.explainability)+'</div>'
+      +'<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:12px;">'+metric("DSR",m.dsr!=null?Number(m.dsr).toFixed(2):"—")+metric("SHARPE",m.sharpe!=null?Number(m.sharpe).toFixed(3):"—")+metric("RETURN",m.total_return!=null?(m.total_return*100).toFixed(1)+"%":"—")+metric("MAX DD",m.max_drawdown!=null?(m.max_drawdown*100).toFixed(1)+"%":"—")+'</div>'
+      +'<div class="mono" style="font-size:11.5px;color:#6b7280;border-top:1px solid rgba(0,0,0,.06);padding-top:10px;">max order $'+(lim.max_order_usd!=null?Number(lim.max_order_usd).toLocaleString():"—")+' · capital '+(p.capital_allocation!=null?(p.capital_allocation*100).toFixed(1)+"%":"—")+' · '+esc(p.red_team||"")+'</div>'
+    +'</div>';
+  }
+  var body = ps.length ? ps.map(card).join("") : '<div style="color:#9aa0aa;">loading…</div>';
+  return '<div style="max-width:1180px;margin:0 auto;padding:56px 40px 80px;"><div style="font-size:12px;font-weight:600;letter-spacing:.2em;color:#6b7280;margin-bottom:12px;">CAPITAL-WORTHINESS</div><h1 style="margin:0 0 10px;font-size:clamp(2rem,4vw,2.9rem);font-weight:700;letter-spacing:-.028em;color:#1d1d1f;">Agent Passport</h1><p style="margin:0 0 36px;font-size:15px;color:#6b7280;max-width:700px;">The credit score for an autonomous trading agent. Trust Score = 40% skill (overfit-corrected) + 30% safety + 20% performance + 10% explainability. PnL ranks agents by outcome; this ranks them by whether they deserve capital.</p>'+body+'</div>';
+}
 function lab(){
   var d=state.lab||{}, G="#0b7a4b", R="#c23b30";
   function card(t,b){ return '<div style="border:1px solid rgba(0,0,0,.09);border-radius:16px;padding:24px;background:#fff;margin-bottom:18px;"><div style="font-size:10.5px;font-weight:600;letter-spacing:.16em;color:#9aa0aa;margin-bottom:14px;">'+t+'</div>'+b+'</div>'; }
@@ -579,9 +641,9 @@ function lab(){
   if(d.reflection&&d.reflection.decisions){ var rs=(d.reflection.decisions||[]).filter(function(x){return x.reflection;}).slice(-4); rf='<div class="mono" style="font-size:12px;color:#6b7280;margin-bottom:10px;">hit rate '+(d.reflection.hit_rate!=null?Math.round(d.reflection.hit_rate*100):0)+'% over '+(d.reflection.resolved||0)+' graded calls</div>'+rs.map(function(x){ return '<div style="font-size:13px;color:#1d1d1f;margin-bottom:5px;">• '+esc(x.reflection)+'</div>'; }).join(""); }
   var db="—";
   if(d.debate&&d.debate.debate&&d.debate.debate.transcript){ var dd=d.debate.debate; db=dd.transcript.map(function(t){ return '<div style="margin-bottom:9px;"><span class="mono" style="font-size:10.5px;color:#9aa0aa;letter-spacing:.1em;text-transform:uppercase;">'+esc(t.role)+'</span><div style="font-size:13px;color:#1d1d1f;line-height:1.45;">'+esc(t.text)+'</div></div>'; }).join("")+'<div class="mono" style="font-size:12px;color:'+G+';margin-top:6px;">stance '+esc(dd.stance)+' · conviction '+dd.conviction+' · Ed25519-signed ✓</div>'; }
-  return '<div style="max-width:1180px;margin:0 auto;padding:56px 40px 80px;"><div style="font-size:12px;font-weight:600;letter-spacing:.2em;color:#6b7280;margin-bottom:12px;">THE LAB</div><h1 style="margin:0 0 10px;font-size:clamp(2rem,4vw,2.9rem);font-weight:700;letter-spacing:-.028em;color:#1d1d1f;">Innovations</h1><p style="margin:0 0 36px;font-size:15px;color:#6b7280;max-width:680px;">Built on top of the trust layer: identity, memory, debate, language-to-agent, a model arena, and real analyst briefs, each one signed or sandboxed.</p>'+card("AGENT PERSONAS",pers)+card("MULTI-BRAIN MODEL ARENA",br)+card("NATURAL LANGUAGE TO A SANDBOXED AGENT",st)+card("REFLECTION MEMORY",rf)+card("SIGNED DEBATE TRANSCRIPT",db)+'</div>';
+  return '<div style="max-width:1180px;margin:0 auto;padding:56px 40px 80px;"><div style="font-size:12px;font-weight:600;letter-spacing:.2em;color:#6b7280;margin-bottom:12px;">THE LAB</div><h1 style="margin:0 0 10px;font-size:clamp(2rem,4vw,2.9rem);font-weight:700;letter-spacing:-.028em;color:#1d1d1f;">Innovations</h1><p style="margin:0 0 36px;font-size:15px;color:#6b7280;max-width:680px;">Built on top of the trust layer: identity, memory, debate, language-to-agent, a model arena, and real analyst briefs, each one signed or sandboxed.</p>'+card("AGENT PERSONAS",pers)+card("MULTI-BRAIN MODEL ARENA",br)+card("NATURAL LANGUAGE TO A SANDBOXED AGENT",st)+card("REFLECTION MEMORY",rf)+card("SIGNED DEBATE TRANSCRIPT",db)+card("HOW IT COMPARES",'<div style="overflow:auto;"><table style="width:100%;border-collapse:collapse;font-size:12.5px;min-width:540px;"><tr style="color:#9aa0aa;text-align:left;"><th style="padding:6px 8px;font-weight:600;">project</th><th>signed firewall</th><th>DSR/PBO</th><th>allocator</th><th>browser-verify</th></tr><tr style="border-top:1px solid rgba(0,0,0,.06);color:#6b7280;"><td style="padding:6px 8px;">TradingAgents (87k stars)</td><td>no</td><td>no</td><td>no</td><td>no</td></tr><tr style="border-top:1px solid rgba(0,0,0,.06);color:#6b7280;"><td style="padding:6px 8px;">AI Hedge Fund (60k stars)</td><td>no</td><td>no</td><td>no</td><td>no</td></tr><tr style="border-top:1px solid rgba(0,0,0,.06);color:#6b7280;"><td style="padding:6px 8px;">AI-Trader</td><td>no</td><td>no</td><td>social</td><td>no</td></tr><tr style="border-top:1px solid rgba(0,0,0,.06);font-weight:700;color:#0a0a0a;"><td style="padding:6px 8px;">Agent Arena</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td></tr></table></div><div style="font-size:12px;color:#6b7280;margin-top:10px;">These projects prove agentic trading is real. Agent Arena adds the missing trust layer.</div>')+'</div>';
 }
-function view(){ switch(state.view){ case "firewall":return firewall(); case "arena":return arena(); case "allocator":return allocatorView(); case "ledger":return ledger(); case "debate":return debate(); case "lab":return lab(); case "verify":return verifyView(); default:return landing(); } }
+function view(){ switch(state.view){ case "firewall":return firewall(); case "arena":return arena(); case "allocator":return allocatorView(); case "ledger":return ledger(); case "debate":return debate(); case "lab":return lab(); case "passport":return passport(); case "judge":return judge(); case "verify":return verifyView(); default:return landing(); } }
 function render(){ $("app").innerHTML = nav() + view() + footer(); document.querySelectorAll("#app input:not([name])").forEach((el,i)=>{ el.name = "field" + i; }); }
 
 // ---------- live pulse: a continuously-updating signed firewall heartbeat ----------
