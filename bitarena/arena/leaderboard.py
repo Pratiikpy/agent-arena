@@ -14,6 +14,7 @@ import numpy as np
 
 from ..scoring.metrics import summarize, to_returns
 from ..scoring.overfit import (
+    deflated_sharpe_ratio,
     probabilistic_sharpe_ratio,
     probability_of_backtest_overfitting,
     sharpe_moments,
@@ -25,10 +26,12 @@ _NEG_INF = float("-inf")
 
 def build_leaderboard(portfolios: dict[str, Portfolio], periods_per_year: float | None = None) -> list[dict]:
     rows: list[dict] = []
+    moments_by_id: dict[str, dict] = {}
     for agent_id, pf in portfolios.items():
         metrics = summarize(pf.equity_curve, periods_per_year)
         returns = to_returns(pf.equity_curve)
         moments = sharpe_moments(returns)
+        moments_by_id[agent_id] = moments
         psr = probabilistic_sharpe_ratio(moments["sr"], moments["n"], skew=moments["skew"], kurt=moments["kurt"])
         rows.append(
             {
@@ -40,7 +43,26 @@ def build_leaderboard(portfolios: dict[str, Portfolio], periods_per_year: float 
                 **metrics,
             }
         )
+
+    # Deflate every agent's Sharpe against the expected-max-Sharpe of THIS trial set (the agents
+    # themselves): an agent whose Sharpe is no better than the luckiest draw across N competitors
+    # is flagged as selection luck, not skill. This is what makes the overfit math *load-bearing* —
+    # it carries a per-row verdict and breaks Sharpe ties — rather than a printed-once diagnostic.
+    srs = [moments_by_id[r["agent_id"]]["sr"] for r in rows]
+    n_trials = len(rows)
+    sr_variance = float(np.var(srs, ddof=1)) if n_trials > 1 else 0.0
+    for r in rows:
+        m = moments_by_id[r["agent_id"]]
+        dsr = deflated_sharpe_ratio(m["sr"], m["n"], n_trials, sr_variance, skew=m["skew"], kurt=m["kurt"])
+        r["dsr"] = None if math.isnan(dsr) else round(dsr, 4)
+        # DSR >= 0.95: the Sharpe survives the multiple-testing bar (genuine skill). Below: not
+        # distinguishable from the luckiest-of-N draw — the ranking treats it as luck, honestly.
+        r["skill_significant"] = bool(r["dsr"] is not None and r["dsr"] >= 0.95)
+
+    # Rank by Sharpe, but break ties by DSR (skill over luck) before raw return — so the
+    # verification layer visibly shapes the order, not just an appended column.
     rows.sort(key=lambda r: (r["sharpe"] if r["sharpe"] is not None else _NEG_INF,
+                             r["dsr"] if r.get("dsr") is not None else _NEG_INF,
                              r["total_return"] if r["total_return"] is not None else _NEG_INF),
               reverse=True)
     for i, row in enumerate(rows):
