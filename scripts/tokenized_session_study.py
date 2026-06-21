@@ -73,9 +73,58 @@ def study_symbol(sym: str, candles: list) -> dict:
     }
 
 
+def reopen_pairs(candles: list) -> list[tuple[float, float]]:
+    """(off-hours drift, following open-session cumulative return) for each closed→open transition.
+
+    Used to ask whether off-hours dislocation REVERTS once the market re-opens (a correctable
+    ghost price) or PERSISTS (informative) — the overfit-aware edge-or-noise question.
+    """
+    closes = [float(c.close) for c in candles]
+    sessions = [us_equity_session(int(c.ts)) for c in candles]
+    rets: list[tuple[str, float]] = []
+    for i in range(1, len(closes)):
+        if closes[i - 1] > 0 and closes[i] > 0:
+            rets.append((sessions[i], float(np.log(closes[i] / closes[i - 1]))))
+    runs: list[tuple[str, float]] = []  # maximal same-session runs as (session, cumret)
+    cur, acc = None, 0.0
+    for sess, r in rets:
+        if sess != cur:
+            if cur is not None:
+                runs.append((cur, acc))
+            cur, acc = sess, r
+        else:
+            acc += r
+    if cur is not None:
+        runs.append((cur, acc))
+    return [(runs[j][1], runs[j + 1][1]) for j in range(len(runs) - 1)
+            if runs[j][0] == "closed" and runs[j + 1][0] == "open"]
+
+
+def _reversion(pooled: list[tuple[float, float]]) -> dict | None:
+    """Pooled correlation of off-hours drift vs next-open move + a permutation significance test."""
+    if len(pooled) < 20:
+        return None
+    zd = np.array([p[0] for p in pooled])
+    zo = np.array([p[1] for p in pooled])
+    corr = float(np.corrcoef(zd, zo)[0, 1])
+    rng = np.random.default_rng(11)  # fixed seed → reproducible permutation p on the same data
+    null = np.array([abs(float(np.corrcoef(zd, rng.permutation(zo))[0, 1])) for _ in range(2000)])
+    p = float((null >= abs(corr)).mean())
+    if p < 0.05:
+        interp = ("off-hours moves significantly REVERT at re-open (the ghost price corrects) — "
+                  "supports capping off-hours risk") if corr < 0 else \
+                 "off-hours moves significantly PERSIST (informative)"
+    else:
+        interp = ("no significant predictability — off-hours moves are risk/noise, not a reliable "
+                  "signal; capping (not trading) them is the right response")
+    return {"n_transitions": len(pooled), "pooled_corr": round(corr, 4), "permutation_p": round(p, 4),
+            "interpretation": interp, "note": "~3-4 weeks of 1h data; small sample, reported honestly"}
+
+
 def main() -> int:
     client = BitgetPublicData()
     per_stock: list[dict] = []
+    pooled: list[tuple[float, float]] = []  # per-stock-standardized (drift, next-open) pairs
     for sym in STOCKS:
         candles = client.get_candles(sym, InstrumentType.SPOT, timeframe="1h", limit=720)
         if not candles or len(candles) < 50:
@@ -83,6 +132,12 @@ def main() -> int:
             continue
         s = study_symbol(sym, candles)
         per_stock.append(s)
+        pairs = reopen_pairs(candles)
+        if len(pairs) >= 5:
+            d = np.array([p[0] for p in pairs])
+            o = np.array([p[1] for p in pairs])
+            if d.std() > 0 and o.std() > 0:  # standardize within stock so stocks pool comparably
+                pooled.extend(zip((d - d.mean()) / d.std(), (o - o.mean()) / o.std()))
         print(f"  {s['name']:<10} {sym:<11} bars={s['bars']:<4} off-hours={s['off_hours_bar_share']*100:4.1f}% "
               f"open_vol={s['open_session_vol']:.4f} closed_vol={s['closed_session_vol']:.4f} "
               f"ratio={s['off_to_open_vol_ratio']} reopen_p95={s['reopen_gap_p95_abs_pct']:.2f}%")
@@ -98,12 +153,16 @@ def main() -> int:
         "median_off_hours_bar_share": round(float(np.median([s["off_hours_bar_share"] for s in ok])), 4) if ok else None,
         "median_off_to_open_vol_ratio": round(float(np.median(ratios)), 3) if ratios else None,
         "max_reopen_gap_p95_abs_pct": round(max((s["reopen_gap_p95_abs_pct"] for s in ok), default=0.0), 4),
+        "off_hours_reversion": _reversion(pooled),
         "per_stock": per_stock,
     }
     out = Path("evidence/tokenized_session_risk.json")
     out.write_text(json.dumps(result, indent=2), encoding="utf-8")
     print(f"\n{len(ok)} stocks · median off-hours share {result['median_off_hours_bar_share']} · "
           f"median off/open vol ratio {result['median_off_to_open_vol_ratio']}")
+    rev = result["off_hours_reversion"]
+    if rev:
+        print(f"reversion: n={rev['n_transitions']} corr={rev['pooled_corr']} perm_p={rev['permutation_p']} — {rev['interpretation']}")
     print(f"wrote {out}")
     return 0
 
