@@ -163,6 +163,17 @@ def test_session_gate_off_hours_tightening_is_monotone():
         assert off <= off_cap + EPS          # off-hours never exceeds the tightened cap
         assert off <= ins + EPS              # tightening can't loosen
 
+    # misconfiguration safety: even a factor > 1 can never OPEN headroom — the firewall clamps the
+    # off-hours factor to [0, 1], so a bad mandate value still only tightens (never loosens).
+    bad = mandate.model_copy(update={"hard_caps": mandate.hard_caps.model_copy(
+        update={"off_hours_notional_factor": 2.0})})
+    q = Quote(symbol="RAAPLUSDT", bid=99.95, ask=100.05, last=100.0, ts=closed_ts)
+    v = fw.evaluate(
+        TradeIntent(agent_id="bad", symbol="RAAPLUSDT", side=Side.BUY,
+                    notional_usd=1e6, instrument=InstrumentType.TOKENIZED_EQUITY),
+        EvalContext(mandate=bad, equity_usd=10_000.0, quote=q, now_ms=closed_ts, max_quote_age_ms=10**15))
+    assert (v.effective_notional_usd or 0.0) <= ORDER_CAP + EPS  # clamp held; no loosening
+
 
 def test_firewall_rejects_non_finite_size():
     # a malformed (NaN/inf) request must fail closed: rejected either at the model

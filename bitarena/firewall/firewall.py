@@ -149,12 +149,14 @@ class Firewall:
         # Session gate: when an agent trades a tokenized US stock while the underlying market is
         # CLOSED, the rToken can dislocate from the (frozen) underlying and gap at re-open, so the
         # per-order cap is tightened — graduated containment (size down off-hours), not a reject.
-        if (
-            intent.instrument is InstrumentType.TOKENIZED_EQUITY
-            and ctx.now_ms is not None
-            and us_equity_session(ctx.now_ms) == "closed"
+        # Fail-safe: an unknown clock (now_ms=None) is treated as off-hours, and the factor is
+        # clamped to [0, 1] so the gate can only ever TIGHTEN — a misconfigured >1 factor (or a
+        # negative one) can never open headroom past the order cap.
+        if intent.instrument is InstrumentType.TOKENIZED_EQUITY and (
+            ctx.now_ms is None or us_equity_session(ctx.now_ms) == "closed"
         ):
-            tightened = order_cap * caps.off_hours_notional_factor
+            factor = min(max(caps.off_hours_notional_factor, 0.0), 1.0)
+            tightened = order_cap * factor
             results.append(
                 GateResult(
                     gate="session",
@@ -163,7 +165,7 @@ class Firewall:
                     attempted=requested,
                     detail=(
                         f"underlying US market closed — off-hours tokenized-equity cap "
-                        f"x{caps.off_hours_notional_factor:g} (${order_cap:,.0f} -> ${tightened:,.0f})"
+                        f"x{factor:g} (${order_cap:,.0f} -> ${tightened:,.0f})"
                     ),
                 )
             )
