@@ -75,6 +75,21 @@ controls and lets through 0 unsafe orders**, every verdict signed (`redteam.json
   invariants (never-exceeds-cap, monotonicity, excluded-symbol, non-finite, halt-rejects) are
   property-tested over thousands of random inputs.
 
+## Operational security (audited)
+
+A trust layer is only trustworthy if its own surface is. Audited and clean:
+
+- **Secrets never committed.** The signing key, Bitget API keys, and the model key live only in
+  `.env` (gitignored) or deploy env vars; the repo tracks only `.env.example` (placeholders). No
+  key material is hardcoded, and the signing key is never logged — it only signs verdicts server-side.
+- **Inputs are validated.** Every HTTP / MCP input is Pydantic-typed (bounded notional, enum
+  side/instrument); the certificate verifier rebuilds through the model before checking. The one
+  user-fed file parameter (`/ledger?agent=`) is regex-guarded against path traversal (CWE-22), and
+  every other file-serving endpoint reads a fixed path, never user input.
+- **The public API exposes no credentials.** `/firewall` and `/verify` are intentionally open (a
+  firewall is a public good) but hold nothing to steal — they return signed *public* verdicts; the
+  private key never leaves the server.
+
 ## Residual risks (honest)
 
 - **Host / key compromise is out of scope.** With the signing key, an attacker mints valid
