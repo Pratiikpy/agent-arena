@@ -77,6 +77,17 @@ class Firewall:
         return self._signer.fingerprint if self._signer else None
 
     def evaluate(self, intent: TradeIntent, ctx: EvalContext) -> Verdict:
+        # A safety firewall must NEVER crash: any unexpected internal error fails closed to a signed
+        # REJECT rather than propagating an exception to the caller (a crash would be a fail-open).
+        try:
+            return self._evaluate(intent, ctx)
+        except Exception as exc:
+            return self._finalize(
+                intent, Decision.REJECT, None,
+                f"internal error — fail-closed ({type(exc).__name__})", [],
+            )
+
+    def _evaluate(self, intent: TradeIntent, ctx: EvalContext) -> Verdict:
         price = ctx.quote.mid if ctx.quote is not None else None
 
         structural: list[GateResult] = [

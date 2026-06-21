@@ -195,3 +195,24 @@ def test_firewall_rejects_non_finite_size():
             assert v.decision is Decision.REJECT
             assert v.effective_notional_usd is None
             assert verify_certificate(v.certificate) is True
+
+
+def test_firewall_fails_closed_on_internal_error(monkeypatch):
+    # a safety firewall must never crash: an unexpected exception inside a gate becomes a signed
+    # REJECT, never an exception out to the caller (a crash would be a fail-open).
+    from bitarena.firewall import gates as _gates
+
+    fw = Firewall(Signer.generate())
+
+    def _boom(*_a, **_k):
+        raise RuntimeError("synthetic gate crash")
+
+    monkeypatch.setattr(_gates, "gate_halt", _boom)
+    v = fw.evaluate(
+        TradeIntent(agent_id="x", symbol="BTCUSDT", side=Side.BUY, notional_usd=50.0),
+        EvalContext(mandate=default_arena_mandate(10_000), equity_usd=10_000.0, quote=_quote(),
+                    now_ms=1_000, max_quote_age_ms=60_000),
+    )
+    assert v.decision is Decision.REJECT
+    assert "internal error" in v.reason
+    assert verify_certificate(v.certificate) is True  # even the fail-closed reject is signed
