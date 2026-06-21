@@ -1,0 +1,25 @@
+{
+  "agent": {
+    "agent_id": "swarm",
+    "name": "The Consensus",
+    "lens": "agreement"
+  },
+  "symbol": "BTCUSDT",
+  "side": "buy",
+  "requested_usd": 50000.0,
+  "decision": "ALLOW_CAPPED",
+  "effective_usd": 2000.0,
+  "reason": "capped from $50,000.00 to $2,000.00",
+  "sections": {
+    "thesis": "The Consensus (agreement) proposed to buy BTCUSDT for $50,000.",
+    "signals": "Net signal +0.12 at 0.42 agreement across 19 analyst views.",
+    "risk": "Gates that bound the order: gate:; gate:; gate:.",
+    "verdict": "The firewall returned ALLOW_CAPPED: capped from $50,000.00 to $2,000.00. Effective size $2,000."
+  },
+  "source": "template",
+  "certificate_hash": "470ed41100dc70a4f4022d66a8f1677e606ff48e0848f0258a52b190d91e306b",
+  "payload_sha256": "c4c86950bf8215e5ec5cd95cb03ac78157b2ad2315dbe5304fe4e73ca5fbec12",
+  "issuer": "98683e5cbe6313a0",
+  "public_key_hex": "c2f8243b0d573587f285c830a868acd19249d17d59ecbf9329e796dfed6fb630",
+  "signature_hex": "43e389ea247535fd3fffd9fde158bf8564366ee20b2b8014d2bfda583b4896ab0387d2e421e6d8fad66f4e5d32f8ea1fa9c645dc2bf59d6cc2199fc5478a990d"
+}

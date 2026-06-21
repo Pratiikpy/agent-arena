@@ -14,7 +14,7 @@ import json
 import re
 from dataclasses import asdict, dataclass, field
 
-from ..firewall.signing import Signer, canonical_json, sha256_hex, verify_bytes
+from ..firewall.signing import Signer, sign_payload, verify_payload
 from ..llm import QwenClient
 from ..perception.base import SignalBundle
 
@@ -25,8 +25,6 @@ _JUDGE_SYS = (
     "analysts disagree, and decide. Respond ONLY as compact JSON: "
     '{"stance":"long|short|flat","conviction":0..1,"reason":"<=20 words"}.'
 )
-
-_SIG_KEYS = ("payload_sha256", "issuer", "public_key_hex", "signature_hex")
 
 
 def _extract_json(text: str) -> dict | None:
@@ -137,24 +135,9 @@ class DebateSession:
 
 def sign_debate(result: DebateResult, signer: Signer) -> dict:
     """Wrap a debate result in a signed, tamper-evident envelope (arena Ed25519 key)."""
-    payload = result.to_dict()
-    raw = canonical_json(payload)
-    return {
-        **payload,
-        "payload_sha256": sha256_hex(raw),
-        "issuer": signer.fingerprint,
-        "public_key_hex": signer.public_key_hex,
-        "signature_hex": signer.sign_bytes(raw),
-    }
+    return sign_payload(result.to_dict(), signer)
 
 
 def verify_debate(envelope: dict, expected_public_key_hex: str | None = None) -> bool:
     """Verify a signed debate envelope. Integrity by default; pins the issuer if given. Never raises."""
-    payload = {k: v for k, v in envelope.items() if k not in _SIG_KEYS}
-    raw = canonical_json(payload)
-    if sha256_hex(raw) != envelope.get("payload_sha256"):
-        return False
-    pk = envelope.get("public_key_hex", "")
-    if expected_public_key_hex is not None and pk.strip().lower() != expected_public_key_hex.strip().lower():
-        return False
-    return verify_bytes(pk, envelope.get("signature_hex", ""), raw)
+    return verify_payload(envelope, expected_public_key_hex)

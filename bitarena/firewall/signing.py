@@ -192,3 +192,35 @@ def verify_bytes(public_key_hex: str, signature_hex: str, payload: bytes) -> boo
         return True
     except (InvalidSignature, ValueError):
         return False
+
+
+_ENVELOPE_SIG_KEYS = ("payload_sha256", "issuer", "public_key_hex", "signature_hex")
+
+
+def sign_payload(payload: dict[str, Any], signer: Signer) -> dict[str, Any]:
+    """Wrap any JSON-able payload in a signed, tamper-evident envelope (arena Ed25519 key).
+
+    Returns the payload plus ``payload_sha256``, ``issuer``, ``public_key_hex`` and
+    ``signature_hex``. Used for signed artifacts beyond certificates — debate transcripts,
+    trade memos — so they all verify offline the same way a certificate does.
+    """
+    raw = canonical_json(payload)
+    return {
+        **payload,
+        "payload_sha256": sha256_hex(raw),
+        "issuer": signer.fingerprint,
+        "public_key_hex": signer.public_key_hex,
+        "signature_hex": signer.sign_bytes(raw),
+    }
+
+
+def verify_payload(envelope: dict[str, Any], expected_public_key_hex: str | None = None) -> bool:
+    """Verify a signed payload envelope. Integrity by default; pins the issuer if given. Never raises."""
+    payload = {k: v for k, v in envelope.items() if k not in _ENVELOPE_SIG_KEYS}
+    raw = canonical_json(payload)
+    if sha256_hex(raw) != envelope.get("payload_sha256"):
+        return False
+    pk = envelope.get("public_key_hex", "")
+    if expected_public_key_hex is not None and pk.strip().lower() != expected_public_key_hex.strip().lower():
+        return False
+    return verify_bytes(pk, envelope.get("signature_hex", ""), raw)
