@@ -34,9 +34,10 @@ Bitget's own GetAgent platform.
 - **Live signed firewall** — curl a verdict in 10 seconds; tamper any field and the
   signature dies. A 24-case red-team battery: **0 unsafe orders ever passed.**
 - **It makes money — four published Bitget Playbooks** that profit on real on-platform
-  backtests: up to **+39.7% (budget) at PF 2.33** (BTC breakout), profit factors **1.42–3.34**
-  across the set (ETH breakout 1.42, adaptive regime BTC 1.74, adaptive regime ETH Sharpe 2.15 /
-  PF 3.34) — plus three more honestly *withheld* because they underperformed.
+  backtests: **profit factors 1.42–3.34** (BTC breakout wins **2.33×** its losses — **+0.40% on a
+  0.26% drawdown** account-basis, ≈+39.7% on the deployed $1k budget; both bases shown so the
+  number can't mislead) across the set (ETH breakout 1.42, adaptive regime BTC 1.74, adaptive
+  regime ETH Sharpe 2.15 / PF 3.34) — plus three more honestly *withheld* because they underperformed.
 - **A real, structural money edge, honestly validated** — a delta-neutral funding carry on
   real Bitget funding history (walk-forward + Deflated Sharpe): **~+3.1% annualized at low risk** —
   a small, steady, market-neutral yield, not an overfit curve. On flat price data no agent beats

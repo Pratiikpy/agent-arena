@@ -209,10 +209,12 @@ ledger, and Bitget integration are original work, with **no imports or copies** 
 (clean reimplementation of public ideas; see `NOTICE`). The statistics are reimplemented from the
 source papers (Bailey & López de Prado), formulas only.
 
-**"Does it make money?"** Yes — with real, reproducible evidence, and we don't fake it. The four
-strategies published on Bitget's GetAgent return up to **+39.7% on the strategy budget at profit
-factor 2.33** (BTC momentum-breakout), with profit factors **1.42–3.34** across the set — real
-on-platform backtests, not paper math. The **funding-carry** agent harvests a genuine low-risk
+**"Does it make money?"** Yes — with real, reproducible evidence, on one honest basis, and we
+don't fake it. The four strategies published on Bitget's GetAgent are genuinely profitable —
+**profit factors 1.42–3.34** (basis-independent; the BTC momentum-breakout wins **2.33× its
+losses**): **+0.40% return on a 0.26% drawdown account-basis**, ≈+39.7% on the deployed $1k budget
+(the budget is ~100× smaller than the account — we show both bases so the number can't mislead) —
+real on-platform backtests, not paper math. The **funding-carry** agent harvests a genuine low-risk
 yield (**+3.1% annualized** on BTC, adaptive — skipping negative-funding intervals; its very high
 Sharpe reflects funding's *low variance*, not big returns), and it ranks **top-3 by Sharpe across
 BTC/ETH/SOL** in the live tournaments while collecting real funding. The honesty that makes this
