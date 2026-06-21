@@ -21,6 +21,7 @@ from ..scoring.overfit import (
     sharpe_moments,
 )
 from .portfolio import Portfolio
+from .trust import trust_score
 
 _NEG_INF = float("-inf")
 
@@ -75,6 +76,7 @@ def build_leaderboard(portfolios: dict[str, Portfolio], periods_per_year: float 
         # DSR >= 0.95: the Sharpe survives the multiple-testing bar (genuine skill). Below: not
         # distinguishable from the luckiest-of-N draw — the ranking treats it as luck, honestly.
         r["skill_significant"] = bool(r["dsr"] is not None and r["dsr"] >= 0.95)
+        r["trust"] = trust_score(r)  # one transparent number: deserve-capital, not raw PnL
 
     # Rank by Sharpe, but break ties by DSR (skill over luck) before raw return — so the
     # verification layer visibly shapes the order, not just an appended column.
