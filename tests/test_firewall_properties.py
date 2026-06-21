@@ -127,6 +127,43 @@ def test_firewall_never_allows_excluded_symbol_over_random_inputs():
         assert verify_certificate(v.certificate) is True
 
 
+def test_session_gate_off_hours_tightening_is_monotone():
+    # The session gate may only TIGHTEN: over random sizes/sides, an off-hours tokenized-equity
+    # order is never allowed above the off-hours cap, and never MORE than the same order in-session
+    # ("tightening can't loosen") — the gate's safety invariant across the input space.
+    from datetime import datetime, timezone
+
+    from bitarena.domain import InstrumentType
+    from bitarena.domain.mandate import default_arena_mandate as mk
+    from bitarena.domain.session import us_equity_session
+
+    rng = random.Random(424_242)
+    fw = Firewall(Signer.generate())
+    mandate = mk(10_000, allowed_symbols=("RAAPLUSDT",))  # order cap 2000
+    off_cap = ORDER_CAP * mandate.hard_caps.off_hours_notional_factor
+
+    def _ts(y, mo, d, h):
+        return int(datetime(y, mo, d, h, 0, tzinfo=timezone.utc).timestamp() * 1000)
+
+    open_ts, closed_ts = _ts(2026, 6, 19, 18), _ts(2026, 6, 20, 18)  # Fri 14:00 ET / Sat
+    assert us_equity_session(open_ts) == "open" and us_equity_session(closed_ts) == "closed"
+
+    def eff(notional, side, now):
+        q = Quote(symbol="RAAPLUSDT", bid=99.95, ask=100.05, last=100.0, ts=now)
+        intent = TradeIntent(agent_id="sess", symbol="RAAPLUSDT", side=side,
+                             notional_usd=notional, instrument=InstrumentType.TOKENIZED_EQUITY)
+        v = fw.evaluate(intent, EvalContext(mandate=mandate, equity_usd=10_000.0, quote=q,
+                                            now_ms=now, max_quote_age_ms=10**15))
+        return v.effective_notional_usd or 0.0
+
+    for _ in range(1_000):
+        n = rng.uniform(1.0, 1e6)
+        side = rng.choice([Side.BUY, Side.SELL])
+        off, ins = eff(n, side, closed_ts), eff(n, side, open_ts)
+        assert off <= off_cap + EPS          # off-hours never exceeds the tightened cap
+        assert off <= ins + EPS              # tightening can't loosen
+
+
 def test_firewall_rejects_non_finite_size():
     # a malformed (NaN/inf) request must fail closed: rejected either at the model
     # boundary (ValidationError) or by the firewall — never turned into a capped trade.
