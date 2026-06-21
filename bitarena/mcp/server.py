@@ -1,9 +1,12 @@
 """MCP server exposing the Agent Arena to any MCP client (Claude, Cursor, Codex…).
 
-Tools:
-  vet_trade(...)     - run a proposed trade through the firewall; returns a signed verdict
-  get_leaderboard()  - the most recent tournament standings
-  list_agents()      - the competitor agents available in the arena
+Tools — the full trust layer over MCP (contain · rank · fund · verify):
+  vet_trade(...)                  - run a proposed trade through the firewall; signed verdict
+  get_leaderboard()               - the most recent tournament standings (Sharpe + DSR)
+  list_agents()                   - the competitor agents available in the arena
+  get_allocator()                 - the DSR-adjusted trust allocation (capital to skill, not luck)
+  issuer_key()                    - issuer fingerprint + public key (pin it to verify offline)
+  verify_certificate(certificate) - independently verify a signed verdict (integrity + pinned issuer)
 
 Run with:  uv run python -m bitarena.mcp.server   (stdio transport)
 
@@ -45,8 +48,8 @@ def build_server():
     """Construct the FastMCP server (imports the optional ``mcp`` package lazily)."""
     from mcp.server.fastmcp import FastMCP
 
-    from ..domain import InstrumentType, Side, TradeIntent, default_arena_mandate
-    from ..firewall import EvalContext, Firewall, verify_certificate
+    from ..domain import Certificate, InstrumentType, Side, TradeIntent, default_arena_mandate
+    from ..firewall import EvalContext, Firewall, verify_certificate as _verify_cert
 
     settings = load_settings()
     firewall = Firewall.with_key(settings.signing_key_path)
@@ -102,7 +105,7 @@ def build_server():
             "reason": verdict.reason,
             "effective_notional_usd": verdict.effective_notional_usd,
             "certificate": verdict.certificate.model_dump() if verdict.certificate else None,
-            "certificate_valid": verify_certificate(verdict.certificate) if verdict.certificate else None,
+            "certificate_valid": _verify_cert(verdict.certificate) if verdict.certificate else None,
         }
 
     @server.tool()
@@ -117,6 +120,36 @@ def build_server():
     def list_agents() -> list[str]:
         """List the competitor agents in the arena (from the latest tournament)."""
         return _roster_from_leaderboard(evidence)
+
+    @server.tool()
+    def get_allocator() -> dict:
+        """The TrustAllocator result: capital flows to DSR-verified skill, not lucky streaks."""
+        for path in (evidence / "allocator.json", evidence.parent / "allocator.json", Path("evidence/allocator.json")):
+            if path.exists():
+                return json.loads(path.read_text(encoding="utf-8"))
+        return {"detail": "no allocator run yet"}
+
+    @server.tool()
+    def issuer_key() -> dict:
+        """The arena's issuer fingerprint + Ed25519 public key — pin this to verify certs offline."""
+        return {"issuer": firewall.issuer, "public_key_hex": firewall._signer.public_key_hex}
+
+    @server.tool()
+    def verify_certificate(certificate: dict) -> dict:
+        """Independently verify a signed Agent Arena certificate (don't trust — check).
+
+        Returns whether the signature is intact (``valid``) and whether it was signed by THIS
+        arena's published key (``trusted`` — issuer pinning, not just integrity).
+        """
+        try:
+            cert = Certificate(**certificate)
+        except (TypeError, ValueError) as exc:
+            return {"valid": False, "trusted": False, "detail": f"malformed certificate: {exc}"}
+        return {
+            "valid": _verify_cert(cert),
+            "trusted": _verify_cert(cert, expected_public_key_hex=firewall._signer.public_key_hex),
+            "issuer": cert.issuer,
+        }
 
     return server
 

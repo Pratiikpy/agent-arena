@@ -73,3 +73,28 @@ def test_mcp_vet_trade_returns_signed_verdict(monkeypatch):
     assert out["decision"] in ("ALLOW", "ALLOW_CAPPED", "REJECT")
     assert out["certificate"] is not None
     assert out["certificate_valid"] is True  # the signed cert independently verifies
+
+
+def test_mcp_verify_certificate_tool(monkeypatch):
+    # the full trust loop over MCP: vet a trade to get a real signed cert, then verify it via the
+    # verify_certificate tool — it must report intact (valid) AND signed by the pinned arena key.
+    pytest.importorskip("mcp")
+    import asyncio
+
+    from bitarena.connectors.bitget import BitgetPublicData
+    from bitarena.mcp.server import build_server
+
+    monkeypatch.setattr(BitgetPublicData, "get_quote", lambda self, *a, **k: None)
+    srv = build_server()
+
+    def _out(res, key):
+        blocks = res[0] if isinstance(res, tuple) else res
+        structured = res[1] if isinstance(res, tuple) and len(res) > 1 else None
+        return structured if isinstance(structured, dict) and key in structured else json.loads(blocks[0].text)
+
+    vet = asyncio.run(srv.call_tool(
+        "vet_trade", {"symbol": "BTCUSDT", "side": "buy", "notional_usd": 50.0, "instrument": "perp"}))
+    cert = _out(vet, "certificate")["certificate"]
+    res = asyncio.run(srv.call_tool("verify_certificate", {"certificate": cert}))
+    out = _out(res, "valid")
+    assert out["valid"] is True and out["trusted"] is True  # intact + signed by the pinned arena key
