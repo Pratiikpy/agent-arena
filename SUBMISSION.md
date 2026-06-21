@@ -93,8 +93,13 @@ One project, three tracks (eligible for all-tracks judging):
   buy-hold), a Q-learning RL agent, and an optional Qwen LLM debate variant.
 - **Trading Infra** — the firewall, signed ledger, overfit benchmark, independent
   verifier, and MCP server are reusable infrastructure any developer can integrate.
-- **US Stock AI** — tournaments run across **six** Bitget tokenized US stocks (AAPL, TSLA,
-  NVDA, MSFT, GOOGL, META); the firewall gates every order, **0 unsafe** (`tokenized_stock_sweep.json`).
+- **US Stock AI** — *breadth and depth*. **Breadth:** tournaments + firewall across **six**
+  Bitget tokenized US stocks (AAPL, TSLA, NVDA, MSFT, GOOGL, META); every order gated, **0 unsafe**
+  (`tokenized_stock_sweep.json`). **Depth:** a tokenized-stock-specific **session-aware firewall
+  gate** — because **~76% of tokenized-stock trading is off-hours** (the underlying US market is
+  closed) and the rToken can gap **1–2% at re-open** (`tokenized_session_risk.json`), the gate
+  tightens the per-order cap off-hours instead of trading a stale "ghost price." DST-aware,
+  red-teamed (the *session* case), threat-modeled (row 16).
 
 ## 5. Shipped to Bitget's own platform — four published Playbooks
 
