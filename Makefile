@@ -1,6 +1,6 @@
 # Agent Arena — one-command workflows. Requires `uv` (https://docs.astral.sh/uv/).
 
-.PHONY: setup test cov lint arena firewall firewall-value redteam killswitch allocator funding walkforward overfit-trap bench evidence check-docs verify-evidence integrate playbook-validate serve live live-order tokenized-sweep custom-agent showcase demo verify
+.PHONY: setup test cov lint arena firewall firewall-value redteam killswitch allocator funding walkforward overfit-trap bench evidence check-docs verify-evidence integrate playbook-validate serve live live-order tokenized-sweep session-study custom-agent showcase demo verify
 
 setup:           ## create venv + install everything
 	uv venv && uv pip install -e ".[dev,api,mcp,llm]"
@@ -70,6 +70,9 @@ live-order:      ## DRY-RUN a firewall-gated dust order (add --confirm + a trade
 
 tokenized-sweep: ## Track 3 breadth: run the arena + firewall across six tokenized US stocks
 	uv run python scripts/tokenized_stock_sweep.py
+
+session-study:   ## Track 3 depth: off-hours vs market-hours risk in tokenized US stocks
+	uv run python scripts/tokenized_session_study.py
 
 custom-agent:    ## bring-your-own-agent: a ~15-line custom strategy competing in the arena
 	uv run python scripts/custom_agent_example.py

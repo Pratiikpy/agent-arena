@@ -1,0 +1,81 @@
+{
+  "description": "Track 3 depth: off-hours ('closed') vs regular-session ('open') risk in Bitget tokenized US stocks on real 1h candles \u2014 the ghost-price dislocation a session-aware firewall gate contains. US holidays not excluded (understates off-hours).",
+  "stocks": 6,
+  "median_off_hours_bar_share": 0.7604,
+  "median_off_to_open_vol_ratio": 0.648,
+  "max_reopen_gap_p95_abs_pct": 2.2195,
+  "per_stock": [
+    {
+      "symbol": "RAAPLUSDT",
+      "name": "Apple",
+      "bars": 720,
+      "off_hours_bar_share": 0.7597,
+      "open_session_vol": 0.00441,
+      "closed_session_vol": 0.003162,
+      "off_to_open_vol_ratio": 0.717,
+      "reopen_gaps": 29,
+      "reopen_gap_mean_abs_pct": 0.467,
+      "reopen_gap_p95_abs_pct": 1.0669
+    },
+    {
+      "symbol": "RTSLAUSDT",
+      "name": "Tesla",
+      "bars": 720,
+      "off_hours_bar_share": 0.7681,
+      "open_session_vol": 0.008233,
+      "closed_session_vol": 0.003871,
+      "off_to_open_vol_ratio": 0.47,
+      "reopen_gaps": 28,
+      "reopen_gap_mean_abs_pct": 0.9163,
+      "reopen_gap_p95_abs_pct": 2.2195
+    },
+    {
+      "symbol": "RNVDAUSDT",
+      "name": "NVIDIA",
+      "bars": 720,
+      "off_hours_bar_share": 0.7667,
+      "open_session_vol": 0.00693,
+      "closed_session_vol": 0.004425,
+      "off_to_open_vol_ratio": 0.639,
+      "reopen_gaps": 28,
+      "reopen_gap_mean_abs_pct": 0.8543,
+      "reopen_gap_p95_abs_pct": 1.6179
+    },
+    {
+      "symbol": "RMSFTUSDT",
+      "name": "Microsoft",
+      "bars": 720,
+      "off_hours_bar_share": 0.7528,
+      "open_session_vol": 0.005127,
+      "closed_session_vol": 0.003369,
+      "off_to_open_vol_ratio": 0.657,
+      "reopen_gaps": 30,
+      "reopen_gap_mean_abs_pct": 0.6188,
+      "reopen_gap_p95_abs_pct": 1.4986
+    },
+    {
+      "symbol": "RGOOGLUSDT",
+      "name": "Alphabet",
+      "bars": 720,
+      "off_hours_bar_share": 0.7611,
+      "open_session_vol": 0.005462,
+      "closed_session_vol": 0.003802,
+      "off_to_open_vol_ratio": 0.696,
+      "reopen_gaps": 29,
+      "reopen_gap_mean_abs_pct": 0.6313,
+      "reopen_gap_p95_abs_pct": 1.5104
+    },
+    {
+      "symbol": "RMETAUSDT",
+      "name": "Meta",
+      "bars": 720,
+      "off_hours_bar_share": 0.7556,
+      "open_session_vol": 0.006058,
+      "closed_session_vol": 0.003855,
+      "off_to_open_vol_ratio": 0.636,
+      "reopen_gaps": 30,
+      "reopen_gap_mean_abs_pct": 0.5535,
+      "reopen_gap_p95_abs_pct": 1.1792
+    }
+  ]
+}
