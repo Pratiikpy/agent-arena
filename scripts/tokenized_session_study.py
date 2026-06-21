@@ -118,7 +118,7 @@ def _reversion(pooled: list[tuple[float, float]]) -> dict | None:
         interp = ("no significant predictability — off-hours moves are risk/noise, not a reliable "
                   "signal; capping (not trading) them is the right response")
     return {"n_transitions": len(pooled), "pooled_corr": round(corr, 4), "permutation_p": round(p, 4),
-            "interpretation": interp, "note": "~3-4 weeks of 1h data; small sample, reported honestly"}
+            "interpretation": interp, "note": "720 1h bars per stock (~1 month); small sample, reported honestly"}
 
 
 def main() -> int:

@@ -7,9 +7,11 @@ the (closed) underlying and gap at re-open. Classifying a timestamp as regular-s
 risk study quantify that risk.
 
 DST-aware using the **post-2007** US rules (2nd Sunday of March → 1st Sunday of November; pre-2007
-rules differed and are out of scope — the tokenized-stock data is current). It does **not** exclude
-US market holidays — a holiday weekday is classified ``open`` by hour, a small, documented
-over-count of open hours (the off-hours risk it measures is, if anything, *understated* as a result).
+rules differed and are out of scope — the tokenized-stock data is current). The measured off-hours
+*share* is **approximate** (likely a lower bound): low-volume off-hours candles can be missing from
+the feed, and US market holidays are not excluded (a holiday weekday is classified ``open`` by hour)
+— both push the measured off-hours share *down*, so the true figure is, if anything, higher. The
+session **classification** of any given timestamp is exact; only the aggregate share is approximate.
 Self-contained: no ``tzdata`` dependency (zoneinfo has no tz database on Windows).
 """
 

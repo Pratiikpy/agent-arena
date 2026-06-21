@@ -6,10 +6,10 @@
   "max_reopen_gap_p95_abs_pct": 2.2195,
   "off_hours_reversion": {
     "n_transitions": 174,
-    "pooled_corr": 0.1094,
-    "permutation_p": 0.1535,
+    "pooled_corr": 0.1092,
+    "permutation_p": 0.154,
     "interpretation": "no significant predictability \u2014 off-hours moves are risk/noise, not a reliable signal; capping (not trading) them is the right response",
-    "note": "~3-4 weeks of 1h data; small sample, reported honestly"
+    "note": "720 1h bars per stock (~1 month); small sample, reported honestly"
   },
   "per_stock": [
     {
@@ -18,8 +18,8 @@
       "bars": 720,
       "off_hours_bar_share": 0.7597,
       "open_session_vol": 0.00441,
-      "closed_session_vol": 0.003075,
-      "off_to_open_vol_ratio": 0.697,
+      "closed_session_vol": 0.003076,
+      "off_to_open_vol_ratio": 0.698,
       "reopen_gaps": 29,
       "reopen_gap_mean_abs_pct": 0.467,
       "reopen_gap_p95_abs_pct": 1.0669
