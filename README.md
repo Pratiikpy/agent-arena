@@ -17,7 +17,7 @@
 ### For judges — confirm it in 60 seconds
 - **See it live — then verify it yourself in one click:** open [bitarena.vercel.app](https://bitarena.vercel.app); the **LIVE FIREWALL** badge ticks a freshly Ed25519-signed verdict on the real BTC price every few seconds. **Click the badge** → it verifies that live verdict's signature *in your browser* (Web Crypto, no server) → then hit **"Tamper a byte"** and watch the same signature go **✗ invalid**. Trustless, tamper-evident, on live data.
 - **Run it:** `uv venv && uv pip install -e ".[dev,api,mcp]" && uv run pytest` (255 tests, offline) — or `make verify` for the full gate (tests · lint · doc-numbers · evidence · red-team).
-- **Verify the evidence yourself, offline:** `uv run python scripts/verify_evidence.py` → re-checks every signed ledger (9,230 records) + certificate, all pinned to the published issuer.
+- **Verify the evidence yourself, offline:** `uv run python scripts/verify_evidence.py` → re-checks every signed ledger (8,414 records) + certificate, all pinned to the published issuer.
 - **Integrate in 5 lines:** `uv run python scripts/integrate_example.py` → a third-party bot vets *and* offline-verifies its trades against the live deploy.
 - **Read the threat model:** [`THREAT_MODEL.md`](./THREAT_MODEL.md) — every threat mapped to the gate that stops it and the test/red-team case that proves it, with honest residual risks.
 
@@ -195,7 +195,7 @@ and signatures, every certificate, all pinned to the published issuer (`config/i
 
 ```bash
 uv run python scripts/verify_evidence.py
-# -> ✓ 53 ledgers, 9,230 signed records, certs + red-team — signed, chained, pinned, untampered
+# -> ✓ 53 ledgers, 8,414 signed records, certs + red-team — signed, chained, pinned, untampered
 ```
 
 ## Documentation

@@ -72,6 +72,12 @@ def main() -> int:
     fv = json.loads((ROOT / "evidence/firewall_value.json").read_text(encoding="utf-8"))
     ks = json.loads((ROOT / "evidence/regime_killswitch.json").read_text(encoding="utf-8"))
     ot = json.loads((ROOT / "evidence/overfit_trap.json").read_text(encoding="utf-8"))
+    # signed-ledger totals, computed from the evidence the verifier checks (matches
+    # verify_evidence.py's "N files, M signed records") — guards the "verify in 60 seconds" count.
+    ledger_files = sorted((ROOT / "evidence").glob("*/ledgers/*.jsonl"))
+    ledger_records = sum(
+        1 for f in ledger_files for line in f.read_text(encoding="utf-8").splitlines() if line.strip()
+    )
     combined = "\n".join(
         (ROOT / rel).read_text(encoding="utf-8") for rel in DOCS if (ROOT / rel).exists()
     )
@@ -79,6 +85,8 @@ def main() -> int:
         (f"${round(fv['firewall_saved_usd']):,}", "firewall containment value"),
         (f"${round(ks['loss_avoided_usd']):,}", "kill-switch loss avoided"),
         (f"PBO {ot['cross_agent_pbo']:.2f}", "overfit-trap PBO"),
+        (f"{ledger_records:,} ", "signed-record count"),  # trailing space: matches "8,414 records"/"8,414 signed records"
+        (f"{len(ledger_files)} ledgers", "ledger file count"),
     ]
     for token, label in present:
         if token not in combined:
