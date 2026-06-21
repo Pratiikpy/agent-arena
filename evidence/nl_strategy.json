@@ -1,0 +1,14 @@
+{
+  "brief": "Go long when 10-bar momentum is positive and the short MA is above the long MA; short the mirror case; otherwise stay flat.",
+  "source": "sample(no-model)",
+  "code": "def decide(obs):\n    fast = sma(obs[\"prices\"], 8)\n    slow = sma(obs[\"prices\"], 21)\n    momentum = roc(obs[\"prices\"], 10)\n    if fast > slow and momentum > 0:\n        return clip(momentum * 8.0, 0.2, 1.0)\n    if fast < slow and momentum < 0:\n        return clip(momentum * 8.0, -1.0, -0.2)\n    return 0.0\n",
+  "backtest": {
+    "ok": true,
+    "trades": 109,
+    "total_return": -0.1108,
+    "sharpe": -1.143,
+    "bars": 160
+  },
+  "admitted": true,
+  "note": "model output is AST-allowlisted + sandboxed + backtest-gated before it can compete"
+}
