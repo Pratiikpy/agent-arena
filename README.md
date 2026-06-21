@@ -1,3 +1,5 @@
+<img src="docs/agent-arena-logo.png" alt="Agent Arena" width="96" />
+
 # Agent Arena (bitarena)
 
 [![CI](https://github.com/narutopyy/agent-arena/actions/workflows/ci.yml/badge.svg)](https://github.com/narutopyy/agent-arena/actions/workflows/ci.yml)

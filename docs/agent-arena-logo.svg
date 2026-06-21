@@ -1,0 +1,28 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Agent Arena">
+  <defs>
+    <linearGradient id="bg" x1="0.08" y1="0.02" x2="0.92" y2="1">
+      <stop offset="0" stop-color="#17ad72"/>
+      <stop offset="0.5" stop-color="#0b7a4b"/>
+      <stop offset="1" stop-color="#053723"/>
+    </linearGradient>
+    <linearGradient id="sh" x1="0.3" y1="0.05" x2="0.7" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#c4eed7"/>
+    </linearGradient>
+    <radialGradient id="gl" cx="0.24" cy="0.14" r="0.92">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.26"/>
+      <stop offset="0.5" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="ds" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#021a11" flood-opacity="0.42"/>
+    </filter>
+  </defs>
+  <rect x="0" y="0" width="512" height="512" fill="url(#bg)"/>
+  <rect x="0" y="0" width="512" height="512" fill="url(#gl)"/>
+  <path d="M256 100 L384 146 V262 C384 340 330 388 256 416 C182 388 128 340 128 262 V146 Z" fill="url(#sh)" filter="url(#ds)"/>
+  <g stroke="#0b7a4b" stroke-width="33" stroke-linecap="round" stroke-linejoin="round" fill="none">
+    <path d="M256 178 L204 324"/>
+    <path d="M256 178 L308 324"/>
+    <path d="M222 290 H290"/>
+  </g>
+</svg>
