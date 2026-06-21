@@ -10,8 +10,16 @@ from __future__ import annotations
 
 import argparse
 import sys
+from pathlib import Path
 
 from bitarena.client import FirewallClient
+
+# The published issuer key, pinned out-of-band (committed) — we verify against THIS, not whatever
+# key the server advertises. That proves authenticity (signed by the real arena), not just
+# integrity. A third party would copy this constant from the repo/docs once.
+PINNED_ISSUER_KEY = (
+    Path(__file__).resolve().parent.parent / "config" / "issuer_pubkey.hex"
+).read_text(encoding="utf-8").strip()
 
 for _stream in (sys.stdout, sys.stderr):  # tolerate a cp1252 console
     try:
@@ -26,8 +34,13 @@ def main() -> int:
     args = ap.parse_args()
 
     fw = FirewallClient(args.base_url)
-    issuer_key = fw.issuer_key()
-    print(f"firewall: {args.base_url}  ·  issuer key {issuer_key[:16]}…\n")
+    served = fw.issuer_key()  # what the deploy advertises
+    if served != PINNED_ISSUER_KEY:
+        print(f"✗ deploy issuer key {served[:16]}… ≠ pinned published key {PINNED_ISSUER_KEY[:16]}… — "
+              "not the real arena; aborting.")
+        fw.close()
+        return 1
+    print(f"firewall: {args.base_url}  ·  issuer key {PINNED_ISSUER_KEY[:16]}… (pinned, deploy matches)\n")
 
     # my bot's proposed trades — the firewall decides which may be placed, and at what size.
     # (symbol, side, notional, current_exposure) — the last trade is at the exposure cap.
@@ -39,7 +52,7 @@ def main() -> int:
     placed = 0
     for symbol, side, notional, exposure in trades:
         v = fw.vet(symbol, side, notional_usd=notional, current_exposure_usd=exposure)
-        trusted = v.verify(issuer_key)  # offline: signature intact AND signed by this arena
+        trusted = v.verify(PINNED_ISSUER_KEY)  # offline: signature intact AND signed by the PINNED arena key
         eff = v.effective_notional_usd or 0.0
         print(f"  {side:<4} {symbol:<9} ${notional:>10,.0f}  ->  {v.decision:<13} "
               f"eff=${eff:>9,.2f}  verified={trusted}")
