@@ -73,10 +73,10 @@ Arena reports that rather than hiding it.
 `bitget_btc_perp/leaderboard.json`). Active trading does not manufacture edge from
 noise, and the Arena says so.
 
-**Overfitting is flagged — and the metric discriminates.** With the full six-agent
-roster the synthetic run reports a high cross-agent `PBO ≈ 0.84` (the in-sample winner
-there is mostly luck), while the regime scenario reports `PBO ≈ 0.00` (the ranking is
-robust). Same metric, opposite verdicts — that is the number that stops a lucky
+**Overfitting is flagged — and the metric discriminates.** On the synthetic run's six agents
+(the funding-carry competitor only joins on real perp data, where funding exists) the
+cross-agent `PBO ≈ 0.84` is high (the in-sample winner there is mostly luck), while the regime
+scenario reports `PBO ≈ 0.00` (the ranking is robust). Same metric, opposite verdicts — that is the number that stops a lucky
 backtest from being sold as an edge. (The `RegimeAgent` — the published Bitget Playbook
 mirror — wins the clean synthetic trend but underperforms in chop and on flat real data,
 reported honestly rather than hidden.)
