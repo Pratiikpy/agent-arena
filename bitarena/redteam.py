@@ -27,7 +27,9 @@ _EPS = 1e-6
 _NOW = 1_000_000
 
 
-def _quote(mid: float = 60_000.0, ts: int = _NOW, crossed: bool = False) -> Quote:
+def _quote(mid: float = 60_000.0, ts: int = _NOW, crossed: bool = False, one_sided: bool = False) -> Quote:
+    if one_sided:  # malformed book: no bid, only a `last` price — unusable, must fail closed
+        return Quote(symbol="BTCUSDT", bid=0.0, ask=mid + 3, last=mid, ts=ts)
     if crossed:
         return Quote(symbol="BTCUSDT", bid=mid + 1, ask=mid - 1, last=mid, ts=ts)
     return Quote(symbol="BTCUSDT", bid=mid - 3, ask=mid + 3, last=mid, ts=ts)
@@ -96,6 +98,7 @@ def build_attacks() -> list[Attack]:
         Attack("no_quote", "quote", _intent(notional=100.0), _ctx(None), "reject"),
         Attack("crossed_book", "quote", _intent(notional=100.0), _ctx(_quote(crossed=True)), "reject"),
         Attack("stale_quote", "quote", _intent(notional=100.0), _ctx(_quote(ts=0), now=10_000_000, max_age=60_000), "reject"),
+        Attack("malformed_book", "quote", _intent(notional=100.0), _ctx(_quote(one_sided=True)), "reject"),
         Attack("daily_limit_flood", "rate", _intent(notional=100.0), _ctx(_quote(), daily=200), "reject"),
         Attack("kill_switch_active", "halt", _intent(notional=100.0), _ctx(_quote(), halted=True), "reject"),
         Attack("below_min_price", "universe", _intent(notional=100.0), _ctx(_quote(), mandate=min_price), "reject"),

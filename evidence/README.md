@@ -26,7 +26,7 @@ uv run python scripts/demo_firewall.py --symbol BTCUSDT --side buy --notional 99
 | `bitget_tokenized_aapl/` | Tournament on **real Bitget tokenized AAPL** (`RAAPLUSDT`) — Track 3 (full signed ledgers) |
 | `tokenized_stock_sweep.json` | **Track 3 breadth:** the arena + firewall across **six** real Bitget tokenized US stocks (AAPL, TSLA, NVDA, MSFT, GOOGL, META) — 883 firewall intents, **0 unsafe**, all ledgers verified |
 | `last_run/` | Working copy of the most recent tournament — what the API serves at `GET /leaderboard` (and the deployed UI reads) |
-| `redteam.json` | 20 adversarial attacks + 3 controls; **0 unsafe orders passed**, all signed |
+| `redteam.json` | 21 adversarial attacks + 3 controls; **0 unsafe orders passed**, all signed |
 | `firewall_value.json` | The firewall's *containment value*, quantified: a misbehaving agent (8×-oversized orders) on an adverse market stays **solvent (+\$4,212)** under the mandate vs **bankrupt (−\$4,362)** unprotected — the firewall saved \$8,574 on a \$10k account |
 | `regime_killswitch.json` | The firewall's *market-wide* kill-switch: a reckless "buy the dip" agent through a ~16% flash crash, run with the kill-switch ON vs OFF. In `FAST_RISK_OFF` the firewall blocks new exposure (signed REJECTs, issuer `98683e5c`) while still permitting de-risking — the protected fleet avoids **\$3,120** of further loss vs unprotected (on a \$100k account). Per-order safety + fleet-wide circuit-breaker. |
 | `firewall_bench.json` | Firewall latency: a full signed verdict (gates + Ed25519) is **~0.1 ms** (~9,700/sec single core) — gating every trade is effectively free |

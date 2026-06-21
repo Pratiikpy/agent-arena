@@ -32,7 +32,7 @@ Bitget's own GetAgent platform.
 
 ## Proof it's real (not slides)
 - **Live signed firewall** — curl a verdict in 10 seconds; tamper any field and the
-  signature dies. A 23-case red-team battery: **0 unsafe orders ever passed.**
+  signature dies. A 24-case red-team battery: **0 unsafe orders ever passed.**
 - **Four published Bitget Playbooks** with real on-platform backtests (BTC breakout
   Sharpe 1.68 / PF 2.33, ETH breakout PF 1.42, adaptive regime BTC PF 1.74, adaptive regime
   ETH Sharpe 2.15 / PF 3.34) — plus three more honestly *withheld* because they underperformed.

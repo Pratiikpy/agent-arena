@@ -59,7 +59,7 @@ limits (`ALLOW_CAPPED`).
 | 14 | Pass off a wrong-issuer certificate | a technically-valid signature from another key | issuer **pinning** to the published key | `test_signing` pinning; `verify_evidence` (all artifacts pinned) |
 | 15 | Hide or rewrite a bad trade after the fact | edit / reorder / delete ledger records | append-only **hash-chained**, signed ledger | `test_ledger_properties` (mutation, reorder, mid-chain deletion, truncation all detected) |
 
-The aggregate guarantee is measured, not asserted: the red-team battery runs **20 attacks + 3
+The aggregate guarantee is measured, not asserted: the red-team battery runs **21 attacks + 3
 controls and lets through 0 unsafe orders**, every verdict signed (`redteam.json`).
 
 ## Design principles
