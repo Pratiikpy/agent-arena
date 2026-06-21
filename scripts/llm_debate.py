@@ -103,6 +103,13 @@ def main() -> None:
             "certificate_valid": verify_certificate(verdict.certificate) if verdict.certificate else None,
         }
 
+    # the transcribed, signed bull/bear/judge debate behind the conviction — a verifiable artifact
+    if agent.last_bundle is not None:
+        from bitarena.agents.debate import DebateSession, sign_debate
+
+        debate = DebateSession(agent._llm).run(agent.last_bundle)
+        out["debate"] = sign_debate(debate, firewall._signer)
+
     Path(args.out).parent.mkdir(parents=True, exist_ok=True)
     Path(args.out).write_text(json.dumps(out, indent=2), encoding="utf-8")
     print(json.dumps(out, indent=2))

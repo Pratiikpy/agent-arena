@@ -1,131 +1,294 @@
 {
   "symbol": "BTCUSDT",
   "instrument": "perp",
-  "source": "bitget:120bars",
+  "source": "synthetic",
   "qwen_available": true,
   "decision_source": "qwen",
-  "rationale": "Sharp disagreement between mean-reversion bounce and trend breakdown; low agreement forces flat per risk protocol.",
+  "rationale": "Low agreement and conflicting technicals override weak net positive; risk check mandates flat.",
   "signals": [
     {
       "name": "momentum",
       "source": "technical",
-      "value": -0.024,
-      "confidence": 0.998608985238669
+      "value": 0.118,
+      "confidence": 0.9512982467625822
     },
     {
       "name": "trend",
       "source": "technical",
-      "value": -0.02,
-      "confidence": 0.998608985238669
+      "value": 0.392,
+      "confidence": 0.9512982467625822
     },
     {
       "name": "mean_reversion",
       "source": "technical",
-      "value": 0.576,
-      "confidence": 0.7988871881909353
+      "value": -0.377,
+      "confidence": 0.7610385974100659
     },
     {
       "name": "rsi",
       "source": "technical",
-      "value": 0.283,
-      "confidence": 0.7988871881909353
+      "value": -0.17,
+      "confidence": 0.7610385974100659
     },
     {
       "name": "stochastic",
       "source": "quant_factors",
-      "value": -0.503,
-      "confidence": 0.5409465020576354
+      "value": 0.393,
+      "confidence": 0.44023526081425174
     },
     {
       "name": "williams_r",
       "source": "quant_factors",
-      "value": -0.503,
-      "confidence": 0.5409465020576354
+      "value": 0.393,
+      "confidence": 0.44023526081425174
     },
     {
       "name": "roc",
       "source": "quant_factors",
-      "value": -0.009,
-      "confidence": 0.5409465020576354
+      "value": 0.092,
+      "confidence": 0.44023526081425174
     },
     {
       "name": "macd",
       "source": "quant_factors",
-      "value": -0.011,
-      "confidence": 0.5409465020576354
+      "value": 0.038,
+      "confidence": 0.44023526081425174
     },
     {
       "name": "bollinger_pctb",
       "source": "quant_factors",
-      "value": 0.5,
-      "confidence": 0.48685185185187185
+      "value": -0.201,
+      "confidence": 0.39621173473282656
     },
     {
       "name": "cci",
       "source": "quant_factors",
-      "value": -0.605,
-      "confidence": 0.5409465020576354
+      "value": 0.385,
+      "confidence": 0.44023526081425174
     },
     {
       "name": "obv",
       "source": "quant_factors",
-      "value": -0.018,
-      "confidence": 0.4327572016461083
+      "value": 0.095,
+      "confidence": 0.35218820865140144
     },
     {
       "name": "kmid",
       "source": "quant_factors",
-      "value": 0.003,
-      "confidence": 0.3786625514403448
+      "value": -0.378,
+      "confidence": 0.3081646825699762
     },
     {
       "name": "autocorr",
       "source": "quant_factors",
-      "value": 0.332,
-      "confidence": 0.32456790123458124
+      "value": -0.158,
+      "confidence": 0.264141156488551
     },
     {
       "name": "donchian",
       "source": "quant_factors",
-      "value": -0.703,
-      "confidence": 0.5409465020576354
+      "value": 0.393,
+      "confidence": 0.44023526081425174
     },
     {
       "name": "macro",
       "source": "agent_hub:macro(fallback)",
-      "value": 0.024,
+      "value": 0.584,
       "confidence": 0.4
     },
     {
       "name": "sentiment",
       "source": "agent_hub:sentiment(fallback)",
-      "value": 0.583,
+      "value": -0.262,
       "confidence": 0.4
     },
     {
       "name": "news",
       "source": "agent_hub:news(fallback)",
-      "value": -0.014,
+      "value": 0.152,
       "confidence": 0.4
     },
     {
       "name": "onchain",
       "source": "agent_hub:onchain(fallback)",
-      "value": -0.031,
+      "value": 0.61,
       "confidence": 0.4
     },
     {
       "name": "technical",
       "source": "agent_hub:technical(fallback)",
-      "value": -0.035,
+      "value": 0.167,
       "confidence": 0.4
     }
   ],
-  "net_signal": -0.006,
-  "agreement": 0.037,
+  "net_signal": 0.118,
+  "agreement": 0.423,
   "intent": null,
   "verdict": {
     "decision": "HOLD",
     "reason": "no conviction -> no order"
+  },
+  "debate": {
+    "symbol": "BTCUSDT",
+    "ts": 7140000,
+    "net_signal": 0.118253,
+    "agreement": 0.422713,
+    "transcript": [
+      {
+        "role": "bull",
+        "text": "BTCUSDT presents a high-conviction buy as high-confidence trend (+0.39, 0.95) and momentum (+0.12, 0.95) signals confirm a sustained upward price structure, strongly reinforced by leading onchain accumulation (+0.61) and favorable macro tailwinds (+0.58). This technical foundation is further validated by uniformly positive quant momentum readings (+0.39 across Stochastic, CCI, and Donchian), signaling that underlying institutional and retail demand is poised to drive continued upside despite minor short-term mean-reversion noise."
+      },
+      {
+        "role": "bear",
+        "text": "The bull's thesis dangerously overweights low-confidence macro and onchain readings (0.40) while dismissing high-confidence mean-reversion (-0.38, 0.76) and RSI (-0.17, 0.76) signals that clearly warn of overextension and an impending pullback. With a fragmented net signal of just +0.12 and weak cross-model agreement (0.42), there is insufficient consensus to justify chasing upside, making a flat or defensive short stance the only prudent position."
+      },
+      {
+        "role": "judge",
+        "text": "Low agreement and conflicting high-confidence signals indicate uncertainty; weak net bias favors flat positioning."
+      }
+    ],
+    "stance": "flat",
+    "conviction": 0.25,
+    "reason": "Low agreement and conflicting high-confidence signals indicate uncertainty; weak net bias favors flat positioning.",
+    "source": "qwen",
+    "signals": [
+      {
+        "name": "momentum",
+        "source": "technical",
+        "value": 0.1176,
+        "confidence": 0.9513,
+        "detail": "20-bar return 0.59%"
+      },
+      {
+        "name": "trend",
+        "source": "technical",
+        "value": 0.3919,
+        "confidence": 0.9513,
+        "detail": "SMA10 vs SMA30: 1.24%"
+      },
+      {
+        "name": "mean_reversion",
+        "source": "technical",
+        "value": -0.3772,
+        "confidence": 0.761,
+        "detail": "z-score 0.79"
+      },
+      {
+        "name": "rsi",
+        "source": "technical",
+        "value": -0.1697,
+        "confidence": 0.761,
+        "detail": "RSI 58.5"
+      },
+      {
+        "name": "stochastic",
+        "source": "quant_factors",
+        "value": 0.3931,
+        "confidence": 0.4402,
+        "detail": ""
+      },
+      {
+        "name": "williams_r",
+        "source": "quant_factors",
+        "value": 0.3931,
+        "confidence": 0.4402,
+        "detail": ""
+      },
+      {
+        "name": "roc",
+        "source": "quant_factors",
+        "value": 0.0917,
+        "confidence": 0.4402,
+        "detail": ""
+      },
+      {
+        "name": "macd",
+        "source": "quant_factors",
+        "value": 0.0376,
+        "confidence": 0.4402,
+        "detail": ""
+      },
+      {
+        "name": "bollinger_pctb",
+        "source": "quant_factors",
+        "value": -0.2014,
+        "confidence": 0.3962,
+        "detail": ""
+      },
+      {
+        "name": "cci",
+        "source": "quant_factors",
+        "value": 0.3854,
+        "confidence": 0.4402,
+        "detail": ""
+      },
+      {
+        "name": "obv",
+        "source": "quant_factors",
+        "value": 0.0953,
+        "confidence": 0.3522,
+        "detail": ""
+      },
+      {
+        "name": "kmid",
+        "source": "quant_factors",
+        "value": -0.3782,
+        "confidence": 0.3082,
+        "detail": ""
+      },
+      {
+        "name": "autocorr",
+        "source": "quant_factors",
+        "value": -0.1579,
+        "confidence": 0.2641,
+        "detail": ""
+      },
+      {
+        "name": "donchian",
+        "source": "quant_factors",
+        "value": 0.3931,
+        "confidence": 0.4402,
+        "detail": ""
+      },
+      {
+        "name": "macro",
+        "source": "agent_hub:macro(fallback)",
+        "value": 0.5839,
+        "confidence": 0.4,
+        "detail": "fallback: slow 60-bar trend"
+      },
+      {
+        "name": "sentiment",
+        "source": "agent_hub:sentiment(fallback)",
+        "value": -0.2623,
+        "confidence": 0.4,
+        "detail": "fallback: contrarian 20-bar z-score"
+      },
+      {
+        "name": "news",
+        "source": "agent_hub:news(fallback)",
+        "value": 0.1521,
+        "confidence": 0.4,
+        "detail": "fallback: 10-bar momentum"
+      },
+      {
+        "name": "onchain",
+        "source": "agent_hub:onchain(fallback)",
+        "value": 0.6099,
+        "confidence": 0.4,
+        "detail": "fallback: 30-bar accumulation trend"
+      },
+      {
+        "name": "technical",
+        "source": "agent_hub:technical(fallback)",
+        "value": 0.1672,
+        "confidence": 0.4,
+        "detail": "fallback: 20-bar momentum"
+      }
+    ],
+    "payload_sha256": "a7a9dcff5d82a2e8fa7b97b8872243bcac1e115ea501979d5a4a37fdafe46fe8",
+    "issuer": "98683e5cbe6313a0",
+    "public_key_hex": "c2f8243b0d573587f285c830a868acd19249d17d59ecbf9329e796dfed6fb630",
+    "signature_hex": "448d7a5b2c5f314bf631e2e1becb892d3a44c404a729122f038b64522c2502e371da0ec214527fad982d11ec87f8a4b4bb084ec5434b7889e145ee408747b502"
   }
 }
