@@ -57,6 +57,13 @@ def test_quote_sanity():
     assert gates.gate_quote_sanity(fresh, 1_000, 60_000).passed is True
     stale = Quote(symbol="BTCUSDT", bid=100, ask=100.1, last=100, ts=0)
     assert gates.gate_quote_sanity(stale, 120_000, 60_000).passed is False
+    # malformed books must fail closed — do NOT trust quote.mid's `last` fallback for execution
+    one_sided = Quote(symbol="BTCUSDT", bid=0.0, ask=100.1, last=100, ts=1_000)
+    assert gates.gate_quote_sanity(one_sided, 1_000, 60_000).passed is False
+    negative = Quote(symbol="BTCUSDT", bid=-5.0, ask=100.1, last=100, ts=1_000)
+    assert gates.gate_quote_sanity(negative, 1_000, 60_000).passed is False
+    nan_book = Quote(symbol="BTCUSDT", bid=float("nan"), ask=100.1, last=100, ts=1_000)
+    assert gates.gate_quote_sanity(nan_book, 1_000, 60_000).passed is False
 
 
 def test_daily_count_gate():

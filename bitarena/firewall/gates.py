@@ -8,6 +8,7 @@ result rather than a pass.
 
 from __future__ import annotations
 
+import math
 from datetime import datetime, timezone
 
 from ..domain.mandate import Mandate
@@ -63,6 +64,10 @@ def gate_quote_sanity(
 ) -> GateResult:
     if quote is None:
         return GateResult(gate="quote", passed=False, detail="no quote available (fail-closed)")
+    # A one-sided, negative, or non-finite book is unusable for execution. Fail closed rather than
+    # trust the `last`-price fallback that quote.mid uses for display when bid/ask are missing.
+    if not (math.isfinite(quote.bid) and math.isfinite(quote.ask)) or quote.bid <= 0 or quote.ask <= 0:
+        return GateResult(gate="quote", passed=False, detail="malformed book: non-positive or non-finite bid/ask (fail-closed)")
     if quote.is_crossed:
         return GateResult(gate="quote", passed=False, detail="crossed/locked order book")
     if quote.mid <= 0:
