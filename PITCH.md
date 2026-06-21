@@ -12,16 +12,19 @@ from doing something catastrophic before a human ever sees it. Everyone builds a
 that *generate* trades. **Almost nobody builds the layer that makes them trustworthy.**
 
 ## The insight
-Trust = **containment + verification**.
-- **Containment** — every order from every agent passes one fail-closed firewall that
-  returns a *cryptographically signed* ALLOW / ALLOW_CAPPED / REJECT before anything
-  reaches the exchange. No agent can breach its mandate, and a market-wide **kill-switch**
-  force-flats the whole fleet in a fast crash.
-- **Verification** — agents are ranked by risk-adjusted performance (not raw PnL) and
-  stress-tested with anti-overfitting math (Deflated Sharpe, PBO) that flags lucky backtests,
-  and a meta-allocator funds them by *proven* trust. Anyone can verify a
-  certificate — **in their own browser** (Web Crypto), pinned to our published key. You
-  don't have to trust us.
+A fleet of autonomous agents is only safe to run if something physically caps the downside.
+That is the unlock. Give each agent a hard safety boundary and it can run fully unsupervised,
+so the agents end up **more** autonomous, not less. Trust is the enabler of autonomy, not a
+limit on it. Two parts make it work.
+- **Containment, the enabler.** Every order from every agent passes one fail-closed firewall
+  that returns a cryptographically signed ALLOW / ALLOW_CAPPED / REJECT before anything reaches
+  the exchange. No agent can breach its mandate, and a market-wide **kill-switch** flattens the
+  whole fleet in a fast crash. Because the blast radius is capped, an agent can decide end to
+  end with no human in the loop.
+- **Verification, the honesty.** Agents are ranked by skill that survives an overfit test
+  (Deflated Sharpe, PBO), not raw PnL, and a meta-allocator funds them by verified skill.
+  Anyone can check a certificate **in their own browser** (Web Crypto), pinned to our published
+  key. You do not trust us, you check.
 
 ## What it is
 **Agent Arena**: a live tournament where multiple autonomous agents (a conflict-gated
@@ -54,10 +57,12 @@ Bitget's own GetAgent platform.
   tokenized US stocks** (AAPL/TSLA/NVDA/MSFT/GOOGL/META).
 
 ## Why only an AI agent can do this
-The competitors read five analyst perspectives, debate them (the LLM agent argues bull
-vs bear and *down-weights disagreement*), size by conviction, and self-grade —
-continuously, with no human. Agent Arena is the harness that makes a fleet of such
-agents safe to run and honest to compare.
+The agents do what only an LLM agent can. They weigh several analyst views (macro, sentiment,
+news, on-chain, technical), argue them bull versus bear, down-weight their own disagreement,
+size by conviction, and act, continuously, with no human. A rules engine cannot read conflicting
+narratives in natural language and change its mind. The firewall and the overfit-aware tournament
+are what make running a whole fleet of these agents safe to deploy and honest to compare. Trust
+is not a guardrail on autonomy here. It is the thing that makes full autonomy fundable.
 
 ## Tracks (all three)
 Trading Agent (the autonomous agents) · Trading Infra (firewall, benchmark, MCP server,
