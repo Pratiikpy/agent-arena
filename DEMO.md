@@ -29,11 +29,13 @@ oversized order is clamped to the mandate). Then prove it can't be faked:
 uv run python scripts/demo_firewall.py --symbol BTCUSDT --side buy --notional 50 > v.json
 uv run python scripts/verify_cert.py --file v.json     # -> ✓ signature VALID (fully offline)
 ```
-Then, even stronger, on the live site: open the **Verify** tab at bitarena.vercel.app, paste the
-certificate, and it shows **"✓ verified in your browser · no server"** — the Ed25519 signature
-is checked client-side (Web Crypto) and pinned to the published issuer; the cert never leaves
-the page. "Don't trust us — verify it yourself, in your own browser. And it's effectively free:
-~0.1 ms per signed verdict, ~9,700 a second on one core."
+Then the strongest beat — do it live, in one click, on bitarena.vercel.app: **click the LIVE
+FIREWALL badge.** It loads that freshly-signed live verdict into the **Verify** tab and checks
+the Ed25519 signature **in your browser** (Web Crypto, pinned to the published issuer) → **✓
+valid**. Now hit **"Tamper a byte"** → the same signature goes **✗ invalid**. "Don't trust us —
+verify a *live* verdict yourself, in your own browser, then watch one flipped byte break it. No
+server. And it's effectively free: ~0.1 ms per signed verdict, ~9,700 a second on one core."
+(You can also paste any cert into the Verify tab, or `verify_cert.py` offline.)
 
 Or show it **live** on the deployed service (same signed verdict, public URL):
 ```bash
@@ -84,15 +86,17 @@ integrating in seconds — `uv run python scripts/integrate_example.py` runs a b
 persisting signed ledgers, funding, and even the agents' learning — served at `/live`, with
 the **LIVE FIREWALL** heartbeat badge ticking the live price + a fresh signed verdict. Close:
 > "Agent Arena is the trust layer for agentic trading: a signed firewall no agent can
-> bypass, overfit-aware scoring that tells you which agents deserve capital, three
-> strategies already live on Bitget, and an arena that runs live on a schedule. It runs
-> on real Bitget data, today."
+> bypass, overfit-aware scoring that tells you which agents deserve capital, four
+> strategies already published on Bitget's own platform, and an arena that runs live on a
+> schedule. It runs on real Bitget data, today."
 
 ## Capture checklist
 - Terminal with a dark theme, large font.
 - Pre-warm `uv` (run once before recording so installs don't show).
 - Have `.env` populated with the Bitget Qwen key so the LLM step is live.
-- For the UI beat: `make serve`, then open `http://localhost:8000` and click the Verify tab.
+- For the verify beat, the live deploy is easiest: open `bitarena.vercel.app`, click the LIVE
+  FIREWALL badge (→ verifies in-browser), then "Tamper a byte" (→ ✗ invalid). No local setup.
+- For the local UI beat: `make serve`, then open `http://localhost:8000`.
 - For the live beat: run `make live` once or twice beforehand so `/live` shows a populated
   ● LIVE leaderboard on the Arena tab.
 - Keep each command's output on screen long enough to read the key line.
