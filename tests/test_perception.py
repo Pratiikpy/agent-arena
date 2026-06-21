@@ -71,8 +71,8 @@ def test_signal_bundle_agreement_math():
     assert abs(split.net_signal) < 1e-9
 
 
-def test_agent_hub_fallback_is_labeled():
-    src = AgentHubPerception("macro")
+def test_agent_hub_fallback_is_labeled(tmp_path):
+    src = AgentHubPerception("macro", brief_dir=tmp_path)  # empty dir -> no brief -> fallback path
     sigs = src.observe("BTCUSDT", _market(), ts=0)
     assert len(sigs) == 1 and "(fallback)" in sigs[0].source
 
