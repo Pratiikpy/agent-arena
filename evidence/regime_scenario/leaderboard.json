@@ -20,6 +20,8 @@
       "profit_factor": 1.160906,
       "calmar": 1.59047,
       "periods": 600,
+      "dsr": 0.4445,
+      "skill_significant": false,
       "rank": 1
     },
     {
@@ -37,6 +39,8 @@
       "profit_factor": 0.957696,
       "calmar": -0.244048,
       "periods": 600,
+      "dsr": 0.038,
+      "skill_significant": false,
       "rank": 2
     },
     {
@@ -54,6 +58,8 @@
       "profit_factor": 0.820732,
       "calmar": -0.573723,
       "periods": 600,
+      "dsr": 0.0072,
+      "skill_significant": false,
       "rank": 3
     },
     {
@@ -71,6 +77,8 @@
       "profit_factor": 0.814349,
       "calmar": -0.524466,
       "periods": 600,
+      "dsr": 0.0036,
+      "skill_significant": false,
       "rank": 4
     },
     {
@@ -88,6 +96,8 @@
       "profit_factor": 0.671592,
       "calmar": -0.732269,
       "periods": 600,
+      "dsr": 0.0011,
+      "skill_significant": false,
       "rank": 5
     },
     {
@@ -105,6 +115,8 @@
       "profit_factor": 0.613785,
       "calmar": -0.813054,
       "periods": 600,
+      "dsr": 0.0002,
+      "skill_significant": false,
       "rank": 6
     }
   ],
