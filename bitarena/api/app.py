@@ -312,6 +312,44 @@ def create_app(
         return {"passports": build_all_passports(
             rows if isinstance(rows, list) else None, alloc, fw_stats=fw)}
 
+    @app.get("/attestation/{agent_id}")
+    def attestation(agent_id: str):
+        """A signed, ERC-8004-style verifiable reputation credential for one agent."""
+        from ..arena.passport import build_all_passports, passport_attestation
+        from ..firewall.signing import build_signer
+
+        lb = _load_json("leaderboard.json")
+        rows = lb.get("leaderboard", lb) if isinstance(lb, dict) else lb
+        alloc = _load_json("allocator.json")
+        fw = (lb.get("firewall", {}) or {}).get("by_agent") if isinstance(lb, dict) else None
+        passports = build_all_passports(rows if isinstance(rows, list) else None, alloc, fw_stats=fw)
+        match = next((p for p in passports if p["agent_id"] == agent_id), None)
+        if match is None:
+            return JSONResponse({"detail": f"unknown agent {agent_id}"}, status_code=404)
+        signer = build_signer(None, settings.signing_key_path)
+        return passport_attestation(match, signer)
+
+    @app.get("/limits")
+    def limits():
+        """The honest boundaries: what the system does not do yet, stated plainly (from SELF_ASSESSMENT)."""
+        return {"limits": [
+            {"title": "Paper execution",
+             "detail": "Trades are simulated. A real dust-sized Bitget order is one gated command "
+                       "away and needs a trade-permission key. The four published Playbooks are the "
+                       "on-platform real-money proof."},
+            {"title": "Mixed directional alpha",
+             "detail": "On flat price data no directional agent reliably beats buy-hold, and the "
+                       "leaderboard shows it. The durable edge is the trust layer and the structural "
+                       "funding carry, not a secret strategy."},
+            {"title": "Stateless deploy",
+             "detail": "The hosted arena is a faithful 1h-bar replay. The genuinely-live signed "
+                       "surface is the firewall and the /pulse heartbeat; the full continuous arena "
+                       "needs a stateful host."},
+            {"title": "Architectural, not kernel-enforced",
+             "detail": "\"No agent can bypass\" is guaranteed by one code path, not an OS sandbox. It "
+                       "bounds order decisions, the threat in scope, and says so in THREAT_MODEL.md."},
+        ]}
+
     @app.get("/usage")
     def usage():
         """A verifiable firewall-call log: every verdict with timestamp, order, and signed cert hash."""

@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from ..agents.persona import PERSONAS, persona_for
 from ..domain.mandate import default_arena_mandate
+from ..firewall.signing import Signer, sign_payload
 from .restraint import restraint_score
 from .trust import trust_score
 
@@ -69,6 +70,29 @@ def build_passport(agent_id: str, row: dict | None = None,
         "red_team": "0 unsafe orders passed (25-case battery)",
         "verification": "every decision is Ed25519-signed and checkable at /verify",
     }
+
+
+def passport_attestation(passport: dict, signer: Signer) -> dict:
+    """A verifiable agent credential, shaped after ERC-8004's three registries and signed.
+
+    Identity (who the agent is + the issuer), reputation (the overfit-corrected Trust Score and
+    metrics), and validation (the red-team result + the signature that lets anyone check it). The
+    same signed-envelope anyone can verify offline, applied to an agent's reputation rather than a
+    single order — so a passport is portable, not a screenshot.
+    """
+    trust = {"trust_score": passport.get("trust_score"), "grade": passport.get("grade"),
+             "components": passport.get("components")}
+    claim = {
+        "standard": "ERC-8004-style agent reputation (identity / reputation / validation)",
+        "identity": {"agent_id": passport.get("agent_id"), "name": passport.get("name"),
+                     "issuer": signer.fingerprint},
+        "reputation": {"trust": trust, "restraint": passport.get("restraint"),
+                       "metrics": passport.get("metrics"),
+                       "capital_allocation": passport.get("capital_allocation")},
+        "validation": {"red_team": passport.get("red_team"),
+                       "method": "Ed25519 signed envelope, verifiable at /verify"},
+    }
+    return sign_payload(claim, signer)
 
 
 def build_all_passports(leaderboard: list[dict] | None = None,

@@ -38,3 +38,18 @@ def test_allocator_weights_read_from_history():
     lb = [{"agent_id": "swarm", "trust": {"trust_score": 0.5, "grade": "C", "components": {}}}]
     alloc = {"history": [{"weights": {"swarm": 0.626}}]}
     assert build_all_passports(lb, alloc)[0]["capital_allocation"] == 0.626
+
+
+def test_attestation_verifies_and_pins_issuer():
+    from bitarena.arena.passport import passport_attestation
+    from bitarena.firewall.signing import Signer, verify_payload
+
+    signer = Signer.load_or_create("./.keys/test_arena.pem")
+    p = build_all_passports([{"agent_id": "swarm", "dsr": 0.9, "max_drawdown": -0.02,
+                              "total_return": 0.1, "trades": 40}])[0]
+    att = passport_attestation(p, signer)
+    assert verify_payload(att) is True
+    assert verify_payload(att, expected_public_key_hex=signer.public_key_hex) is True
+    assert att["identity"]["agent_id"] == "swarm"
+    assert "ERC-8004" in att["standard"]
+    assert att["reputation"]["trust"]["trust_score"] is not None

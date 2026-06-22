@@ -274,7 +274,7 @@ const App = {
     state.lab=out; render();
   },
   async loadPassports(){ if(state.passports) return; try{ const r=await api("/passports"); state.passports=r.ok?r.data:{passports:[]}; }catch(e){ state.passports={passports:[]}; } render(); },
-  async loadCourt(){ if(state.court) return; try{ const r=await api("/court"); state.court=r.ok?r.data:{dockets:[]}; }catch(e){ state.court={dockets:[]}; } render(); },
+  async loadCourt(){ if(state.court) return; try{ const r=await api("/court"); state.court=r.ok?r.data:{dockets:[]}; }catch(e){ state.court={dockets:[]}; } try{ const l=await api("/limits"); state.limits=l.ok?l.data:{limits:[]}; }catch(e){ state.limits={limits:[]}; } render(); },
   async runJudge(){
     var cases=[
       {label:"Safe order — $50 perp", body:{notional_usd:50, current_exposure_usd:0}},
@@ -628,7 +628,13 @@ function court(){
   return '<div style="max-width:1100px;margin:0 auto;padding:56px 40px 80px;"><div style="font-size:12px;font-weight:600;letter-spacing:.2em;color:#6b7280;margin-bottom:12px;">SKILL VS LUCK</div><h1 style="margin:0 0 10px;font-size:clamp(2rem,4vw,2.9rem);font-weight:700;letter-spacing:-.028em;color:#1d1d1f;">Overfit Court</h1><p style="margin:0 0 22px;font-size:15px;color:#6b7280;max-width:720px;">A leaderboard ranks by outcome. The Court rules on trust: every agent runs the same ladder of overfit and robustness checks, and a lucky backtest is labelled as luck before capital moves. Most candidates are rejected. That is the point.</p>'
     +'<div style="display:flex;gap:12px;margin-bottom:10px;flex-wrap:wrap;">'+stat+'</div>'
     +(signed?'<div style="margin-bottom:22px;">'+signed+'</div>':'<div style="height:12px;"></div>')
-    +body+'</div>';
+    +body+honestPanel()+'</div>';
+}
+function honestPanel(){
+  var l=(state.limits&&state.limits.limits)||[];
+  if(!l.length) return '';
+  var items=l.map(function(x){ return '<div style="margin-bottom:12px;"><div style="font-size:13px;font-weight:700;color:#1d1d1f;">'+esc(x.title)+'</div><div style="font-size:13px;color:#6b7280;line-height:1.5;">'+esc(x.detail)+'</div></div>'; }).join("");
+  return '<div style="margin-top:34px;border:1px solid rgba(0,0,0,.09);border-radius:16px;padding:24px 26px;background:#fafafa;"><div style="font-size:10.5px;font-weight:600;letter-spacing:.16em;color:#9aa0aa;margin-bottom:14px;">WHAT DOESN\'T WORK YET — STATED PLAINLY</div>'+items+'</div>';
 }
 function passport(){
   var d=state.passports, ps=(d&&d.passports)||[];
@@ -648,7 +654,7 @@ function passport(){
     +'</div>';
   }
   var body = ps.length ? ps.map(card).join("") : '<div style="color:#9aa0aa;">loading…</div>';
-  return '<div style="max-width:1180px;margin:0 auto;padding:56px 40px 80px;"><div style="font-size:12px;font-weight:600;letter-spacing:.2em;color:#6b7280;margin-bottom:12px;">CAPITAL-WORTHINESS</div><h1 style="margin:0 0 10px;font-size:clamp(2rem,4vw,2.9rem);font-weight:700;letter-spacing:-.028em;color:#1d1d1f;">Agent Passport</h1><p style="margin:0 0 36px;font-size:15px;color:#6b7280;max-width:700px;">The credit score for an autonomous trading agent. Trust Score = 40% skill (overfit-corrected) + 30% safety + 20% performance + 10% explainability. PnL ranks agents by outcome; this ranks them by whether they deserve capital.</p>'+body+'</div>';
+  return '<div style="max-width:1180px;margin:0 auto;padding:56px 40px 80px;"><div style="font-size:12px;font-weight:600;letter-spacing:.2em;color:#6b7280;margin-bottom:12px;">CAPITAL-WORTHINESS</div><h1 style="margin:0 0 10px;font-size:clamp(2rem,4vw,2.9rem);font-weight:700;letter-spacing:-.028em;color:#1d1d1f;">Agent Passport</h1><p style="margin:0 0 14px;font-size:15px;color:#6b7280;max-width:700px;">The credit score for an autonomous trading agent. Trust Score = 40% skill (overfit-corrected) + 30% safety + 20% performance + 10% explainability. PnL ranks agents by outcome; this ranks them by whether they deserve capital.</p><p style="margin:0 0 36px;font-size:13px;color:#9aa0aa;max-width:700px;">Each passport is portable: a signed, ERC-8004-style verifiable credential (identity · reputation · validation) is served at <span class="mono">/attestation/&lt;agent&gt;</span> and checks at <span class="mono">/verify</span>.</p>'+body+'</div>';
 }
 function lab(){
   var d=state.lab||{}, G="#0b7a4b", R="#c23b30";
