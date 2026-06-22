@@ -380,6 +380,11 @@ def create_app(
         return {"skills": list(AGENT_HUB_SKILLS), "briefs": out,
                 "note": "Five analyst Skills feed the swarm, persona-team, RL, and LLM agents."}
 
+    @app.get("/carry")
+    def carry():
+        """Delta-neutral funding carry: the net, fee-aware structural yield on real Bitget funding."""
+        return _serve_artifact("delta_neutral_carry.json")
+
     @app.get("/court")
     def court():
         """Overfit Court: each agent's verdict on whether its edge survives the overfit checks."""

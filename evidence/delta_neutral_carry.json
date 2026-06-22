@@ -1,0 +1,316 @@
+{
+  "source": "bitget:history-fund-rate",
+  "fee_bps_per_leg": 6.0,
+  "symbols": {
+    "BTCUSDT": {
+      "intervals": 270,
+      "fee_bps_per_leg": 6.0,
+      "intervals_per_year": 1095,
+      "pct_positive_funding": 0.544,
+      "mean_funding_per_interval": -2.24e-06,
+      "sweep": [
+        {
+          "total_return": -0.031625,
+          "annualized_return": -0.122192,
+          "sharpe_annualized": -6.9149,
+          "max_drawdown": -0.031664,
+          "entry_window": 16,
+          "trades": 17,
+          "time_in_market": 1.0,
+          "gross_annualized_return": 0.030923,
+          "gross_sharpe_annualized": 13.6051,
+          "net_annualized_maker": 0.003691
+        },
+        {
+          "total_return": -0.001866,
+          "annualized_return": -0.007546,
+          "sharpe_annualized": -0.8521,
+          "max_drawdown": -0.003562,
+          "entry_window": 30,
+          "trades": 4,
+          "time_in_market": 1.0,
+          "gross_annualized_return": 0.026884,
+          "gross_sharpe_annualized": 11.6162,
+          "net_annualized_maker": 0.021069
+        },
+        {
+          "total_return": -0.000942,
+          "annualized_return": -0.003817,
+          "sharpe_annualized": -0.5079,
+          "max_drawdown": -0.003562,
+          "entry_window": 60,
+          "trades": 3,
+          "time_in_market": 1.0,
+          "gross_annualized_return": 0.020747,
+          "gross_sharpe_annualized": 8.7769,
+          "net_annualized_maker": 0.016615
+        },
+        {
+          "total_return": -0.002194,
+          "annualized_return": -0.00887,
+          "sharpe_annualized": -1.1868,
+          "max_drawdown": -0.00396,
+          "entry_window": 90,
+          "trades": 3,
+          "time_in_market": 1.0,
+          "gross_annualized_return": 0.015569,
+          "gross_sharpe_annualized": 6.5046,
+          "net_annualized_maker": 0.011458
+        }
+      ],
+      "best": {
+        "total_return": -0.001866,
+        "annualized_return": -0.007546,
+        "sharpe_annualized": -0.8521,
+        "max_drawdown": -0.003562,
+        "entry_window": 30,
+        "trades": 4,
+        "time_in_market": 1.0,
+        "gross_annualized_return": 0.026884,
+        "gross_sharpe_annualized": 11.6162,
+        "net_annualized_maker": 0.021069
+      },
+      "deflated_sharpe_best": 1.0,
+      "n_trials": 4,
+      "walk_forward": [
+        {
+          "total_return": -0.002561,
+          "annualized_return": -0.041049,
+          "sharpe_annualized": -3.809,
+          "max_drawdown": -0.003562,
+          "fold": 0
+        },
+        {
+          "total_return": 0.001545,
+          "annualized_return": 0.025556,
+          "sharpe_annualized": 4.5935,
+          "max_drawdown": -0.001167,
+          "fold": 1
+        },
+        {
+          "total_return": 0.001227,
+          "annualized_return": 0.020242,
+          "sharpe_annualized": 3.952,
+          "max_drawdown": -0.001147,
+          "fold": 2
+        },
+        {
+          "total_return": -0.005076,
+          "annualized_return": -0.077588,
+          "sharpe_annualized": -5.7912,
+          "max_drawdown": -0.005148,
+          "fold": 3
+        }
+      ],
+      "hedge": "long spot + short perp (price-neutral); return is funding minus fees"
+    },
+    "ETHUSDT": {
+      "intervals": 270,
+      "fee_bps_per_leg": 6.0,
+      "intervals_per_year": 1095,
+      "pct_positive_funding": 0.689,
+      "mean_funding_per_interval": 2.688e-05,
+      "sweep": [
+        {
+          "total_return": -0.015056,
+          "annualized_return": -0.059669,
+          "sharpe_annualized": -4.0923,
+          "max_drawdown": -0.018132,
+          "entry_window": 16,
+          "trades": 11,
+          "time_in_market": 1.0,
+          "gross_annualized_return": 0.041631,
+          "gross_sharpe_annualized": 18.8348,
+          "net_annualized_maker": 0.024037
+        },
+        {
+          "total_return": -0.018509,
+          "annualized_return": -0.072968,
+          "sharpe_annualized": -5.0422,
+          "max_drawdown": -0.019552,
+          "entry_window": 30,
+          "trades": 11,
+          "time_in_market": 1.0,
+          "gross_annualized_return": 0.0269,
+          "gross_sharpe_annualized": 11.2491,
+          "net_annualized_maker": 0.009555
+        },
+        {
+          "total_return": -0.012577,
+          "annualized_return": -0.050036,
+          "sharpe_annualized": -3.7611,
+          "max_drawdown": -0.018947,
+          "entry_window": 60,
+          "trades": 9,
+          "time_in_market": 1.0,
+          "gross_annualized_return": 0.031993,
+          "gross_sharpe_annualized": 13.6727,
+          "net_annualized_maker": 0.017859
+        },
+        {
+          "total_return": -0.008303,
+          "annualized_return": -0.033247,
+          "sharpe_annualized": -2.8537,
+          "max_drawdown": -0.015211,
+          "entry_window": 90,
+          "trades": 7,
+          "time_in_market": 1.0,
+          "gross_annualized_return": 0.029961,
+          "gross_sharpe_annualized": 12.686,
+          "net_annualized_maker": 0.019157
+        }
+      ],
+      "best": {
+        "total_return": -0.015056,
+        "annualized_return": -0.059669,
+        "sharpe_annualized": -4.0923,
+        "max_drawdown": -0.018132,
+        "entry_window": 16,
+        "trades": 11,
+        "time_in_market": 1.0,
+        "gross_annualized_return": 0.041631,
+        "gross_sharpe_annualized": 18.8348,
+        "net_annualized_maker": 0.024037
+      },
+      "deflated_sharpe_best": 1.0,
+      "n_trials": 4,
+      "walk_forward": [
+        {
+          "total_return": -0.014696,
+          "annualized_return": -0.214916,
+          "sharpe_annualized": -10.658,
+          "max_drawdown": -0.014774,
+          "fold": 0
+        },
+        {
+          "total_return": -0.005466,
+          "annualized_return": -0.085679,
+          "sharpe_annualized": -5.3246,
+          "max_drawdown": -0.006958,
+          "fold": 1
+        },
+        {
+          "total_return": 0.003826,
+          "annualized_return": 0.064407,
+          "sharpe_annualized": 12.835,
+          "max_drawdown": -0.0011,
+          "fold": 2
+        },
+        {
+          "total_return": -0.004584,
+          "annualized_return": -0.070312,
+          "sharpe_annualized": -5.2613,
+          "max_drawdown": -0.005184,
+          "fold": 3
+        }
+      ],
+      "hedge": "long spot + short perp (price-neutral); return is funding minus fees"
+    },
+    "SOLUSDT": {
+      "intervals": 270,
+      "fee_bps_per_leg": 6.0,
+      "intervals_per_year": 1095,
+      "pct_positive_funding": 0.589,
+      "mean_funding_per_interval": 3.94e-06,
+      "sweep": [
+        {
+          "total_return": -0.035978,
+          "annualized_return": -0.138088,
+          "sharpe_annualized": -7.4998,
+          "max_drawdown": -0.036383,
+          "entry_window": 16,
+          "trades": 19,
+          "time_in_market": 1.0,
+          "gross_annualized_return": 0.032173,
+          "gross_sharpe_annualized": 13.2757,
+          "net_annualized_maker": 0.001653
+        },
+        {
+          "total_return": -0.00301,
+          "annualized_return": -0.012153,
+          "sharpe_annualized": -1.2395,
+          "max_drawdown": -0.004258,
+          "entry_window": 30,
+          "trades": 5,
+          "time_in_market": 1.0,
+          "gross_annualized_return": 0.032123,
+          "gross_sharpe_annualized": 13.252,
+          "net_annualized_maker": 0.024615
+        },
+        {
+          "total_return": -0.004747,
+          "annualized_return": -0.019113,
+          "sharpe_annualized": -2.2025,
+          "max_drawdown": -0.0053,
+          "entry_window": 60,
+          "trades": 4,
+          "time_in_market": 1.0,
+          "gross_annualized_return": 0.014914,
+          "gross_sharpe_annualized": 5.8487,
+          "net_annualized_maker": 0.009167
+        },
+        {
+          "total_return": -0.007197,
+          "annualized_return": -0.028867,
+          "sharpe_annualized": -3.3186,
+          "max_drawdown": -0.007212,
+          "entry_window": 90,
+          "trades": 4,
+          "time_in_market": 1.0,
+          "gross_annualized_return": 0.004822,
+          "gross_sharpe_annualized": 1.8754,
+          "net_annualized_maker": -0.000867
+        }
+      ],
+      "best": {
+        "total_return": -0.00301,
+        "annualized_return": -0.012153,
+        "sharpe_annualized": -1.2395,
+        "max_drawdown": -0.004258,
+        "entry_window": 30,
+        "trades": 5,
+        "time_in_market": 1.0,
+        "gross_annualized_return": 0.032123,
+        "gross_sharpe_annualized": 13.252,
+        "net_annualized_maker": 0.024615
+      },
+      "deflated_sharpe_best": 0.9999,
+      "n_trials": 4,
+      "walk_forward": [
+        {
+          "total_return": -0.003687,
+          "annualized_return": -0.058584,
+          "sharpe_annualized": -4.3449,
+          "max_drawdown": -0.004258,
+          "fold": 0
+        },
+        {
+          "total_return": -0.004989,
+          "annualized_return": -0.078483,
+          "sharpe_annualized": -5.838,
+          "max_drawdown": -0.005756,
+          "fold": 1
+        },
+        {
+          "total_return": -0.003479,
+          "annualized_return": -0.05537,
+          "sharpe_annualized": -3.9505,
+          "max_drawdown": -0.005748,
+          "fold": 2
+        },
+        {
+          "total_return": -0.003272,
+          "annualized_return": -0.050679,
+          "sharpe_annualized": -3.6877,
+          "max_drawdown": -0.00369,
+          "fold": 3
+        }
+      ],
+      "hedge": "long spot + short perp (price-neutral); return is funding minus fees"
+    }
+  },
+  "payload_sha256": "831e748721b15be6eaabb8a9213e08638d42b3c2a2f299253596ba4f9d94066d",
+  "issuer": "919bae586da3e24a",
+  "public_key_hex": "45af2cca9b33e25a30ffdf109ccd8f6dbc1a0f47c18ef960ad25431304be1e89",
+  "signature_hex": "7ed4ac834a44ad518e582406cc2d17a73e9737e0402d53a8956169ec8fc769fb5250eb797ae316c7ba3829d6c121121427d76e2618c544815723340e8a643407"
+}

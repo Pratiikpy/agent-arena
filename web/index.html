@@ -221,7 +221,7 @@ function mockAllocator(){ return { symbol:"BTCUSDT", trust_minus_equal_usd:1109.
 
 // ---------- actions ----------
 const App = {
-  go(v){ state.view=v; try{window.scrollTo(0,0);}catch(e){} if(v==="arena")App.loadLb(); if(v==="allocator")App.loadAlloc(); if(v==="ledger")App.loadLed(); if(v==="debate")App.loadDeb(); if(v==="lab")App.loadLab(); if(v==="passport")App.loadPassports(); if(v==="court")App.loadCourt(); if(v==="judge")App.runJudge(); render(); },
+  go(v){ state.view=v; try{window.scrollTo(0,0);}catch(e){} if(v==="arena")App.loadLb(); if(v==="allocator")App.loadAlloc(); if(v==="ledger")App.loadLed(); if(v==="debate")App.loadDeb(); if(v==="lab")App.loadLab(); if(v==="passport")App.loadPassports(); if(v==="court")App.loadCourt(); if(v==="carry")App.loadCarry(); if(v==="judge")App.runJudge(); render(); },
   set(k,v){ state[k]=v; },
   setSeg(k,v){ state[k]=v; render(); },
   setSize(v){ state[state.sizeMode==="notional"?"notional":"quantity"]=v; },
@@ -274,6 +274,7 @@ const App = {
     state.lab=out; render();
   },
   async loadPassports(){ if(state.passports) return; try{ const r=await api("/passports"); state.passports=r.ok?r.data:{passports:[]}; }catch(e){ state.passports={passports:[]}; } render(); },
+  async loadCarry(){ if(state.carry) return; try{ const r=await api("/carry"); state.carry=r.ok?r.data:{symbols:{}}; }catch(e){ state.carry={symbols:{}}; } render(); },
   async loadCourt(){ if(state.court) return; try{ const r=await api("/court"); state.court=r.ok?r.data:{dockets:[]}; }catch(e){ state.court={dockets:[]}; } try{ const l=await api("/limits"); state.limits=l.ok?l.data:{limits:[]}; }catch(e){ state.limits={limits:[]}; } render(); },
   async runJudge(){
     var cases=[
@@ -371,7 +372,7 @@ function buildResult(r){
 
 // ---------- views ----------
 function nav(){
-  const items=[["OVERVIEW","landing"],["JUDGE","judge"],["FIREWALL","firewall"],["ARENA","arena"],["COURT","court"],["PASSPORT","passport"],["ALLOCATOR","allocator"],["LEDGER","ledger"],["DEBATE","debate"],["LAB","lab"],["VERIFY","verify"]]
+  const items=[["OVERVIEW","landing"],["JUDGE","judge"],["FIREWALL","firewall"],["ARENA","arena"],["CARRY","carry"],["COURT","court"],["PASSPORT","passport"],["ALLOCATOR","allocator"],["LEDGER","ledger"],["DEBATE","debate"],["LAB","lab"],["VERIFY","verify"]]
     .map(n=>'<button onclick="App.go(\''+n[1]+'\')" style="'+navStyle(state.view===n[1])+'">'+n[0]+'</button>').join("");
   const dotColor = state.online ? "#0b7a4b" : "#b3b8c0";
   return '<nav style="position:sticky;top:0;z-index:40;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:rgba(255,255,255,.8);backdrop-filter:saturate(180%) blur(16px);-webkit-backdrop-filter:saturate(180%) blur(16px);border-bottom:1px solid rgba(0,0,0,.06);">\
@@ -609,6 +610,29 @@ function judge(){
     +'<div style="margin-top:20px;"><button onclick="App.runJudge()" style="background:#0a0a0a;color:#fff;border:none;border-radius:11px;padding:12px 20px;font-size:14px;font-weight:600;cursor:pointer;">Run again →</button></div>'
   +'</div>';
 }
+function carry(){
+  var d=state.carry||{}, syms=d.symbols||{}, G="#0b7a4b", R="#c23b30";
+  function pct(x){ return (x>=0?"+":"")+(x*100).toFixed(2)+"%"; }
+  function row(sym,r){
+    if(!r||!r.best) return '';
+    var b=r.best, dsr=r.deflated_sharpe_best;
+    return '<div style="border:1px solid rgba(0,0,0,.09);border-radius:14px;padding:18px 22px;background:#fff;margin-bottom:12px;">'
+      +'<div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;"><div style="font-size:15px;font-weight:700;color:#1d1d1f;">'+esc(sym)+'</div><div class="mono" style="font-size:11px;color:#9aa0aa;">'+r.intervals+' funding intervals · '+(r.pct_positive_funding*100).toFixed(0)+'% positive</div></div>'
+      +'<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;">'
+        +'<div><div style="font-size:10px;color:#9aa0aa;letter-spacing:.08em;">GROSS CARRY</div><div class="mono" style="font-size:20px;font-weight:700;color:'+(b.gross_annualized_return>=0?G:R)+';">'+pct(b.gross_annualized_return)+'</div><div style="font-size:10px;color:#9aa0aa;">structural, price-hedged</div></div>'
+        +'<div><div style="font-size:10px;color:#9aa0aa;letter-spacing:.08em;">NET · MAKER</div><div class="mono" style="font-size:20px;font-weight:700;color:'+(b.net_annualized_maker>=0?G:R)+';">'+pct(b.net_annualized_maker)+'</div><div style="font-size:10px;color:#9aa0aa;">limit orders (realistic)</div></div>'
+        +'<div><div style="font-size:10px;color:#9aa0aa;letter-spacing:.08em;">NET · TAKER</div><div class="mono" style="font-size:20px;font-weight:700;color:'+(b.annualized_return>=0?G:R)+';">'+pct(b.annualized_return)+'</div><div style="font-size:10px;color:#9aa0aa;">market orders</div></div>'
+      +'</div>'
+      +'<div class="mono" style="font-size:11px;color:#6b7280;border-top:1px solid rgba(0,0,0,.06);margin-top:12px;padding-top:9px;">'+b.trades+' side-changes · '+(b.time_in_market*100).toFixed(0)+'% in market · gross Sharpe '+(b.gross_sharpe_annualized!=null?b.gross_sharpe_annualized:"—")+' · Deflated Sharpe '+(dsr!=null?dsr:"—")+'</div>'
+    +'</div>';
+  }
+  var body = Object.keys(syms).length ? Object.keys(syms).map(function(s){ return row(s,syms[s]); }).join("") : '<div style="color:#9aa0aa;">loading…</div>';
+  var signed = d.signature_hex ? '<div class="mono" style="font-size:12px;color:#0b7a4b;margin-bottom:18px;">✓ signed report · issuer '+esc((d.issuer||"").slice(0,16))+'</div>' : '<div style="height:6px;"></div>';
+  return '<div style="max-width:1000px;margin:0 auto;padding:56px 40px 80px;"><div style="font-size:12px;font-weight:600;letter-spacing:.2em;color:#6b7280;margin-bottom:12px;">THE STRUCTURAL EDGE</div><h1 style="margin:0 0 10px;font-size:clamp(2rem,4vw,2.9rem);font-weight:700;letter-spacing:-.028em;color:#1d1d1f;">Delta-neutral funding carry</h1><p style="margin:0 0 18px;font-size:15px;color:#6b7280;max-width:740px;">Long spot, short perp. The price risk cancels between the two legs, so the return is the funding the short leg collects, minus fees. This is a real, explainable yield, not a price prediction. Measured on real Bitget funding history, with the gross edge, the net after maker fees, and the net after taker fees all shown. We do not hide the fee drag.</p>'
+    +signed+body
+    +'<div style="margin-top:20px;font-size:12.5px;color:#9aa0aa;line-height:1.5;max-width:740px;">Honest scope: this is the funding leg of a delta-neutral position, held low-churn (the side flips only when trailing funding turns). It ignores basis-convergence slippage and short-leg borrow, which a live desk also pays. A floor-quality estimate of a structural edge, not a promise. Gross Deflated Sharpe is corrected for the entry-window sweep.</div>'
+  +'</div>';
+}
 function court(){
   var d=state.court||{}, dk=d.dockets||[];
   var COL={CAPITAL_APPROVED:"#0b7a4b",DUST_APPROVED:"#0b7a4b",PAPER_ONLY:"#946200",REJECT_OVERFIT:"#c23b30",REJECT_COST_SENSITIVE:"#c23b30",REJECT_UNSTABLE:"#c23b30"};
@@ -674,7 +698,7 @@ function lab(){
   if(d.debate&&d.debate.debate&&d.debate.debate.transcript){ var dd=d.debate.debate; db=dd.transcript.map(function(t){ return '<div style="margin-bottom:9px;"><span class="mono" style="font-size:10.5px;color:#9aa0aa;letter-spacing:.1em;text-transform:uppercase;">'+esc(t.role)+'</span><div style="font-size:13px;color:#1d1d1f;line-height:1.45;">'+esc(t.text)+'</div></div>'; }).join("")+'<div class="mono" style="font-size:12px;color:'+G+';margin-top:6px;">stance '+esc(dd.stance)+' · conviction '+dd.conviction+' · Ed25519-signed ✓</div>'; }
   return '<div style="max-width:1180px;margin:0 auto;padding:56px 40px 80px;"><div style="font-size:12px;font-weight:600;letter-spacing:.2em;color:#6b7280;margin-bottom:12px;">THE LAB</div><h1 style="margin:0 0 10px;font-size:clamp(2rem,4vw,2.9rem);font-weight:700;letter-spacing:-.028em;color:#1d1d1f;">Innovations</h1><p style="margin:0 0 36px;font-size:15px;color:#6b7280;max-width:680px;">Built on top of the trust layer: identity, memory, debate, language-to-agent, a model arena, and real analyst briefs, each one signed or sandboxed.</p>'+card("BITGET AGENT HUB — 5 ANALYST SKILLS",sk)+card("AGENT PERSONAS",pers)+card("MULTI-BRAIN MODEL ARENA",br)+card("NATURAL LANGUAGE TO A SANDBOXED AGENT",st)+card("REFLECTION MEMORY",rf)+card("SIGNED DEBATE TRANSCRIPT",db)+card("HOW IT COMPARES",'<div style="overflow:auto;"><table style="width:100%;border-collapse:collapse;font-size:12.5px;min-width:540px;"><tr style="color:#9aa0aa;text-align:left;"><th style="padding:6px 8px;font-weight:600;">project</th><th>signed firewall</th><th>DSR/PBO</th><th>allocator</th><th>browser-verify</th></tr><tr style="border-top:1px solid rgba(0,0,0,.06);color:#6b7280;"><td style="padding:6px 8px;">TradingAgents (87k stars)</td><td>no</td><td>no</td><td>no</td><td>no</td></tr><tr style="border-top:1px solid rgba(0,0,0,.06);color:#6b7280;"><td style="padding:6px 8px;">AI Hedge Fund (60k stars)</td><td>no</td><td>no</td><td>no</td><td>no</td></tr><tr style="border-top:1px solid rgba(0,0,0,.06);color:#6b7280;"><td style="padding:6px 8px;">AI-Trader</td><td>no</td><td>no</td><td>social</td><td>no</td></tr><tr style="border-top:1px solid rgba(0,0,0,.06);font-weight:700;color:#0a0a0a;"><td style="padding:6px 8px;">Agent Arena</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td></tr></table></div><div style="font-size:12px;color:#6b7280;margin-top:10px;">These projects prove agentic trading is real. Agent Arena adds the missing trust layer.</div>')+'</div>';
 }
-function view(){ switch(state.view){ case "firewall":return firewall(); case "arena":return arena(); case "allocator":return allocatorView(); case "ledger":return ledger(); case "debate":return debate(); case "lab":return lab(); case "passport":return passport(); case "court":return court(); case "judge":return judge(); case "verify":return verifyView(); default:return landing(); } }
+function view(){ switch(state.view){ case "firewall":return firewall(); case "arena":return arena(); case "allocator":return allocatorView(); case "ledger":return ledger(); case "debate":return debate(); case "lab":return lab(); case "passport":return passport(); case "court":return court(); case "carry":return carry(); case "judge":return judge(); case "verify":return verifyView(); default:return landing(); } }
 function render(){ $("app").innerHTML = nav() + view() + footer(); document.querySelectorAll("#app input:not([name])").forEach((el,i)=>{ el.name = "field" + i; }); }
 
 // ---------- live pulse: a continuously-updating signed firewall heartbeat ----------

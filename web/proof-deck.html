@@ -74,7 +74,23 @@
 </div></section>
 
 <section class="slide"><div class="wrap">
-  <div class="kicker"><span class="num">4</span> FUND</div>
+  <div class="kicker"><span class="num">4</span> COURT</div>
+  <h2>Skill vs luck, with verdicts.</h2>
+  <p class="claim">The Overfit Court runs every agent through one ladder of overfit and robustness checks and hands down a verdict. Most candidates are rejected, including our own on flat data. It is the anti-backtest-fraud machine, not another equity curve.</p>
+  <img class="shot" loading="lazy" src="https://raw.githubusercontent.com/narutopyy/agent-arena/main/docs/screenshots/court.png" alt="Overfit Court: signed skill-vs-luck verdicts">
+  <div class="receipt"><b>GET /court</b> · verdicts from REJECT_OVERFIT to CAPITAL_APPROVED · thresholds published, docket Ed25519-signed</div>
+</div></section>
+
+<section class="slide"><div class="wrap">
+  <div class="kicker"><span class="num">5</span> CARRY</div>
+  <h2>A real, structural yield — measured honestly.</h2>
+  <p class="claim">Delta-neutral funding carry: long spot, short perp, so price risk cancels and the return is the funding the short leg collects. On real Bitget data the gross edge is +2.7% to +4.2%/yr (Deflated Sharpe ~1.0); net of maker fees it holds at +2.1% to +2.5%/yr. We show the taker-fee drag too, and do not hide it.</p>
+  <img class="shot" loading="lazy" src="https://raw.githubusercontent.com/narutopyy/agent-arena/main/docs/screenshots/carry.png" alt="Delta-neutral funding carry: gross, net-maker, and net-taker yields">
+  <div class="receipt"><b>GET /carry</b> · gross / net-maker / net-taker per symbol · price-hedged · not a price prediction</div>
+</div></section>
+
+<section class="slide"><div class="wrap">
+  <div class="kicker"><span class="num">6</span> FUND</div>
   <h2>Capital flows to verified skill.</h2>
   <p class="claim">The allocator sizes each agent by its overfit-corrected skill and starves likely-luck toward a floor. The verification layer, applied to money.</p>
   <img class="shot" loading="lazy" src="https://raw.githubusercontent.com/narutopyy/agent-arena/main/docs/screenshots/allocator.png" alt="Allocator: fund by verified trust, +$1,109 vs equal-weight">
@@ -82,7 +98,7 @@
 </div></section>
 
 <section class="slide"><div class="wrap">
-  <div class="kicker"><span class="num">5</span> PASSPORT</div>
+  <div class="kicker"><span class="num">7</span> PASSPORT</div>
   <h2>A credit score for every agent.</h2>
   <p class="claim">One card per agent: its identity, mandate limits, risk-adjusted metrics, red-team result, capital allocation, and a single Trust Score (skill, safety, performance, explainability). Check the passport before funding an agent.</p>
   <img class="shot" loading="lazy" src="https://raw.githubusercontent.com/narutopyy/agent-arena/main/docs/screenshots/passport.png" alt="Agent Passport: the credit score for autonomous agents">
@@ -90,7 +106,7 @@
 </div></section>
 
 <section class="slide"><div class="wrap">
-  <div class="kicker"><span class="num">6</span> THE LAB</div>
+  <div class="kicker"><span class="num">8</span> THE LAB</div>
   <h2>Seven innovations, each signed or sandboxed.</h2>
   <p class="claim">Named personas, reflection memory, a signed bull/bear/judge debate, signed trade memos, natural language turned into a sandboxed agent, a multi-brain arena, and real Bitget analyst briefs.</p>
   <img class="shot" loading="lazy" src="https://raw.githubusercontent.com/narutopyy/agent-arena/main/docs/screenshots/lab.png" alt="The Lab: seven innovations on the trust layer">
@@ -98,7 +114,7 @@
 </div></section>
 
 <section class="slide"><div class="wrap">
-  <div class="kicker"><span class="num">7</span> JUDGE MODE</div>
+  <div class="kicker"><span class="num">9</span> JUDGE MODE</div>
   <h2>Verify the whole system in 60 seconds.</h2>
   <p class="claim">One click runs three live orders through the firewall (safe, rogue, policy breach), checks a signature in your browser, and shows the proof row. No reading required.</p>
   <img class="shot" loading="lazy" src="https://raw.githubusercontent.com/narutopyy/agent-arena/main/docs/screenshots/judge.png" alt="Judge Mode: verify Agent Arena in 60 seconds">
@@ -107,12 +123,12 @@
 
 <footer><div class="wrap">
   <div class="grid">
-    <div class="stat"><div class="v">320</div><div class="k">tests, CI-green</div></div>
+    <div class="stat"><div class="v">347</div><div class="k">tests, CI-green</div></div>
     <div class="stat"><div class="v">0 / 25</div><div class="k">unsafe orders passed</div></div>
     <div class="stat"><div class="v">~0.1 ms</div><div class="k">per signed verdict</div></div>
     <div class="stat"><div class="v">4</div><div class="k">published Bitget Playbooks</div></div>
   </div>
-  <p class="big" style="margin-top:30px;">Everyone built the race cars. We built the safety inspection, the driver's license, and the insurance score that let you put real money on them.</p>
+  <p class="big" style="margin-top:30px;">Everyone built the race cars. We built the safety inspection, the driver's license, the insurance score, and a real structural yield that let you put money on them.</p>
   <div class="links" style="margin-top:24px;">
     <a class="primary" href="https://bitarena.vercel.app">Open the live demo →</a>
     <a href="https://github.com/narutopyy/agent-arena">Source (MIT)</a>
