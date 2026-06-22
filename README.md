@@ -15,11 +15,13 @@ Every verdict is Ed25519-signed and checkable by anyone.
 ![tests: passing](https://img.shields.io/badge/tests-passing-brightgreen.svg)
 ![lint: ruff](https://img.shields.io/badge/lint-ruff-success.svg)
 
-[![Live demo](https://img.shields.io/badge/Live%20demo-0a0a0a?style=for-the-badge)](https://bitarena.vercel.app) [![Proof deck](https://img.shields.io/badge/Proof%20deck-0b7a4b?style=for-the-badge)](https://bitarena.vercel.app/proof-deck) [![Pitch](https://img.shields.io/badge/Pitch-475569?style=for-the-badge)](https://www.notion.so/3869c0ce787681e99b44d61b5c6be897) [![Source MIT](https://img.shields.io/badge/Source-MIT-444?style=for-the-badge&logo=github)](https://github.com/narutopyy/agent-arena)
+[![Live demo](https://img.shields.io/badge/Live%20demo-0a0a0a?style=for-the-badge)](https://bitarena.vercel.app) [![Proof deck](https://img.shields.io/badge/Proof%20deck-0b7a4b?style=for-the-badge)](https://bitarena.vercel.app/proof-deck) [![Pitch](https://img.shields.io/badge/Pitch-475569?style=for-the-badge)](https://comfortable-goal-205.notion.site/Agent-Arena-3869c0ce787681e99b44d61b5c6be897) [![Source MIT](https://img.shields.io/badge/Source-MIT-444?style=for-the-badge&logo=github)](https://github.com/narutopyy/agent-arena)
 
 <img src="docs/screenshots/hero-firewall.png" alt="The live firewall: a signed verdict on the real BTC price, verifiable in your browser" width="860" />
 
 </div>
+
+> **Start here:** the full project writeup, with screenshots and the command behind every number, is on **[Notion](https://comfortable-goal-205.notion.site/Agent-Arena-3869c0ce787681e99b44d61b5c6be897)**. Everything it shows is also live and verifiable below.
 
 > Built on open-source foundations (Vibe-Trading, FinRL, TradingAgents and others).
 > See [`NOTICE`](./NOTICE) for full attribution. The Arena engine, safety firewall,
