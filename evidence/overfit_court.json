@@ -1,0 +1,731 @@
+{
+  "tested": 19,
+  "rejected": 13,
+  "graduated": 0,
+  "tally": {
+    "REJECT_OVERFIT": 2,
+    "REJECT_COST_SENSITIVE": 11,
+    "REJECT_UNSTABLE": 0,
+    "PAPER_ONLY": 6,
+    "DUST_APPROVED": 0,
+    "CAPITAL_APPROVED": 0
+  },
+  "run_pbo": 0.1825,
+  "thresholds": {
+    "max_pbo": 0.5,
+    "min_profit_factor": 1.0,
+    "max_drawdown": 0.25,
+    "dsr_significant": 0.95,
+    "dsr_promising": 0.5,
+    "min_trades": 5
+  },
+  "dockets": [
+    {
+      "agent_id": "funding-carry",
+      "name": "The Carry Harvester",
+      "verdict": "PAPER_ONLY",
+      "reason": "survives the hard filters but skill is not yet proven",
+      "stages": [
+        {
+          "name": "track record",
+          "passed": true,
+          "detail": "93 trades (min 5)"
+        },
+        {
+          "name": "selection not overfit (PBO)",
+          "passed": true,
+          "detail": "PBO 0.18 (max 0.50)"
+        },
+        {
+          "name": "survives costs (profit factor)",
+          "passed": true,
+          "detail": "PF 1.54 (min 1.00)"
+        },
+        {
+          "name": "drawdown fundable",
+          "passed": true,
+          "detail": "max DD 2.5% (max 25%)"
+        },
+        {
+          "name": "skill significant (Deflated Sharpe)",
+          "passed": false,
+          "detail": "DSR 0.29 (sig 0.95)"
+        }
+      ],
+      "dsr": 0.2911,
+      "profit_factor": 1.543853,
+      "max_drawdown": -0.024941,
+      "trades": 93
+    },
+    {
+      "agent_id": "baseline-momentum",
+      "name": "The Trend Rider",
+      "verdict": "PAPER_ONLY",
+      "reason": "survives the hard filters but skill is not yet proven",
+      "stages": [
+        {
+          "name": "track record",
+          "passed": true,
+          "detail": "115 trades (min 5)"
+        },
+        {
+          "name": "selection not overfit (PBO)",
+          "passed": true,
+          "detail": "PBO 0.18 (max 0.50)"
+        },
+        {
+          "name": "survives costs (profit factor)",
+          "passed": true,
+          "detail": "PF 1.17 (min 1.00)"
+        },
+        {
+          "name": "drawdown fundable",
+          "passed": true,
+          "detail": "max DD 3.4% (max 25%)"
+        },
+        {
+          "name": "skill significant (Deflated Sharpe)",
+          "passed": false,
+          "detail": "DSR 0.15 (sig 0.95)"
+        }
+      ],
+      "dsr": 0.1493,
+      "profit_factor": 1.169529,
+      "max_drawdown": -0.03405,
+      "trades": 115
+    },
+    {
+      "agent_id": "regime",
+      "name": "The Regime Switch",
+      "verdict": "PAPER_ONLY",
+      "reason": "survives the hard filters but skill is not yet proven",
+      "stages": [
+        {
+          "name": "track record",
+          "passed": true,
+          "detail": "136 trades (min 5)"
+        },
+        {
+          "name": "selection not overfit (PBO)",
+          "passed": true,
+          "detail": "PBO 0.18 (max 0.50)"
+        },
+        {
+          "name": "survives costs (profit factor)",
+          "passed": true,
+          "detail": "PF 1.19 (min 1.00)"
+        },
+        {
+          "name": "drawdown fundable",
+          "passed": true,
+          "detail": "max DD 3.2% (max 25%)"
+        },
+        {
+          "name": "skill significant (Deflated Sharpe)",
+          "passed": false,
+          "detail": "DSR 0.05 (sig 0.95)"
+        }
+      ],
+      "dsr": 0.0491,
+      "profit_factor": 1.188246,
+      "max_drawdown": -0.031969,
+      "trades": 136
+    },
+    {
+      "agent_id": "benchmark-buyhold",
+      "name": "The Indexer",
+      "verdict": "PAPER_ONLY",
+      "reason": "not enough trades to judge an edge yet",
+      "stages": [
+        {
+          "name": "track record",
+          "passed": false,
+          "detail": "4 trades (min 5)"
+        },
+        {
+          "name": "selection not overfit (PBO)",
+          "passed": true,
+          "detail": "PBO 0.18 (max 0.50)"
+        },
+        {
+          "name": "survives costs (profit factor)",
+          "passed": false,
+          "detail": "PF 0.86 (min 1.00)"
+        },
+        {
+          "name": "drawdown fundable",
+          "passed": true,
+          "detail": "max DD 17.3% (max 25%)"
+        },
+        {
+          "name": "skill significant (Deflated Sharpe)",
+          "passed": false,
+          "detail": "DSR 0.00 (sig 0.95)"
+        }
+      ],
+      "dsr": 0.0,
+      "profit_factor": 0.859115,
+      "max_drawdown": -0.173251,
+      "trades": 4
+    },
+    {
+      "agent_id": "candidate-05",
+      "name": "Candidate 05",
+      "verdict": "PAPER_ONLY",
+      "reason": "survives the hard filters but skill is not yet proven",
+      "stages": [
+        {
+          "name": "track record",
+          "passed": true,
+          "detail": "24 trades (min 5)"
+        },
+        {
+          "name": "selection not overfit (PBO)",
+          "passed": true,
+          "detail": "PBO 0.18 (max 0.50)"
+        },
+        {
+          "name": "survives costs (profit factor)",
+          "passed": true,
+          "detail": "PF 1.05 (min 1.00)"
+        },
+        {
+          "name": "drawdown fundable",
+          "passed": true,
+          "detail": "max DD 14.0% (max 25%)"
+        },
+        {
+          "name": "skill significant (Deflated Sharpe)",
+          "passed": false,
+          "detail": "DSR 0.19 (sig 0.95)"
+        }
+      ],
+      "dsr": 0.19,
+      "profit_factor": 1.05,
+      "max_drawdown": -0.14,
+      "trades": 24
+    },
+    {
+      "agent_id": "candidate-10",
+      "name": "Candidate 10",
+      "verdict": "PAPER_ONLY",
+      "reason": "survives the hard filters but skill is not yet proven",
+      "stages": [
+        {
+          "name": "track record",
+          "passed": true,
+          "detail": "29 trades (min 5)"
+        },
+        {
+          "name": "selection not overfit (PBO)",
+          "passed": true,
+          "detail": "PBO 0.18 (max 0.50)"
+        },
+        {
+          "name": "survives costs (profit factor)",
+          "passed": true,
+          "detail": "PF 1.05 (min 1.00)"
+        },
+        {
+          "name": "drawdown fundable",
+          "passed": true,
+          "detail": "max DD 12.0% (max 25%)"
+        },
+        {
+          "name": "skill significant (Deflated Sharpe)",
+          "passed": false,
+          "detail": "DSR 0.49 (sig 0.95)"
+        }
+      ],
+      "dsr": 0.49,
+      "profit_factor": 1.05,
+      "max_drawdown": -0.12,
+      "trades": 29
+    },
+    {
+      "agent_id": "persona-team",
+      "name": "The Committee",
+      "verdict": "REJECT_COST_SENSITIVE",
+      "reason": "does not win more than it loses after fees",
+      "stages": [
+        {
+          "name": "track record",
+          "passed": true,
+          "detail": "20 trades (min 5)"
+        },
+        {
+          "name": "selection not overfit (PBO)",
+          "passed": true,
+          "detail": "PBO 0.18 (max 0.50)"
+        },
+        {
+          "name": "survives costs (profit factor)",
+          "passed": false,
+          "detail": "PF 0.93 (min 1.00)"
+        },
+        {
+          "name": "drawdown fundable",
+          "passed": true,
+          "detail": "max DD 0.3% (max 25%)"
+        },
+        {
+          "name": "skill significant (Deflated Sharpe)",
+          "passed": false,
+          "detail": "DSR 0.00 (sig 0.95)"
+        }
+      ],
+      "dsr": 0.001,
+      "profit_factor": 0.931154,
+      "max_drawdown": -0.003385,
+      "trades": 20
+    },
+    {
+      "agent_id": "swarm",
+      "name": "The Consensus",
+      "verdict": "REJECT_COST_SENSITIVE",
+      "reason": "does not win more than it loses after fees",
+      "stages": [
+        {
+          "name": "track record",
+          "passed": true,
+          "detail": "16 trades (min 5)"
+        },
+        {
+          "name": "selection not overfit (PBO)",
+          "passed": true,
+          "detail": "PBO 0.18 (max 0.50)"
+        },
+        {
+          "name": "survives costs (profit factor)",
+          "passed": false,
+          "detail": "PF 0.66 (min 1.00)"
+        },
+        {
+          "name": "drawdown fundable",
+          "passed": true,
+          "detail": "max DD 0.9% (max 25%)"
+        },
+        {
+          "name": "skill significant (Deflated Sharpe)",
+          "passed": false,
+          "detail": "DSR 0.00 (sig 0.95)"
+        }
+      ],
+      "dsr": 0.0002,
+      "profit_factor": 0.662319,
+      "max_drawdown": -0.009346,
+      "trades": 16
+    },
+    {
+      "agent_id": "candidate-02",
+      "name": "Candidate 02",
+      "verdict": "REJECT_COST_SENSITIVE",
+      "reason": "does not win more than it loses after fees",
+      "stages": [
+        {
+          "name": "track record",
+          "passed": true,
+          "detail": "21 trades (min 5)"
+        },
+        {
+          "name": "selection not overfit (PBO)",
+          "passed": true,
+          "detail": "PBO 0.18 (max 0.50)"
+        },
+        {
+          "name": "survives costs (profit factor)",
+          "passed": false,
+          "detail": "PF 0.90 (min 1.00)"
+        },
+        {
+          "name": "drawdown fundable",
+          "passed": true,
+          "detail": "max DD 8.0% (max 25%)"
+        },
+        {
+          "name": "skill significant (Deflated Sharpe)",
+          "passed": false,
+          "detail": "DSR 0.01 (sig 0.95)"
+        }
+      ],
+      "dsr": 0.01,
+      "profit_factor": 0.9,
+      "max_drawdown": -0.08,
+      "trades": 21
+    },
+    {
+      "agent_id": "candidate-03",
+      "name": "Candidate 03",
+      "verdict": "REJECT_COST_SENSITIVE",
+      "reason": "does not win more than it loses after fees",
+      "stages": [
+        {
+          "name": "track record",
+          "passed": true,
+          "detail": "22 trades (min 5)"
+        },
+        {
+          "name": "selection not overfit (PBO)",
+          "passed": true,
+          "detail": "PBO 0.18 (max 0.50)"
+        },
+        {
+          "name": "survives costs (profit factor)",
+          "passed": false,
+          "detail": "PF 0.95 (min 1.00)"
+        },
+        {
+          "name": "drawdown fundable",
+          "passed": true,
+          "detail": "max DD 10.0% (max 25%)"
+        },
+        {
+          "name": "skill significant (Deflated Sharpe)",
+          "passed": false,
+          "detail": "DSR 0.07 (sig 0.95)"
+        }
+      ],
+      "dsr": 0.07,
+      "profit_factor": 0.95,
+      "max_drawdown": -0.1,
+      "trades": 22
+    },
+    {
+      "agent_id": "candidate-04",
+      "name": "Candidate 04",
+      "verdict": "REJECT_COST_SENSITIVE",
+      "reason": "does not win more than it loses after fees",
+      "stages": [
+        {
+          "name": "track record",
+          "passed": true,
+          "detail": "23 trades (min 5)"
+        },
+        {
+          "name": "selection not overfit (PBO)",
+          "passed": true,
+          "detail": "PBO 0.18 (max 0.50)"
+        },
+        {
+          "name": "survives costs (profit factor)",
+          "passed": false,
+          "detail": "PF 1.00 (min 1.00)"
+        },
+        {
+          "name": "drawdown fundable",
+          "passed": true,
+          "detail": "max DD 12.0% (max 25%)"
+        },
+        {
+          "name": "skill significant (Deflated Sharpe)",
+          "passed": false,
+          "detail": "DSR 0.13 (sig 0.95)"
+        }
+      ],
+      "dsr": 0.13,
+      "profit_factor": 1.0,
+      "max_drawdown": -0.12,
+      "trades": 23
+    },
+    {
+      "agent_id": "candidate-06",
+      "name": "Candidate 06",
+      "verdict": "REJECT_COST_SENSITIVE",
+      "reason": "does not win more than it loses after fees",
+      "stages": [
+        {
+          "name": "track record",
+          "passed": true,
+          "detail": "25 trades (min 5)"
+        },
+        {
+          "name": "selection not overfit (PBO)",
+          "passed": true,
+          "detail": "PBO 0.18 (max 0.50)"
+        },
+        {
+          "name": "survives costs (profit factor)",
+          "passed": false,
+          "detail": "PF 0.85 (min 1.00)"
+        },
+        {
+          "name": "drawdown fundable",
+          "passed": true,
+          "detail": "max DD 16.0% (max 25%)"
+        },
+        {
+          "name": "skill significant (Deflated Sharpe)",
+          "passed": false,
+          "detail": "DSR 0.25 (sig 0.95)"
+        }
+      ],
+      "dsr": 0.25,
+      "profit_factor": 0.85,
+      "max_drawdown": -0.16,
+      "trades": 25
+    },
+    {
+      "agent_id": "candidate-07",
+      "name": "Candidate 07",
+      "verdict": "REJECT_COST_SENSITIVE",
+      "reason": "does not win more than it loses after fees",
+      "stages": [
+        {
+          "name": "track record",
+          "passed": true,
+          "detail": "26 trades (min 5)"
+        },
+        {
+          "name": "selection not overfit (PBO)",
+          "passed": true,
+          "detail": "PBO 0.18 (max 0.50)"
+        },
+        {
+          "name": "survives costs (profit factor)",
+          "passed": false,
+          "detail": "PF 0.90 (min 1.00)"
+        },
+        {
+          "name": "drawdown fundable",
+          "passed": true,
+          "detail": "max DD 6.0% (max 25%)"
+        },
+        {
+          "name": "skill significant (Deflated Sharpe)",
+          "passed": false,
+          "detail": "DSR 0.31 (sig 0.95)"
+        }
+      ],
+      "dsr": 0.31,
+      "profit_factor": 0.9,
+      "max_drawdown": -0.06,
+      "trades": 26
+    },
+    {
+      "agent_id": "candidate-08",
+      "name": "Candidate 08",
+      "verdict": "REJECT_COST_SENSITIVE",
+      "reason": "does not win more than it loses after fees",
+      "stages": [
+        {
+          "name": "track record",
+          "passed": true,
+          "detail": "27 trades (min 5)"
+        },
+        {
+          "name": "selection not overfit (PBO)",
+          "passed": true,
+          "detail": "PBO 0.18 (max 0.50)"
+        },
+        {
+          "name": "survives costs (profit factor)",
+          "passed": false,
+          "detail": "PF 0.95 (min 1.00)"
+        },
+        {
+          "name": "drawdown fundable",
+          "passed": true,
+          "detail": "max DD 8.0% (max 25%)"
+        },
+        {
+          "name": "skill significant (Deflated Sharpe)",
+          "passed": false,
+          "detail": "DSR 0.37 (sig 0.95)"
+        }
+      ],
+      "dsr": 0.37,
+      "profit_factor": 0.95,
+      "max_drawdown": -0.08,
+      "trades": 27
+    },
+    {
+      "agent_id": "candidate-09",
+      "name": "Candidate 09",
+      "verdict": "REJECT_COST_SENSITIVE",
+      "reason": "does not win more than it loses after fees",
+      "stages": [
+        {
+          "name": "track record",
+          "passed": true,
+          "detail": "28 trades (min 5)"
+        },
+        {
+          "name": "selection not overfit (PBO)",
+          "passed": true,
+          "detail": "PBO 0.18 (max 0.50)"
+        },
+        {
+          "name": "survives costs (profit factor)",
+          "passed": false,
+          "detail": "PF 1.00 (min 1.00)"
+        },
+        {
+          "name": "drawdown fundable",
+          "passed": true,
+          "detail": "max DD 10.0% (max 25%)"
+        },
+        {
+          "name": "skill significant (Deflated Sharpe)",
+          "passed": false,
+          "detail": "DSR 0.43 (sig 0.95)"
+        }
+      ],
+      "dsr": 0.43,
+      "profit_factor": 1.0,
+      "max_drawdown": -0.1,
+      "trades": 28
+    },
+    {
+      "agent_id": "candidate-11",
+      "name": "Candidate 11",
+      "verdict": "REJECT_COST_SENSITIVE",
+      "reason": "does not win more than it loses after fees",
+      "stages": [
+        {
+          "name": "track record",
+          "passed": true,
+          "detail": "30 trades (min 5)"
+        },
+        {
+          "name": "selection not overfit (PBO)",
+          "passed": true,
+          "detail": "PBO 0.18 (max 0.50)"
+        },
+        {
+          "name": "survives costs (profit factor)",
+          "passed": false,
+          "detail": "PF 0.85 (min 1.00)"
+        },
+        {
+          "name": "drawdown fundable",
+          "passed": true,
+          "detail": "max DD 14.0% (max 25%)"
+        },
+        {
+          "name": "skill significant (Deflated Sharpe)",
+          "passed": false,
+          "detail": "DSR 0.55 (sig 0.95)"
+        }
+      ],
+      "dsr": 0.55,
+      "profit_factor": 0.85,
+      "max_drawdown": -0.14,
+      "trades": 30
+    },
+    {
+      "agent_id": "candidate-12",
+      "name": "Candidate 12",
+      "verdict": "REJECT_COST_SENSITIVE",
+      "reason": "does not win more than it loses after fees",
+      "stages": [
+        {
+          "name": "track record",
+          "passed": true,
+          "detail": "31 trades (min 5)"
+        },
+        {
+          "name": "selection not overfit (PBO)",
+          "passed": true,
+          "detail": "PBO 0.18 (max 0.50)"
+        },
+        {
+          "name": "survives costs (profit factor)",
+          "passed": false,
+          "detail": "PF 0.90 (min 1.00)"
+        },
+        {
+          "name": "drawdown fundable",
+          "passed": true,
+          "detail": "max DD 16.0% (max 25%)"
+        },
+        {
+          "name": "skill significant (Deflated Sharpe)",
+          "passed": false,
+          "detail": "DSR 0.61 (sig 0.95)"
+        }
+      ],
+      "dsr": 0.61,
+      "profit_factor": 0.9,
+      "max_drawdown": -0.16,
+      "trades": 31
+    },
+    {
+      "agent_id": "rl-qlearn",
+      "name": "The Learner",
+      "verdict": "REJECT_OVERFIT",
+      "reason": "no edge survives the overfit correction",
+      "stages": [
+        {
+          "name": "track record",
+          "passed": true,
+          "detail": "219 trades (min 5)"
+        },
+        {
+          "name": "selection not overfit (PBO)",
+          "passed": true,
+          "detail": "PBO 0.18 (max 0.50)"
+        },
+        {
+          "name": "survives costs (profit factor)",
+          "passed": false,
+          "detail": "PF 0.45 (min 1.00)"
+        },
+        {
+          "name": "drawdown fundable",
+          "passed": true,
+          "detail": "max DD 5.3% (max 25%)"
+        },
+        {
+          "name": "skill significant (Deflated Sharpe)",
+          "passed": false,
+          "detail": "DSR 0.00 (sig 0.95)"
+        }
+      ],
+      "dsr": 0.0,
+      "profit_factor": 0.450732,
+      "max_drawdown": -0.052927,
+      "trades": 219
+    },
+    {
+      "agent_id": "candidate-01",
+      "name": "Candidate 01",
+      "verdict": "REJECT_OVERFIT",
+      "reason": "no edge survives the overfit correction",
+      "stages": [
+        {
+          "name": "track record",
+          "passed": true,
+          "detail": "20 trades (min 5)"
+        },
+        {
+          "name": "selection not overfit (PBO)",
+          "passed": true,
+          "detail": "PBO 0.18 (max 0.50)"
+        },
+        {
+          "name": "survives costs (profit factor)",
+          "passed": false,
+          "detail": "PF 0.85 (min 1.00)"
+        },
+        {
+          "name": "drawdown fundable",
+          "passed": true,
+          "detail": "max DD 6.0% (max 25%)"
+        },
+        {
+          "name": "skill significant (Deflated Sharpe)",
+          "passed": false,
+          "detail": "DSR -0.05 (sig 0.95)"
+        }
+      ],
+      "dsr": -0.05,
+      "profit_factor": 0.85,
+      "max_drawdown": -0.06,
+      "trades": 20
+    }
+  ],
+  "payload_sha256": "d313b0953c98c9b84ab521c11c101d40253474cf6955f308b37533a2d8c34de8",
+  "issuer": "919bae586da3e24a",
+  "public_key_hex": "45af2cca9b33e25a30ffdf109ccd8f6dbc1a0f47c18ef960ad25431304be1e89",
+  "signature_hex": "790736ec81df7788d9d5ab9858e9faac6e361531ee9b0efb530b9beabf20c80a2580c7be61de2b6ddf455009fbc36dcbcae793ab24fc879dd8fc23e62592cb0c"
+}

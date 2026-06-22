@@ -310,6 +310,19 @@ def create_app(
         alloc = _load_json("allocator.json")
         return {"passports": build_all_passports(rows if isinstance(rows, list) else None, alloc)}
 
+    @app.get("/court")
+    def court():
+        """Overfit Court: each agent's verdict on whether its edge survives the overfit checks."""
+        pre = _load_json("overfit_court.json")
+        if isinstance(pre, dict) and pre.get("dockets"):
+            return pre  # the signed, reproducible docket (synthetic no-edge cohort included)
+        from ..arena.court import build_court  # fall back to a live docket from the leaderboard
+
+        lb = _load_json("leaderboard.json")
+        rows = lb.get("leaderboard", lb) if isinstance(lb, dict) else lb
+        return build_court(rows if isinstance(rows, list) else None,
+                           lb if isinstance(lb, dict) else None)
+
     @app.get("/reflection")
     def reflection():
         """A per-agent reflection memory: decisions graded against realized outcomes, with lessons."""
