@@ -42,6 +42,7 @@
   <div class="brand">arena<span class="dot">.</span> <span style="color:var(--mut);font-weight:500;font-size:14px;letter-spacing:.08em;">PROOF DECK</span></div>
   <h1>The trust layer for autonomous trading agents.</h1>
   <p class="sub">Everyone builds AI bots that trade. The scarce thing is trust: knowing which bots deserve capital, and stopping the ones that do not. This is the whole system in screenshots, with the command behind every claim.</p>
+  <p class="sub" style="margin-top:14px;font-size:15px;">It is the defensive staging ground for the Bitget Agent Hub: any agent built with the <span class="mono">bitget-mcp-server</span> plugs into the Arena to get a risk, trust, and overfit score, and runs behind the firewall, before it ever touches live capital.</p>
   <div class="links">
     <a class="primary" href="https://bitarena.vercel.app">Open the live demo →</a>
     <a href="https://github.com/narutopyy/agent-arena">Source (MIT)</a>
@@ -52,9 +53,9 @@
 <section class="slide"><div class="wrap">
   <div class="kicker"><span class="num">1</span> CONTAIN</div>
   <h2>Every order passes one signed firewall.</h2>
-  <p class="claim">A rogue $999,999 order is capped to $2,000 before it can reach the exchange. Ten ordered gates, fail-closed, and an Ed25519-signed certificate either way.</p>
+  <p class="claim">A rogue $999,999 order is capped to $2,000 before it can reach the exchange. Ten ordered gates, fail-closed, and an Ed25519-signed certificate either way. Run a misbehaving agent unprotected and it goes bankrupt; run it behind the firewall and it stays solvent — <b>$8,574 saved on a $10k account</b>.</p>
   <img class="shot" loading="lazy" src="https://raw.githubusercontent.com/narutopyy/agent-arena/main/docs/screenshots/firewall.png" alt="Firewall console: ALLOW_CAPPED with a signed certificate">
-  <div class="receipt"><b>POST /firewall</b> · 25-case red-team, <b>0 unsafe orders passed</b> · ~0.1 ms per signed verdict</div>
+  <div class="receipt"><b>POST /firewall</b> · 25-case red-team, <b>0 unsafe orders passed</b> · <b>$8,574</b> saved vs an unprotected rogue agent · ~0.1 ms per signed verdict</div>
 </div></section>
 
 <section class="slide"><div class="wrap">
