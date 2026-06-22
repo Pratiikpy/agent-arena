@@ -27,10 +27,10 @@ Every verdict is Ed25519-signed and checkable by anyone.
 
 ### For judges — confirm it in 60 seconds
 
-**Three ways to check it, in increasing depth:** **60 seconds** (the live demo + Judge Mode), **3 minutes** (the [proof deck](https://bitarena.vercel.app/proof-deck), the whole flow in screenshots), or **deep** (clone and run `uv run pytest` — 330 tests — plus `make verify`).
+**Three ways to check it, in increasing depth:** **60 seconds** (the live demo + Judge Mode), **3 minutes** (the [proof deck](https://bitarena.vercel.app/proof-deck), the whole flow in screenshots), or **deep** (clone and run `uv run pytest` — 337 tests — plus `make verify`).
 - **See it live — then verify it yourself in one click:** open [bitarena.vercel.app](https://bitarena.vercel.app); the **LIVE FIREWALL** badge ticks a freshly Ed25519-signed verdict on the real BTC price every few seconds. **Click the badge** → it verifies that live verdict's signature *in your browser* (Web Crypto, no server) → then hit **"Tamper a byte"** and watch the same signature go **✗ invalid**. Trustless, tamper-evident, on live data.
 - **See the whole flow in screenshots:** the [proof deck](https://bitarena.vercel.app/proof-deck) walks contain, verify, rank, fund, passport, lab, and judge, each with the command behind the claim.
-- **Run it:** `uv venv && uv pip install -e ".[dev,api,mcp]" && uv run pytest` (330 tests, offline) — or `make verify` for the full gate (tests · lint · doc-numbers · evidence · red-team).
+- **Run it:** `uv venv && uv pip install -e ".[dev,api,mcp]" && uv run pytest` (337 tests, offline) — or `make verify` for the full gate (tests · lint · doc-numbers · evidence · red-team).
 - **Verify the evidence yourself, offline:** `uv run python scripts/verify_evidence.py` → re-checks every signed ledger (8,376 records) + certificate, all pinned to the published issuer.
 - **Integrate in 5 lines:** `uv run python scripts/integrate_example.py` → a third-party bot vets *and* offline-verifies its trades against the live deploy.
 - **Read the threat model:** [`THREAT_MODEL.md`](./THREAT_MODEL.md) — every threat mapped to the gate that stops it and the test/red-team case that proves it, with honest residual risks.
@@ -96,7 +96,7 @@ A leaderboard ranks by outcome. The **Overfit Court** rules on trust: every agen
 
 - **Trust Score** — one transparent number per agent: 40% skill (overfit-corrected DSR) + 30% safety + 20% performance + 10% explainability. PnL ranks agents by outcome; Trust Score ranks them by whether they deserve capital (`bitarena/arena/trust.py`).
 - **Agent Passport** — the credit score for an autonomous agent: persona, mandate limits, DSR/PBO/Sharpe/drawdown, Trust Score and grade, red-team result, and capital allocation, one card per agent (`/passports`, the Passport tab).
-- **Judge Mode** — one click verifies the whole system in 60 seconds: a safe order ALLOW, a rogue $50k order ALLOW_CAPPED to $2k, a policy breach REJECT, the signature checked in your browser, and the proof row (0/25 unsafe, 330 tests, ~0.1 ms). The Judge tab.
+- **Judge Mode** — one click verifies the whole system in 60 seconds: a safe order ALLOW, a rogue $50k order ALLOW_CAPPED to $2k, a policy breach REJECT, the signature checked in your browser, and the proof row (0/25 unsafe, 337 tests, ~0.1 ms). The Judge tab.
 - **How it compares** — a feature matrix in the Lab vs TradingAgents, AI Hedge Fund, and AI-Trader: they generate decisions; Agent Arena adds the signed firewall, DSR/PBO, allocator, and browser-verifiable ledger.
 
 <img src="docs/screenshots/judge.png" alt="Judge Mode — verify Agent Arena in 60 seconds" width="760" />
@@ -269,7 +269,7 @@ uv run python scripts/verify_evidence.py
 
 ## Status
 
-Complete and tested — **330 passing tests, lint-clean, fully offline**: the signed
+Complete and tested — **337 passing tests, lint-clean, fully offline**: the signed
 tamper-evident firewall (red-teamed, **0 unsafe orders pass**), a live Bitget connector
 (real data verified), the arena with **seven competitors** (conflict-gated swarm, the
 published-Playbook regime mirror, persona team, Q-learning RL, momentum, buy-hold, and a

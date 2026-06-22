@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from ..agents.persona import PERSONAS, persona_for
 from ..domain.mandate import default_arena_mandate
+from .restraint import restraint_score
 from .trust import trust_score
 
 
@@ -38,13 +39,16 @@ def _alloc_weights(allocator: dict | None) -> dict:
 
 
 def build_passport(agent_id: str, row: dict | None = None,
-                   alloc_weights: dict | None = None, mandate=None) -> dict:
+                   alloc_weights: dict | None = None, mandate=None,
+                   fw_stats: dict | None = None) -> dict:
     """Assemble one agent's passport from its leaderboard row + allocation + the mandate."""
     p = persona_for(agent_id)
     row = row or {}
     trust = row.get("trust") or trust_score({"agent_id": agent_id, **row})
     weight = (alloc_weights or {}).get(agent_id)
+    restraint = restraint_score(row, (fw_stats or {}).get(agent_id))
     return {
+        "restraint": restraint,
         "agent_id": agent_id,
         "name": p.name,
         "philosophy": p.philosophy,
@@ -68,12 +72,13 @@ def build_passport(agent_id: str, row: dict | None = None,
 
 
 def build_all_passports(leaderboard: list[dict] | None = None,
-                        allocator: dict | None = None, mandate=None) -> list[dict]:
+                        allocator: dict | None = None, mandate=None,
+                        fw_stats: dict | None = None) -> list[dict]:
     """Passports for the whole roster, sorted by Trust Score (deserve-capital order)."""
     rows = {r["agent_id"]: r for r in (leaderboard or []) if isinstance(r, dict) and r.get("agent_id")}
     weights = _alloc_weights(allocator)
     ids = list(rows) or list(PERSONAS)
-    passports = [build_passport(a, rows.get(a), weights, mandate) for a in ids]
+    passports = [build_passport(a, rows.get(a), weights, mandate, fw_stats) for a in ids]
     passports.sort(key=lambda x: x["trust_score"], reverse=True)
     for i, p in enumerate(passports):
         p["rank"] = i + 1

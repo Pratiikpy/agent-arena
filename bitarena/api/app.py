@@ -308,7 +308,9 @@ def create_app(
         lb = _load_json("leaderboard.json")
         rows = lb.get("leaderboard", lb) if isinstance(lb, dict) else lb
         alloc = _load_json("allocator.json")
-        return {"passports": build_all_passports(rows if isinstance(rows, list) else None, alloc)}
+        fw = (lb.get("firewall", {}) or {}).get("by_agent") if isinstance(lb, dict) else None
+        return {"passports": build_all_passports(
+            rows if isinstance(rows, list) else None, alloc, fw_stats=fw)}
 
     @app.get("/court")
     def court():
