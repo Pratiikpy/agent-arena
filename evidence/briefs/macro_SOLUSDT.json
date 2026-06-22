@@ -1,7 +1,7 @@
 {
-  "score": 0.3597,
-  "confidence": 0.889,
-  "summary": "60-bar trend +6.96%, realized vol 0.56% (risk on).",
+  "score": 0.3275,
+  "confidence": 0.883,
+  "summary": "60-bar trend +6.39%, realized vol 0.59% (risk on).",
   "source": "bitget-derived (price regime, not external macro feeds)",
   "symbol": "SOLUSDT",
   "skill": "macro"

@@ -312,6 +312,31 @@ def create_app(
         return {"passports": build_all_passports(
             rows if isinstance(rows, list) else None, alloc, fw_stats=fw)}
 
+    @app.get("/skills")
+    def skills():
+        """The 5 Bitget Agent Hub analyst Skills (macro, sentiment, news, onchain, technical),
+        with the latest brief each produced — real Bitget-derived signals the agents read."""
+        from ..perception.agent_hub import AGENT_HUB_SKILLS
+
+        briefs_dir = evidence.parent / "briefs"
+        if not briefs_dir.exists():
+            briefs_dir = Path("evidence/briefs")
+        out: dict[str, list] = {}
+        if briefs_dir.exists():
+            for path in sorted(briefs_dir.glob("*_*.json")):
+                try:
+                    b = json.loads(path.read_text(encoding="utf-8"))
+                except (ValueError, OSError):
+                    continue
+                sym = b.get("symbol", "")
+                out.setdefault(sym, []).append({
+                    "skill": b.get("skill"), "score": b.get("score"),
+                    "confidence": b.get("confidence"), "summary": b.get("summary"),
+                    "source": b.get("source"),
+                })
+        return {"skills": list(AGENT_HUB_SKILLS), "briefs": out,
+                "note": "Five analyst Skills feed the swarm, persona-team, RL, and LLM agents."}
+
     @app.get("/court")
     def court():
         """Overfit Court: each agent's verdict on whether its edge survives the overfit checks."""

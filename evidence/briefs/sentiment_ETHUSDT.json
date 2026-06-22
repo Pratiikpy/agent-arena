@@ -1,7 +1,7 @@
 {
-  "score": 0.0096,
-  "confidence": 0.405,
-  "summary": "Funding -0.0012% per interval; crowded shorts.",
+  "score": -0.0216,
+  "confidence": 0.411,
+  "summary": "Funding +0.0027% per interval; crowded longs.",
   "source": "bitget-funding",
   "symbol": "ETHUSDT",
   "skill": "sentiment"

@@ -1,7 +1,7 @@
 {
-  "score": 0.1783,
-  "confidence": 0.578,
-  "summary": "Volume surge +18% into a up move.",
+  "score": -0.5065,
+  "confidence": 0.907,
+  "summary": "Volume fade -51% into a up move.",
   "source": "bitget-derived (volume flow, not an on-chain feed)",
   "symbol": "SOLUSDT",
   "skill": "onchain"

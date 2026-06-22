@@ -1,7 +1,7 @@
 {
-  "score": 0.0995,
-  "confidence": 0.943,
-  "summary": "60-bar trend +1.79%, realized vol 0.29% (risk on).",
+  "score": 0.0717,
+  "confidence": 0.933,
+  "summary": "60-bar trend +1.30%, realized vol 0.33% (risk on).",
   "source": "bitget-derived (price regime, not external macro feeds)",
   "symbol": "BTCUSDT",
   "skill": "macro"

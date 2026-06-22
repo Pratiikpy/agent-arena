@@ -1,7 +1,7 @@
 {
-  "score": 0.014,
-  "confidence": 0.511,
-  "summary": "RSI 44, 5/20 MA trend +0.06%.",
+  "score": 0.0315,
+  "confidence": 0.525,
+  "summary": "RSI 49, 5/20 MA trend +0.13%.",
   "source": "bitget-candles",
   "symbol": "BTCUSDT",
   "skill": "technical"

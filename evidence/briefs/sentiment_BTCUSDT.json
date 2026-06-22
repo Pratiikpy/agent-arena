@@ -1,7 +1,7 @@
 {
-  "score": 0.0424,
-  "confidence": 0.421,
-  "summary": "Funding -0.0053% per interval; crowded shorts.",
+  "score": -0.024,
+  "confidence": 0.412,
+  "summary": "Funding +0.0030% per interval; crowded longs.",
   "source": "bitget-funding",
   "symbol": "BTCUSDT",
   "skill": "sentiment"

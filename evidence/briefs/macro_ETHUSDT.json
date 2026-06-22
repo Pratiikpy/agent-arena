@@ -1,7 +1,7 @@
 {
-  "score": 0.065,
-  "confidence": 0.936,
-  "summary": "60-bar trend +1.18%, realized vol 0.32% (risk on).",
+  "score": 0.1269,
+  "confidence": 0.928,
+  "summary": "60-bar trend +2.32%, realized vol 0.36% (risk on).",
   "source": "bitget-derived (price regime, not external macro feeds)",
   "symbol": "ETHUSDT",
   "skill": "macro"

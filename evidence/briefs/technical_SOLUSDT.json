@@ -1,7 +1,7 @@
 {
-  "score": 0.1524,
-  "confidence": 0.622,
-  "summary": "RSI 59, 5/20 MA trend +0.61%.",
+  "score": 0.0339,
+  "confidence": 0.527,
+  "summary": "RSI 45, 5/20 MA trend +0.14%.",
   "source": "bitget-candles",
   "symbol": "SOLUSDT",
   "skill": "technical"

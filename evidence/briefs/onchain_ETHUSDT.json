@@ -1,7 +1,7 @@
 {
-  "score": -0.5834,
-  "confidence": 0.983,
-  "summary": "Volume surge +58% into a down move.",
+  "score": -0.2873,
+  "confidence": 0.687,
+  "summary": "Volume fade -29% into a up move.",
   "source": "bitget-derived (volume flow, not an on-chain feed)",
   "symbol": "ETHUSDT",
   "skill": "onchain"

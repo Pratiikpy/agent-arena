@@ -1,7 +1,7 @@
 {
-  "score": -0.4127,
-  "confidence": 0.813,
-  "summary": "Volume surge +41% into a down move.",
+  "score": -0.3513,
+  "confidence": 0.751,
+  "summary": "Volume fade -35% into a up move.",
   "source": "bitget-derived (volume flow, not an on-chain feed)",
   "symbol": "BTCUSDT",
   "skill": "onchain"
