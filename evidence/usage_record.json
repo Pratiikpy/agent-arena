@@ -1,0 +1,112 @@
+{
+  "calls": 8,
+  "totals": {
+    "ALLOW": 6,
+    "ALLOW_CAPPED": 1,
+    "REJECT": 1
+  },
+  "unsafe_passed": 0,
+  "note": "deterministic firewall-call log; regenerate and re-verify each cert_hash.",
+  "rows": [
+    {
+      "seq": 1,
+      "ts": 3540000,
+      "agent_id": "swarm",
+      "symbol": "BTCUSDT",
+      "side": "buy",
+      "requested_usd": 50.0,
+      "decision": "ALLOW",
+      "effective_usd": 50.0,
+      "reason": "within all limits",
+      "cert_hash": "6ca9b5147a9ea5d3ea285209ea07e7ad4ee29d8f050c98f041e93196e95ecedc"
+    },
+    {
+      "seq": 2,
+      "ts": 3540001,
+      "agent_id": "regime",
+      "symbol": "BTCUSDT",
+      "side": "sell",
+      "requested_usd": 120.0,
+      "decision": "ALLOW",
+      "effective_usd": 120.0,
+      "reason": "within all limits",
+      "cert_hash": "ecb4f0957bf197893c2f84ac47b2c654ce5a52483e5a58aa5f45f04c0349e330"
+    },
+    {
+      "seq": 3,
+      "ts": 3540002,
+      "agent_id": "persona-team",
+      "symbol": "BTCUSDT",
+      "side": "buy",
+      "requested_usd": 800.0,
+      "decision": "ALLOW",
+      "effective_usd": 800.0,
+      "reason": "within all limits",
+      "cert_hash": "e85548c644aec5ee750c93e4509cc9ade078aefbc70a1ae90776cb5c506f4d79"
+    },
+    {
+      "seq": 4,
+      "ts": 3540003,
+      "agent_id": "funding-carry",
+      "symbol": "BTCUSDT",
+      "side": "buy",
+      "requested_usd": 1500.0,
+      "decision": "ALLOW",
+      "effective_usd": 1500.0,
+      "reason": "within all limits",
+      "cert_hash": "33b913ec0ea8cf69a9f2244413bb2fda676cf50931715a95b9f4b4b1687d8013"
+    },
+    {
+      "seq": 5,
+      "ts": 3540004,
+      "agent_id": "rl-qlearn",
+      "symbol": "BTCUSDT",
+      "side": "buy",
+      "requested_usd": 999999.0,
+      "decision": "ALLOW_CAPPED",
+      "effective_usd": 2000.0,
+      "reason": "capped from $999,999.00 to $2,000.00",
+      "cert_hash": "b841e21fbc13c5b5540924a3fdfef38ef83870f4d1cad2a21211b2bd81f397d9"
+    },
+    {
+      "seq": 6,
+      "ts": 3540005,
+      "agent_id": "baseline-momentum",
+      "symbol": "BTCUSDT",
+      "side": "sell",
+      "requested_usd": 5000.0,
+      "decision": "REJECT",
+      "effective_usd": null,
+      "reason": "no headroom under sizing caps",
+      "cert_hash": "64f4e0ceec9d894d068724916e6ad69e7ce2976c942b0996109d499e4144afc3"
+    },
+    {
+      "seq": 7,
+      "ts": 3540006,
+      "agent_id": "swarm",
+      "symbol": "BTCUSDT",
+      "side": "buy",
+      "requested_usd": 250.0,
+      "decision": "ALLOW",
+      "effective_usd": 250.0,
+      "reason": "within all limits",
+      "cert_hash": "6ce8f5126afebba9890c5de480e90201a6a158dd63060f65ea7d848964718a89"
+    },
+    {
+      "seq": 8,
+      "ts": 3540007,
+      "agent_id": "benchmark-buyhold",
+      "symbol": "BTCUSDT",
+      "side": "buy",
+      "requested_usd": 75.0,
+      "decision": "ALLOW",
+      "effective_usd": 75.0,
+      "reason": "within all limits",
+      "cert_hash": "4154af0b2d93fc1b97ebf96b2f40b0d0360a29740b4f5a104477097db7c89070"
+    }
+  ],
+  "payload_sha256": "84172c22d92d272da9fb31a8730d12885808008b93a9d1d17b6b5c2d1c43ae1c",
+  "issuer": "98683e5cbe6313a0",
+  "public_key_hex": "c2f8243b0d573587f285c830a868acd19249d17d59ecbf9329e796dfed6fb630",
+  "signature_hex": "420e30ac4219e013e1c5e8e7fdff3e728b10097bf1588997c3307e44c8f80ea61947fd0fc254008a06b149496bef689ac139e8711bb35e82dcb31fff6721ae06"
+}

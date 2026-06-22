@@ -65,7 +65,7 @@ decide (7 agents incl. a live Qwen LLM debate, the published Playbook strategy, 
 funding-carry competitor) →
 **firewall** (signed, red-teamed) → execute (paper / Bitget) → **signed ledger** →
 overfit-aware leaderboard → **trust allocator**. Exposed over an HTTP API and an MCP
-server, with an independent `/verify` endpoint and a production UI. 337 passing tests.
+server, with an independent `/verify` endpoint and a production UI. 340 passing tests.
 Run it: `cd bitarena && uv pip install -e ".[dev,api,mcp,llm]" && uv run pytest` then
 `uv run uvicorn bitarena.api.app:app --port 8000`.
 
@@ -125,7 +125,7 @@ let a fleet of agents be run with real capital. That is what Agent Arena is.
   debate transcript (`llm_debate.json`); a signed trade memo bound to the verdict cert
   (`trade_memo.json`); natural-language → a sandboxed, backtest-gated agent (`nl_strategy.json`);
   a multi-brain model arena (`model_arena.json`); and real Bitget analyst briefs (`evidence/briefs/`,
-  real technicals + funding). 337 tests, CI-green.
+  real technicals + funding). 340 tests, CI-green.
 
 ## Security rigor (Track 2 depth)
 
@@ -198,6 +198,6 @@ Each tweet below is ≤280 chars — post the first as the quote-tweet, the rest
 > exposed, not crowned. 4 strategies already published on Bitget GetAgent. The arena runs on
 > real Bitget data.
 
-> **4/** Open source (MIT, 337 tests, CI-green): https://github.com/narutopyy/agent-arena —
+> **4/** Open source (MIT, 340 tests, CI-green): https://github.com/narutopyy/agent-arena —
 > deploy it, integrate over MCP/HTTP in minutes, or verify any certificate offline. The trust
 > layer for agentic trading. #BitgetHackathon @Bitget_AI

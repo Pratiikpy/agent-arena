@@ -1,0 +1,9 @@
+seq,ts,agent_id,symbol,side,requested_usd,decision,effective_usd,reason,cert_hash
+1,3540000,swarm,BTCUSDT,buy,50.0,ALLOW,50.0,within all limits,6ca9b5147a9ea5d3ea285209ea07e7ad4ee29d8f050c98f041e93196e95ecedc
+2,3540001,regime,BTCUSDT,sell,120.0,ALLOW,120.0,within all limits,ecb4f0957bf197893c2f84ac47b2c654ce5a52483e5a58aa5f45f04c0349e330
+3,3540002,persona-team,BTCUSDT,buy,800.0,ALLOW,800.0,within all limits,e85548c644aec5ee750c93e4509cc9ade078aefbc70a1ae90776cb5c506f4d79
+4,3540003,funding-carry,BTCUSDT,buy,1500.0,ALLOW,1500.0,within all limits,33b913ec0ea8cf69a9f2244413bb2fda676cf50931715a95b9f4b4b1687d8013
+5,3540004,rl-qlearn,BTCUSDT,buy,999999.0,ALLOW_CAPPED,2000.0,"capped from $999,999.00 to $2,000.00",b841e21fbc13c5b5540924a3fdfef38ef83870f4d1cad2a21211b2bd81f397d9
+6,3540005,baseline-momentum,BTCUSDT,sell,5000.0,REJECT,,no headroom under sizing caps,64f4e0ceec9d894d068724916e6ad69e7ce2976c942b0996109d499e4144afc3
+7,3540006,swarm,BTCUSDT,buy,250.0,ALLOW,250.0,within all limits,6ce8f5126afebba9890c5de480e90201a6a158dd63060f65ea7d848964718a89
+8,3540007,benchmark-buyhold,BTCUSDT,buy,75.0,ALLOW,75.0,within all limits,4154af0b2d93fc1b97ebf96b2f40b0d0360a29740b4f5a104477097db7c89070

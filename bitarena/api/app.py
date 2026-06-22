@@ -312,6 +312,11 @@ def create_app(
         return {"passports": build_all_passports(
             rows if isinstance(rows, list) else None, alloc, fw_stats=fw)}
 
+    @app.get("/usage")
+    def usage():
+        """A verifiable firewall-call log: every verdict with timestamp, order, and signed cert hash."""
+        return _serve_artifact("usage_record.json")
+
     @app.get("/skills")
     def skills():
         """The 5 Bitget Agent Hub analyst Skills (macro, sentiment, news, onchain, technical),
