@@ -112,14 +112,14 @@ bitarena/
   connectors/    ExchangeConnector protocol · PaperExchange · Bitget v2 REST client
   perception/    technical features · Agent Hub Skills + real Bitget briefs (macro/sentiment/news/onchain/technical)
   agents/        swarm · regime · persona team · RL · momentum · buy-hold · funding-carry · Qwen debate · NL-strategy · personas · reflection · signed debate · memo
-  arena/         tournament engine · portfolio/PnL · leaderboard · Trust Score · Agent Passport · TrustAllocator · LiveArena · multi-brain model arena
+  arena/         tournament engine · portfolio/PnL · leaderboard · Trust Score · Restraint Score · Agent Passport · Overfit Court · TrustAllocator · LiveArena · multi-brain model arena
   scoring/       Sharpe/Sortino/drawdown · Deflated Sharpe / PSR / PBO
   strategy/      natural-language strategy creation: AST-allowlisted sandbox + backtest gate
   ledger/        append-only Ed25519-signed trade log (Bitget-required fields, tamper-evident)
   mcp/           MCP server: vet_trade · get_leaderboard · list_agents · get_allocator · issuer_key · verify_certificate
-  api/           FastAPI: /firewall /verify /pubkey /leaderboard /live /ledger /debate /personas /passports /brains /strategy /reflection /memo (+ serves the UI)
+  api/           FastAPI: /firewall /verify /pubkey /leaderboard /live /ledger /debate /personas /passports /court /skills /usage /limits /attestation /brains /strategy /reflection /memo (+ serves the UI)
   research/      funding-carry edge study (walk-forward + Deflated Sharpe)
-web/             production single-page UI: firewall · arena · allocator · ledger · debate · lab · verify
+web/             production single-page UI: firewall · arena · court · passport · allocator · ledger · debate · lab · verify
 playbook/        four published Bitget GetAgent Playbooks — see playbook/PUBLISHED.md
 ```
 
